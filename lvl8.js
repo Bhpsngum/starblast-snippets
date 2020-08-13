@@ -74,6 +74,10 @@ this.tick = function ()
       {
         ship.show = true;
         showUI(ship);
+        ship.timeout_hide_hide = setTimeout(function(){
+          hideUI(ship);
+          ship.show = false;
+        },10000);
         ship.lvl8 = true;
       }
     }
@@ -82,6 +86,11 @@ this.tick = function ()
       ship.lvl8 = false;
       if (!ship.notlvl8)
       {
+        if (ship.timeout_hide)
+        {
+          clearTimeout(ship.timeout_hide);
+          ship.timeout_hide = 0;
+        }
         hideUI(ship,true);
         ship.notlvl8 = true;
       }
@@ -97,6 +106,11 @@ this.event = function(event, game) {
       {
         case "upgrades":
           ship.show = !ship.show;
+          if (ship.timeout_hide)
+          {
+            clearTimeout(ship.timeout_hide);
+            ship.timeout_hide = 0;
+          }
           if (ship.show) showUI(ship);
           else hideUI(ship);
           break;
@@ -123,8 +137,9 @@ var hideUI = function(ship, isNot)
     visible: true,
     components: [
       { type: "box",position:[0,0,100,100],stroke:"#CDE",width:1},
-      { type: "text",position:[0,10,100,80],value:"Upgrades  K ",color:"#CDE"},
-      { type: "box",position:[62,15,6,70],stroke:"#CDE",width:1}
+      { type: "text",position:[0,10,100,80],value:"Upgrades    ",color:"#CDE"},
+      { type: "box",position:[63,15,6,70],stroke:"#CDE",width:1},
+      { type: "text",position:[64,10,4,80],value:"K",color:"#CDE"}
     ]
   });
 }
@@ -171,24 +186,3 @@ var showUI = function(ship)
     ]
   });
 }
-/* testUI = function()
-{
-  game.ships[0].setUIComponent({
-      id: "upgrades",
-      position: [25,0,20,10],
-      clickable: true,
-      shortcut: "Y",
-      visible: true,
-      components: [
-        { type: "box",position:[0,0,100,100],stroke:"#CDE",width:2},
-        { type: "text",position:[5,0,33.75,50],value:"Shadow X-4",color:"#CDE"},
-        { type: "text",position:[5,65,12,20],value:"Lv8",color:"#CDE"},
-        { type: "box",position:[21,62,8.5,26],stroke:"#CDE",width:1},
-        { type: "text",position:[23,65,5,20],value:`9️️`,color:"#CDE"},
-        { type: "text",position:[68,15,27,20],value:`DEF MK 25️️`,color:"#CDE"},
-        { type: "text",position:[68,40,27,20],value:`ATK MK 35️️`,color:"#CDE"},
-        { type: "text",position:[68,65,24,20],value:`AGL MK 7️️`,color:"#CDE"},
-        { type: "text",position:[42,0,20,100],value:"?",color:"#CDE"}
-      ]
-    });
-} */
