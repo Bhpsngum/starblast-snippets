@@ -74,7 +74,7 @@ this.tick = function ()
       {
         ship.show = true;
         showUI(ship);
-        ship.timeout_hide_hide = setTimeout(function(){
+        ship.timeout_hide = setTimeout(function(){
           hideUI(ship);
           ship.show = false;
         },10000);
