@@ -30,7 +30,11 @@ game.execAliens = [];
 game.addCrystal = function(data)
 {
   this.execAliens.push(game.modding.I1I0I.request_id);
-  this.addAlien({code:13, x:data.x||0, y:data.y||0, crystal_drop: data.value||0});
+  let crystal = {x:data.x||0, y:data.y||0, value: data.value||0,
+    toString: function(){return "Crystal:"+JSON.stringify(this)}
+  };
+  this.addAlien({code:13,x:crystal.x,y:crystal.y,crystal_drop:crystal.value});
+  return crystal;
 }
 
 /* Do mod stuffs below, don't remove anything in this.tick, just add */
