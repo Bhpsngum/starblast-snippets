@@ -40,12 +40,12 @@ for (let ship of ships)
   let prs = JSON.parse(ship);
   game.custom_paths.set(prs.typespec.code,{
     level: Math.round(prs.level),
-    next: prs.custom_next||[],
+    next: prs.custom_next,
     name: prs.name,
     specs: prs.specs
   });
 }
-
+console.log(game.custom_paths);
 this.options = {
   ships:ships,
   reset_tree:false
@@ -60,7 +60,7 @@ this.tick = function (game)
 {
   for (let ship of game.ships)
   {
-    if (game.custom_paths.get(ship.type))
+    if (Array.isArray((game.custom_paths.get(ship.type)||{}).next))
     {
       if (ship.crystals >= 20*(Math.round(ship.type/100)**2))
       {
@@ -72,6 +72,7 @@ this.tick = function (game)
           ship.timeout_hide = setTimeout(function(){
             hideUI(ship);
             ship.show = false;
+            ship.timeout_hide = 0;
           },10000);
           ship.need_upgrade = true;
         }
@@ -81,11 +82,7 @@ this.tick = function (game)
         ship.need_upgrade = false;
         if (!ship.can_upgrade)
         {
-          if (ship.timeout_hide)
-          {
-            clearTimeout(ship.timeout_hide);
-            ship.timeout_hide = 0;
-          }
+          clearComponentTimeout(ship,"hide")
           hideUI(ship,true);
           ship.can_upgrade = true;
         }
@@ -102,23 +99,51 @@ this.event = function(event, game) {
       {
         case "upgrades":
           ship.show = !ship.show;
-          if (ship.timeout_hide)
-          {
-            clearTimeout(ship.timeout_hide);
-            ship.timeout_hide = 0;
-          }
+          clearComponentTimeout(ship,"hide");
           if (ship.show) showUI(ship);
           else hideUI(ship);
           break;
         default:
           if (event.id.startsWith("next-opt"))
           {
-            let type = game.custom_paths.get(ship.type).next[event.id.slice(-1)];
-            ship.set({type:type,shield:game.custom_paths.get(type).specs.shield.capacity[0],crystals:0});
+            let type = game.custom_paths.get(ship.type).next[event.id.slice(-1)],
+            nxt_ship = game.custom_paths.get(type) || broken_ships(type);
+            ship.set({type:type,shield:nxt_ship.specs.shield.capacity[0]||999,generator:nxt_ship.specs.generator.capacity[0]||999,crystals:0});
+            clearComponentTimeout(ship,"hide");
             hideUI(ship,true);
           }
       }
       break;
+  }
+}
+var clearComponentTimeout = function(ship,id)
+{
+  if (ship["timeout_"+id])
+  {
+    clearTimeout(ship["timeout_"+id]);
+    ship["timeout_"+id] = 0;
+  }
+}
+var broken_ships = function(code)
+{
+  return {
+    name: "Unknown ship",
+    level: Math.round(code/100),
+    specs: {
+      shield: {
+        capacity: [],
+        reload: []
+      },
+      generator: {
+        capacity: [],
+        reload: []
+      },
+      ship: {
+        speed: [],
+        acceleration: [],
+        rotation: []
+      }
+    }
   }
 }
 var hideUI = function(ship, isNot)
@@ -141,10 +166,10 @@ var hideUI = function(ship, isNot)
 }
 var showUI = function(ship)
 {
-  let key = [9,0];
+  let key = [9,0],nxt = game.custom_paths.get(ship.type).next;
   for (let i=0;i<2;i++)
   {
-    let next_ship = game.custom_paths.get(game.custom_paths.get(ship.type).next[i]),
+    let next_ship = game.custom_paths.get(nxt[i])||broken_ships(nxt[i]),
     name = next_ship.name;
     def = "DEF MK "+Math.round((next_ship.specs.shield.capacity[0]+next_ship.specs.shield.reload[0]*10)/20),
     atk = "ATK MK "+Math.round((next_ship.specs.generator.capacity[0]+next_ship.specs.generator.reload[0]*10)/20),
