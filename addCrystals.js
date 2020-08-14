@@ -35,6 +35,15 @@ game.addCrystal = function(data)
 
 /* Do mod stuffs below, don't remove anything in this.tick, just add */
 
+/* RESTRICTIONS - Do not use the values/variables/components listing below in their particular contexts:
+Global Scope Variables:
+  manageAliens
+  
+Game properties:
+  game.execAliens
+
+*/
+
 this.options = {
   // see documentation for options reference
   root_mode: "survival",
