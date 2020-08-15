@@ -29,6 +29,7 @@ var manageAliens = function(game)
 game.execAliens = [];
 game.addCrystal = function(data)
 {
+  data = data || {};
   this.execAliens.push(game.modding.I1I0I.request_id);
   let crystal = {x:data.x||0, y:data.y||0, value: data.value||0,
     toString: function(){return "Crystal:"+JSON.stringify(this)}
