@@ -1,20 +1,25 @@
-/* Custom ship tree
+/* CUSTOM SHIP TREE
+
 Having many ships upgraded in just from one ship
+
 In the ships you want to make custom upgrade tree, place `custom_next` like the `next` (you can also place both)
+
 You can do like this :
   level: 2
   next: [301,302]
   custom_next: [303,304]
+
 Or just simple like this:
   level: 2
   next: [null,null] ## to disable original ship upgrade bar, `max_level: 2` also works
   custom_next: [301,302,303,304]
+
 Have fun :D
 */
 
 /* Sample ships provided by 45rfew/Money and Karey */
 
-/* Place your ship list here */
+/* Place your ship list and `this.options` here */
 
 var Odyssey_701 = '{"name":"Odyssey","level":7,"model":1,"size":4,"custom_next":[101,201,202,301,302,303,304,401,402,403,404,405,406,501,502,503,504,505,506,507,601,602,603,604,605,606,607,608,701,702,703,704,791,792,793,794,795,796,797,798],"specs":{"shield":{"capacity":[750,750],"reload":[15,15]},"generator":{"capacity":[330,330],"reload":[150,150]},"ship":{"mass":700,"speed":[45,45],"rotation":[20,20],"acceleration":[150,150]}},"tori":{"circle":{"segments":20,"radius":95,"section_segments":12,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20],"height":[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],"texture":[63,63,4,10,4,4,10,4,63,63,63,63,3,10,3,3,10,3,63]}},"bodies":{"main":{"section_segments":20,"offset":{"x":0,"y":-10,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0],"y":[-130,-130,-85,-70,-60,-20,-25,40,40,100,90],"z":[0,0,0,0,0,0,0,0,0,0,0]},"width":[0,20,40,45,10,12,30,30,40,30,0],"height":[0,20,25,25,10,12,25,25,20,10,0],"texture":[4,15,63,4,4,4,11,10,4,12]},"laser1":{"section_segments":12,"offset":{"x":110,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0],"y":[-25,-30,-20,0,20,30,20],"z":[0,0,0,0,0,0,0]},"width":[0,3,5,5,5,3,0],"height":[0,3,5,5,5,3,0],"texture":[12,6,63,63,6,12],"laser":{"damage":[20,20],"rate":3,"type":1,"speed":[200,200],"number":1,"error":0}},"laser2":{"section_segments":12,"offset":{"x":110,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0],"y":[-25,-30,-20,0,20,30,20],"z":[0,0,0,0,0,0,0]},"width":[0,3,5,5,5,3,0],"height":[0,3,5,5,5,3,0],"texture":[12,6,63,63,6,12],"angle":180,"laser":{"damage":[20,20],"rate":3,"type":1,"speed":[200,200],"number":1,"error":0}},"cannon":{"section_segments":6,"offset":{"x":0,"y":-115,"z":0},"position":{"x":[0,0,0,0],"y":[-25,-30,-20,0],"z":[0,0,0,0]},"width":[0,15,9,7],"height":[0,10,9,7],"texture":[6,6,6,10],"laser":{"damage":[250,250],"rate":1,"type":1,"speed":[100,100],"number":1,"error":0,"recoil":300}},"cockpit":{"section_segments":10,"offset":{"x":0,"y":0,"z":15},"position":{"x":[0,0,0,0,0,0,0],"y":[-30,-10,0,10,30],"z":[0,0,0,0,0]},"width":[0,12,15,10,0],"height":[0,20,22,18,0],"texture":[9]},"bumpers":{"section_segments":8,"offset":{"x":85,"y":20,"z":0},"position":{"x":[-5,0,5,10,5,0,-5],"y":[-85,-80,-40,0,20,50,55],"z":[0,0,0,0,0,0,0]},"width":[0,10,15,15,15,5,0],"height":[0,20,35,35,25,15,0],"texture":[11,2,63,4,3],"angle":0},"toppropulsors":{"section_segments":10,"offset":{"x":17,"y":50,"z":15},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-20,-15,0,10,20,25,30,40,50,40],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,10,15,15,15,10,10,15,10,0],"height":[0,10,15,15,15,10,10,15,10,0],"texture":[3,4,10,3,3,63,4],"propeller":true},"bottompropulsors":{"section_segments":10,"offset":{"x":17,"y":50,"z":-15},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-20,-15,0,10,20,25,30,40,50,40],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,10,15,15,15,10,10,15,10,0],"height":[0,10,15,15,15,10,10,15,10,0],"texture":[3,4,10,3,3,63,4],"propeller":true}},"wings":{"topjoin":{"offset":{"x":0,"y":-3,"z":0},"doubleside":true,"length":[100],"width":[20,20],"angle":[25],"position":[0,0,0,50],"texture":[1],"bump":{"position":10,"size":30}},"bottomjoin":{"offset":{"x":0,"y":-3,"z":0},"doubleside":true,"length":[100],"width":[20,20],"angle":[-25],"position":[0,0,0,50],"texture":[1],"bump":{"position":-10,"size":30}}},"typespec":{"name":"Odyssey","level":7,"model":1,"code":701,"specs":{"shield":{"capacity":[750,750],"reload":[15,15]},"generator":{"capacity":[330,330],"reload":[150,150]},"ship":{"mass":700,"speed":[45,45],"rotation":[20,20],"acceleration":[150,150]}},"shape":[11.623,11.646,10.525,8.979,7.873,3.633,3.688,8.551,8.989,8.821,9.353,9.348,9.272,9.272,9.348,9.353,8.977,9.064,9.121,4.686,5.299,6.216,7.781,8.276,8.144,7.775,8.144,8.276,7.781,6.216,5.299,4.686,9.121,9.064,8.977,9.353,9.348,9.272,9.272,9.348,9.353,8.821,8.989,8.551,3.688,3.633,7.873,8.979,10.525,11.646],"lasers":[{"x":8.8,"y":-2.4,"z":0,"angle":0,"damage":[20,20],"rate":3,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":0},{"x":-8.8,"y":-2.4,"z":0,"angle":0,"damage":[20,20],"rate":3,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":0},{"x":8.8,"y":2.4,"z":0,"angle":180,"damage":[20,20],"rate":3,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":0},{"x":-8.8,"y":2.4,"z":0,"angle":-180,"damage":[20,20],"rate":3,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":0},{"x":0,"y":-11.6,"z":0,"angle":0,"damage":[250,250],"rate":1,"type":1,"speed":[100,100],"number":1,"spread":0,"error":0,"recoil":300}],"radius":11.646}}';
 var Shadow_X_3_702 = '{"name":"Shadow X-3","level":7,"model":2,"size":3,"custom_next":[791,793],"specs":{"shield":{"capacity":[400,400],"reload":[10,10]},"generator":{"capacity":[250,250],"reload":[45,45]},"ship":{"mass":350,"speed":[140,140],"rotation":[35,35],"acceleration":[35,35]}},"bodies":{"main":{"section_segments":16,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-130,-128,-115,-70,-40,0,40,65,75,90,105,95],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,5,10,20,25,20,20,30,30,30,22,0],"height":[0,5,10,25,20,10,10,20,20,20,15,0],"texture":[8,3,12.8,4,63,63,4,4,8,13,17],"laser":{"damage":[225,225],"rate":1,"type":1,"speed":[200,200],"number":1,"error":0,"recoil":500},"propeller":true},"cockpit":{"section_segments":16,"offset":{"x":0,"y":-30,"z":17},"position":{"x":[0,0,0,0,0,0,0,0,0],"y":[-50,-25,0,25,60,90,100,90],"z":[0,0,0,0,-10,-8,-10,-10]},"width":[0,10,15,10,20,15,10,0],"height":[0,15,20,10,10,5,10,0],"texture":[9,9,9,63,10,4]},"superchargers":{"section_segments":24,"offset":{"x":17,"y":-5,"z":-8},"position":{"x":[1,2,2,2,2,2,0,0,0],"y":[-45,-40,-50,-40,-20,0],"z":[0,0,0,0,0,0,0,0]},"width":[0,5,12,17,20,10],"height":[0,5,12,16,16,3],"angle":0,"texture":[15.1,8,13,4,4,10,11,13,17]},"innerthruster":{"section_segments":16,"offset":{"x":50,"y":-20,"z":-20},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0],"y":[-20,-25,-15,0,10,20,25,30,57,70,60],"z":[0,0,0,0,0,0,0,0,0,0,0]},"width":[0,10,13,15,15,15,13,13,16,13,0],"height":[0,10,13,15,15,15,10,10,15,9,0],"texture":[18,63,4,10,3,4,3,18,13,17],"propeller":true},"outerthruster":{"section_segments":16,"offset":{"x":90,"y":10,"z":-19},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0],"y":[-20,-25,-15,0,10,20,25,3,57,70,60],"z":[0,0,0,0,0,0,0,0,0,0,0]},"width":[0,10,13,15,15,15,15,17,14,12,0],"height":[0,10,13,15,15,15,10,10,15,9,0],"texture":[18,63,4,10,3,4,3,18,13,17],"propeller":true},"cannonsinner":{"section_segments":16,"offset":{"x":50,"y":-10,"z":-20},"position":{"x":[0,0,0,0,0,0,0,0],"y":[-45,-50,-49,-40,-38,-5,-1],"z":[0,0,0,0,0,0,0,0]},"width":[0,1,2.5,2.5,1.5,3],"height":[0,1,2.5,2.5,1.5,3],"texture":[8,13,4,10,10,13],"laser":{"damage":[4,4],"rate":4,"type":1,"speed":[150,150],"number":1}},"cannonsouter":{"section_segments":16,"offset":{"x":90,"y":20,"z":-20},"position":{"x":[0,0,0,0,0,0,0,0],"y":[-45,-50,-49,-40,-38,-5,-1],"z":[0,0,0,0,0,0,0,0]},"width":[0,1,2.5,2.5,1.5,3],"height":[0,1,2.5,2.5,1.5,3],"texture":[8,13,4,10,10,13],"laser":{"damage":[4,4],"rate":3,"type":1,"speed":[150,150],"number":1}}},"wings":{"wing1":{"doubleside":true,"offset":{"x":10,"y":0,"z":0},"length":[35,15,30,25],"width":[100,50,60,35,45],"angle":[-10,20,-5,0],"position":[0,0,10,30,-10],"texture":[4,4,4,4,4],"bump":{"position":-15,"size":15}}},"typespec":{"name":"Shadow X-3","level":7,"model":2,"code":702,"specs":{"shield":{"capacity":[400,400],"reload":[10,10]},"generator":{"capacity":[250,250],"reload":[45,45]},"ship":{"mass":350,"speed":[140,140],"rotation":[35,35],"acceleration":[35,35]}},"shape":[7.8,7.281,5.239,4.058,3.788,4.672,4.739,4.5,4.475,4.314,7.081,7.024,6.859,6.848,6.786,6.8,7.152,7.624,7.778,7.011,3.893,3.747,5.727,6.437,6.413,6.312,6.413,6.437,5.727,3.747,3.893,7.011,7.778,7.624,7.152,6.8,6.786,6.848,6.859,7.024,7.081,4.314,4.475,4.5,4.739,4.672,3.788,4.058,5.239,7.281],"lasers":[{"x":0,"y":-7.8,"z":0,"angle":0,"damage":[225,225],"rate":1,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":500},{"x":3,"y":-3.6,"z":-1.2,"angle":0,"damage":[4,4],"rate":4,"type":1,"speed":[150,150],"number":1,"spread":0,"error":0,"recoil":0},{"x":-3,"y":-3.6,"z":-1.2,"angle":0,"damage":[4,4],"rate":4,"type":1,"speed":[150,150],"number":1,"spread":0,"error":0,"recoil":0},{"x":5.4,"y":-1.8,"z":-1.2,"angle":0,"damage":[4,4],"rate":3,"type":1,"speed":[150,150],"number":1,"spread":0,"error":0,"recoil":0},{"x":-5.4,"y":-1.8,"z":-1.2,"angle":0,"damage":[4,4],"rate":3,"type":1,"speed":[150,150],"number":1,"spread":0,"error":0,"recoil":0}],"radius":7.8}}';
@@ -45,54 +50,63 @@ ships.push(Tsimtsum_796);
 ships.push(Pusat_797);
 ships.push(Trisbaena_798);
 
+this.options = {
+  // see documentation for options reference
+  ships:ships,
+  reset_tree: false
+}
+
 /* Don't touch anything below and scroll to the end */
 
-game.custom_paths = new Map([
+game.custom_paths = new Map(((this.options||{}).reset_tree)?[]:[
   [101,{"name":"Fly","level":1,"specs":{"shield":{"capacity":[75,100],"reload":[2,3]},"generator":{"capacity":[40,60],"reload":[10,15]},"ship":{"mass":60,"speed":[125,145],"rotation":[110,130],"acceleration":[100,120]}}}],
-	[201,{"name":"Delta-Fighter","level":2,"specs":{"shield":{"capacity":[100,150],"reload":[3,4]},"generator":{"capacity":[50,80],"reload":[15,25]},"ship":{"mass":80,"speed":[110,135],"rotation":[80,100],"acceleration":[110,120]}}}],
-	[202,{"name":"Trident","level":2,"specs":{"shield":{"capacity":[125,175],"reload":[3,5]},"generator":{"capacity":[50,80],"reload":[15,20]},"ship":{"mass":100,"speed":[110,135],"rotation":[70,85],"acceleration":[90,110]}}}],
-	[302,{"name":"Side-Fighter","level":3,"next":[403,404],"specs":{"shield":{"capacity":[125,175],"reload":[2,4]},"generator":{"capacity":[75,125],"reload":[20,35]},"ship":{"mass":90,"speed":[100,120],"rotation":[50,70],"acceleration":[100,130]}}}],
-	[301,{"name":"Pulse-Fighter","level":3,"specs":{"shield":{"capacity":[150,200],"reload":[3,5]},"generator":{"capacity":[60,90],"reload":[20,30]},"ship":{"mass":120,"speed":[105,120],"rotation":[60,80],"acceleration":[80,100]}}}],
-	[303,{"name":"Shadow X-1","level":3,"specs":{"shield":{"capacity":[90,130],"reload":[3,6]},"generator":{"capacity":[50,80],"reload":[12,16]},"ship":{"mass":70,"speed":[120,155],"rotation":[35,60],"acceleration":[130,150]}}}],
-	[304,{"name":"Y-Defender","level":3,"specs":{"shield":{"capacity":[175,225],"reload":[4,6]},"generator":{"capacity":[50,80],"reload":[18,25]},"ship":{"mass":200,"speed":[80,100],"rotation":[40,60],"acceleration":[70,80]}}}],
-	[401,{"name":"Vanguard","level":4,"specs":{"shield":{"capacity":[140,190],"reload":[3,4]},"generator":{"capacity":[80,140],"reload":[25,35]},"ship":{"mass":200,"speed":[75,90],"rotation":[90,120],"acceleration":[60,80]}}}],
-	[403,{"name":"X-Warrior","level":4,"specs":{"shield":{"capacity":[150,200],"reload":[3,5]},"generator":{"capacity":[90,150],"reload":[35,55]},"ship":{"mass":250,"speed":[75,100],"rotation":[50,90],"acceleration":[90,110]}}}],
-	[402,{"name":"Mercury","level":4,"specs":{"shield":{"capacity":[150,200],"reload":[3,5]},"generator":{"capacity":[100,150],"reload":[30,50]},"ship":{"mass":200,"speed":[85,105],"rotation":[60,90],"acceleration":[60,80]}}}],
-	[404,{"name":"Side-Interceptor","level":4,"specs":{"shield":{"capacity":[175,225],"reload":[3,6]},"generator":{"capacity":[100,150],"reload":[30,40]},"ship":{"mass":120,"speed":[80,110],"rotation":[50,100],"acceleration":[110,140]}}}],
-	[405,{"name":"Pioneer","level":4,"specs":{"shield":{"capacity":[175,230],"reload":[4,7]},"generator":{"capacity":[50,100],"reload":[25,30]},"ship":{"mass":250,"speed":[90,120],"rotation":[40,80],"acceleration":[50,100]}}}],
-	[406,{"name":"Crusader","level":4,"specs":{"shield":{"capacity":[250,300],"reload":[5,7]},"generator":{"capacity":[50,90],"reload":[20,35]},"ship":{"mass":250,"speed":[75,100],"rotation":[40,70],"acceleration":[80,100]}}}],
-	[501,{"name":"U-Sniper","level":5,"specs":{"shield":{"capacity":[200,300],"reload":[4,6]},"generator":{"capacity":[80,160],"reload":[40,60]},"ship":{"mass":200,"speed":[70,90],"rotation":[50,70],"acceleration":[60,110]}}}],
-	[503,{"name":"T-Warrior","level":5,"specs":{"shield":{"capacity":[225,325],"reload":[4,7]},"generator":{"capacity":[80,140],"reload":[35,50]},"ship":{"mass":250,"speed":[80,90],"rotation":[50,80],"acceleration":[90,120]}}}],
-	[504,{"name":"Aetos","level":5,"specs":{"shield":{"capacity":[200,300],"reload":[5,7]},"generator":{"capacity":[80,140],"reload":[35,45]},"ship":{"mass":175,"speed":[90,100],"rotation":[70,90],"acceleration":[110,130]}}}],
-	[505,{"name":"Shadow X-2","level":5,"specs":{"shield":{"capacity":[150,220],"reload":[5,7]},"generator":{"capacity":[80,145],"reload":[19,29]},"ship":{"mass":125,"speed":[110,140],"rotation":[35,48],"acceleration":[140,160]}}}],
-	[502,{"name":"FuryStar","level":5,"specs":{"shield":{"capacity":[200,275],"reload":[6,7]},"generator":{"capacity":[100,150],"reload":[30,40]},"ship":{"mass":200,"speed":[70,100],"rotation":[120,180],"acceleration":[150,180]}}}],
-	[506,{"name":"Howler","level":5,"specs":{"shield":{"capacity":[275,340],"reload":[5,7]},"generator":{"capacity":[80,110],"reload":[35,50]},"ship":{"mass":225,"speed":[85,98],"rotation":[70,95],"acceleration":[90,120]}}}],
-	[507,{"name":"Bat-Defender","level":5,"specs":{"shield":{"capacity":[300,400],"reload":[7,10]},"generator":{"capacity":[70,100],"reload":[25,35]},"ship":{"mass":350,"speed":[70,90],"rotation":[40,70],"acceleration":[90,100]}}}],
-	[601,{"name":"Advanced-Fighter","level":6,"specs":{"shield":{"capacity":[200,350],"reload":[4,6]},"generator":{"capacity":[120,200],"reload":[50,60]},"ship":{"mass":400,"speed":[70,80],"rotation":[30,50],"acceleration":[70,100]}}}],
-	[602,{"name":"Scorpion","level":6,"specs":{"shield":{"capacity":[225,400],"reload":[5,7]},"generator":{"capacity":[80,175],"reload":[38,50]},"ship":{"mass":450,"speed":[75,90],"rotation":[50,70],"acceleration":[80,100]}}}],
-	[603,{"name":"Marauder","level":6,"specs":{"shield":{"capacity":[210,350],"reload":[8,11]},"generator":{"capacity":[85,160],"reload":[25,40]},"ship":{"mass":250,"speed":[70,110],"rotation":[60,80],"acceleration":[80,120]}}}],
-	[604,{"name":"Condor","level":6,"specs":{"shield":{"capacity":[225,400],"reload":[7,10]},"generator":{"capacity":[70,130],"reload":[30,48]},"ship":{"mass":200,"speed":[75,105],"rotation":[50,70],"acceleration":[80,120]}}}],
-	[605,{"name":"A-Speedster","level":6,"specs":{"shield":{"capacity":[200,300],"reload":[6,8]},"generator":{"capacity":[80,140],"reload":[30,45]},"ship":{"mass":175,"speed":[90,115],"rotation":[60,80],"acceleration":[90,140]}}}],
-	[606,{"name":"Rock-Tower","level":6,"specs":{"shield":{"capacity":[300,500],"reload":[8,11]},"generator":{"capacity":[75,115],"reload":[35,45]},"ship":{"mass":450,"speed":[75,90],"rotation":[50,70],"acceleration":[80,90]}}}],
-	[607,{"name":"Barracuda","level":6,"specs":{"shield":{"capacity":[300,400],"reload":[8,12]},"generator":{"capacity":[100,150],"reload":[8,14]},"ship":{"mass":675,"speed":[70,90],"rotation":[30,45],"acceleration":[130,150],"dash":{"rate":2,"burst_speed":[160,200],"speed":[120,150],"acceleration":[70,70],"initial_energy":[50,75],"energy":[20,30]}}}}],
-	[608,{"name":"O-Defender","level":6,"specs":{"shield":{"capacity":[400,550],"reload":[10,13]},"generator":{"capacity":[70,100],"reload":[25,40]},"ship":{"mass":500,"speed":[70,80],"rotation":[30,40],"acceleration":[60,80]}}}],
-	[701,{"name":"Odyssey","level":7,"specs":{"shield":{"capacity":[750,750],"reload":[15,15]},"generator":{"capacity":[330,330],"reload":[150,150]},"ship":{"mass":700,"speed":[45,45],"rotation":[20,20],"acceleration":[150,150]}}}],
-	[702,{"name":"Shadow X-3","level":7,"specs":{"shield":{"capacity":[400,400],"reload":[10,10]},"generator":{"capacity":[250,250],"reload":[45,45]},"ship":{"mass":350,"speed":[140,140],"rotation":[35,35],"acceleration":[35,35]}}}],
-	[703,{"name":"Bastion","level":7,"specs":{"shield":{"capacity":[400,400],"reload":[20,20]},"generator":{"capacity":[500,500],"reload":[100,100]},"ship":{"mass":350,"speed":[80,80],"rotation":[15,15],"acceleration":[125,125]}}}],
-	[704,{"name":"Aries","level":7,"specs":{"shield":{"capacity":[800,800],"reload":[17,17]},"generator":{"capacity":[350,350],"reload":[175,175]},"ship":{"mass":800,"speed":[40,40],"rotation":[20,20],"acceleration":[150,150]}}}]
+  [201,{"name":"Delta-Fighter","level":2,"specs":{"shield":{"capacity":[100,150],"reload":[3,4]},"generator":{"capacity":[50,80],"reload":[15,25]},"ship":{"mass":80,"speed":[110,135],"rotation":[80,100],"acceleration":[110,120]}}}],
+  [202,{"name":"Trident","level":2,"specs":{"shield":{"capacity":[125,175],"reload":[3,5]},"generator":{"capacity":[50,80],"reload":[15,20]},"ship":{"mass":100,"speed":[110,135],"rotation":[70,85],"acceleration":[90,110]}}}],
+  [302,{"name":"Side-Fighter","level":3,"next":[403,404],"specs":{"shield":{"capacity":[125,175],"reload":[2,4]},"generator":{"capacity":[75,125],"reload":[20,35]},"ship":{"mass":90,"speed":[100,120],"rotation":[50,70],"acceleration":[100,130]}}}],
+  [301,{"name":"Pulse-Fighter","level":3,"specs":{"shield":{"capacity":[150,200],"reload":[3,5]},"generator":{"capacity":[60,90],"reload":[20,30]},"ship":{"mass":120,"speed":[105,120],"rotation":[60,80],"acceleration":[80,100]}}}],
+  [303,{"name":"Shadow X-1","level":3,"specs":{"shield":{"capacity":[90,130],"reload":[3,6]},"generator":{"capacity":[50,80],"reload":[12,16]},"ship":{"mass":70,"speed":[120,155],"rotation":[35,60],"acceleration":[130,150]}}}],
+  [304,{"name":"Y-Defender","level":3,"specs":{"shield":{"capacity":[175,225],"reload":[4,6]},"generator":{"capacity":[50,80],"reload":[18,25]},"ship":{"mass":200,"speed":[80,100],"rotation":[40,60],"acceleration":[70,80]}}}],
+  [401,{"name":"Vanguard","level":4,"specs":{"shield":{"capacity":[140,190],"reload":[3,4]},"generator":{"capacity":[80,140],"reload":[25,35]},"ship":{"mass":200,"speed":[75,90],"rotation":[90,120],"acceleration":[60,80]}}}],
+  [403,{"name":"X-Warrior","level":4,"specs":{"shield":{"capacity":[150,200],"reload":[3,5]},"generator":{"capacity":[90,150],"reload":[35,55]},"ship":{"mass":250,"speed":[75,100],"rotation":[50,90],"acceleration":[90,110]}}}],
+  [402,{"name":"Mercury","level":4,"specs":{"shield":{"capacity":[150,200],"reload":[3,5]},"generator":{"capacity":[100,150],"reload":[30,50]},"ship":{"mass":200,"speed":[85,105],"rotation":[60,90],"acceleration":[60,80]}}}],
+  [404,{"name":"Side-Interceptor","level":4,"specs":{"shield":{"capacity":[175,225],"reload":[3,6]},"generator":{"capacity":[100,150],"reload":[30,40]},"ship":{"mass":120,"speed":[80,110],"rotation":[50,100],"acceleration":[110,140]}}}],
+  [405,{"name":"Pioneer","level":4,"specs":{"shield":{"capacity":[175,230],"reload":[4,7]},"generator":{"capacity":[50,100],"reload":[25,30]},"ship":{"mass":250,"speed":[90,120],"rotation":[40,80],"acceleration":[50,100]}}}],
+  [406,{"name":"Crusader","level":4,"specs":{"shield":{"capacity":[250,300],"reload":[5,7]},"generator":{"capacity":[50,90],"reload":[20,35]},"ship":{"mass":250,"speed":[75,100],"rotation":[40,70],"acceleration":[80,100]}}}],
+  [501,{"name":"U-Sniper","level":5,"specs":{"shield":{"capacity":[200,300],"reload":[4,6]},"generator":{"capacity":[80,160],"reload":[40,60]},"ship":{"mass":200,"speed":[70,90],"rotation":[50,70],"acceleration":[60,110]}}}],
+  [503,{"name":"T-Warrior","level":5,"specs":{"shield":{"capacity":[225,325],"reload":[4,7]},"generator":{"capacity":[80,140],"reload":[35,50]},"ship":{"mass":250,"speed":[80,90],"rotation":[50,80],"acceleration":[90,120]}}}],
+  [504,{"name":"Aetos","level":5,"specs":{"shield":{"capacity":[200,300],"reload":[5,7]},"generator":{"capacity":[80,140],"reload":[35,45]},"ship":{"mass":175,"speed":[90,100],"rotation":[70,90],"acceleration":[110,130]}}}],
+  [505,{"name":"Shadow X-2","level":5,"specs":{"shield":{"capacity":[150,220],"reload":[5,7]},"generator":{"capacity":[80,145],"reload":[19,29]},"ship":{"mass":125,"speed":[110,140],"rotation":[35,48],"acceleration":[140,160]}}}],
+  [502,{"name":"FuryStar","level":5,"specs":{"shield":{"capacity":[200,275],"reload":[6,7]},"generator":{"capacity":[100,150],"reload":[30,40]},"ship":{"mass":200,"speed":[70,100],"rotation":[120,180],"acceleration":[150,180]}}}],
+  [506,{"name":"Howler","level":5,"specs":{"shield":{"capacity":[275,340],"reload":[5,7]},"generator":{"capacity":[80,110],"reload":[35,50]},"ship":{"mass":225,"speed":[85,98],"rotation":[70,95],"acceleration":[90,120]}}}],
+  [507,{"name":"Bat-Defender","level":5,"specs":{"shield":{"capacity":[300,400],"reload":[7,10]},"generator":{"capacity":[70,100],"reload":[25,35]},"ship":{"mass":350,"speed":[70,90],"rotation":[40,70],"acceleration":[90,100]}}}],
+  [601,{"name":"Advanced-Fighter","level":6,"specs":{"shield":{"capacity":[200,350],"reload":[4,6]},"generator":{"capacity":[120,200],"reload":[50,60]},"ship":{"mass":400,"speed":[70,80],"rotation":[30,50],"acceleration":[70,100]}}}],
+  [602,{"name":"Scorpion","level":6,"specs":{"shield":{"capacity":[225,400],"reload":[5,7]},"generator":{"capacity":[80,175],"reload":[38,50]},"ship":{"mass":450,"speed":[75,90],"rotation":[50,70],"acceleration":[80,100]}}}],
+  [603,{"name":"Marauder","level":6,"specs":{"shield":{"capacity":[210,350],"reload":[8,11]},"generator":{"capacity":[85,160],"reload":[25,40]},"ship":{"mass":250,"speed":[70,110],"rotation":[60,80],"acceleration":[80,120]}}}],
+  [604,{"name":"Condor","level":6,"specs":{"shield":{"capacity":[225,400],"reload":[7,10]},"generator":{"capacity":[70,130],"reload":[30,48]},"ship":{"mass":200,"speed":[75,105],"rotation":[50,70],"acceleration":[80,120]}}}],
+  [605,{"name":"A-Speedster","level":6,"specs":{"shield":{"capacity":[200,300],"reload":[6,8]},"generator":{"capacity":[80,140],"reload":[30,45]},"ship":{"mass":175,"speed":[90,115],"rotation":[60,80],"acceleration":[90,140]}}}],
+  [606,{"name":"Rock-Tower","level":6,"specs":{"shield":{"capacity":[300,500],"reload":[8,11]},"generator":{"capacity":[75,115],"reload":[35,45]},"ship":{"mass":450,"speed":[75,90],"rotation":[50,70],"acceleration":[80,90]}}}],
+  [607,{"name":"Barracuda","level":6,"specs":{"shield":{"capacity":[300,400],"reload":[8,12]},"generator":{"capacity":[100,150],"reload":[8,14]},"ship":{"mass":675,"speed":[70,90],"rotation":[30,45],"acceleration":[130,150],"dash":{"rate":2,"burst_speed":[160,200],"speed":[120,150],"acceleration":[70,70],"initial_energy":[50,75],"energy":[20,30]}}}}],
+  [608,{"name":"O-Defender","level":6,"specs":{"shield":{"capacity":[400,550],"reload":[10,13]},"generator":{"capacity":[70,100],"reload":[25,40]},"ship":{"mass":500,"speed":[70,80],"rotation":[30,40],"acceleration":[60,80]}}}],
+  [701,{"name":"Odyssey","level":7,"specs":{"shield":{"capacity":[750,750],"reload":[15,15]},"generator":{"capacity":[330,330],"reload":[150,150]},"ship":{"mass":700,"speed":[45,45],"rotation":[20,20],"acceleration":[150,150]}}}],
+  [702,{"name":"Shadow X-3","level":7,"specs":{"shield":{"capacity":[400,400],"reload":[10,10]},"generator":{"capacity":[250,250],"reload":[45,45]},"ship":{"mass":350,"speed":[140,140],"rotation":[35,35],"acceleration":[35,35]}}}],
+  [703,{"name":"Bastion","level":7,"specs":{"shield":{"capacity":[400,400],"reload":[20,20]},"generator":{"capacity":[500,500],"reload":[100,100]},"ship":{"mass":350,"speed":[80,80],"rotation":[15,15],"acceleration":[125,125]}}}],
+  [704,{"name":"Aries","level":7,"specs":{"shield":{"capacity":[800,800],"reload":[17,17]},"generator":{"capacity":[350,350],"reload":[175,175]},"ship":{"mass":800,"speed":[40,40],"rotation":[20,20],"acceleration":[150,150]}}}]
 ]);
 
-for (let ship of ships)
-{
-  let prs = JSON.parse(ship);
-  game.custom_paths.set(prs.typespec.code,{
-    level: Math.round(prs.level),
-    next: prs.custom_next,
-    name: prs.name,
-    specs: prs.specs
-  });
-}
-console.log(game.custom_paths)
+if (Array.isArray((this.options||{}).ships))
+  for (let ship of this.options.ships)
+  {
+    try{
+      let prs= JSON.parse(ship);
+      game.custom_paths.set(prs.typespec.code,{
+        level: Math.round(prs.level),
+        next: prs.custom_next,
+        name: prs.name,
+        specs: prs.specs
+      });
+    }
+    catch(e){}
+  }
 levelTick = function (game)
 {
   for (let ship of game.ships)
@@ -266,7 +280,6 @@ var showUI = function(ship, pgIndex)
       { type: "text",position:[46,65,10,20],value:"K",color:"#CDE"}
     ]
   });
-  console.log(u);
   for (let i=0;i<u.length;i++)
     if (u[i].c) ship.setUIComponent({
       id:"page"+u[i].inc,
@@ -290,6 +303,7 @@ var showUI = function(ship, pgIndex)
 
 /* RESTRICTIONS - Do not use the
 values/variables/components listing below in their particular contexts:
+
 Global Scope Variables:
   showUI
   hideUI
@@ -320,11 +334,7 @@ Components' shortcuts:
   P (Previous Page)
  
 */
-this.options = {
-  // see documentation for options reference
-  ships:ships,
-  reset_tree:false
-}
+
 this.tick = function (game) {
   levelTick(game);
   // do mod stuff here ; see documentation
