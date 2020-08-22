@@ -1,3 +1,4 @@
+/* Credits to Starblast Developers for this outstanding work */
 var lost_sector_aries = {
   id:"lost_sector_aries",
   obj:"https://starblast.io/lost_sector/LostSector_Aries_HardEdges.obj",
