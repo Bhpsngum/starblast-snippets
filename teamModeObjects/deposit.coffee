@@ -1,5 +1,5 @@
 return model =
-  type: 'deposit'
+  name: 'deposit'
   size: 0.5
   tori:
     main:
