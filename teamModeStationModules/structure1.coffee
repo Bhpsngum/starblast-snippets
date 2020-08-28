@@ -1,7 +1,7 @@
 return model =
   name: 'structure1'
   size: 0.5
-  tori: 'main':
+  tori: main:
     radius: 100
     segments: 20
     section_segments: 8

@@ -1,7 +1,7 @@
 return model =
   name: 'spawning'
   size: 0.5
-  tori: 'main':
+  tori: main:
     radius: 100
     segments: 12
     section_segments: 8
@@ -16,7 +16,7 @@ return model =
     width: [30,30,30,30,30,30,30,30,30,30,30,30,30]
     height: [15,15,15,15,15,15,15,15,15,15,15,15,15]
     texture: [10,4,10,4,10,4,10,4,10,4,10,4,10,4,10,4,10,4,10,4,10]
-  bodies: 'sphere':
+  bodies: sphere:
     section_segments: 8
     offset:
       x: 0
