@@ -57,7 +57,7 @@ return model =
       angle: 0
       propeller: false
       texture: [4,4,10,4,63,4]
-    "body0-40":
+    'body0-40':
       section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
       offset:
         x: 0
@@ -70,7 +70,7 @@ return model =
       width: [0,8,8,0]
       height: [0,8,8,0]
       texture: [12,63,12]
-    "body0-20":
+    'body0-20':
       section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
       offset:
         x: 0
@@ -122,7 +122,7 @@ return model =
       width: [0,8,8,0]
       height: [0,8,8,0]
       texture: [12,4,12]
-    "body20-40":
+    'body20-40':
       section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
       offset:
         x: 24
@@ -135,7 +135,7 @@ return model =
       width: [0,8,8,0]
       height: [0,8,8,0]
       texture: [12,63,12]
-    "body20-20":
+    'body20-20':
       section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
       offset:
         x: 24
@@ -187,7 +187,7 @@ return model =
       width: [0,8,8,0]
       height: [0,8,8,0]
       texture: [12,4,12]
-    "body40-40":
+    'body40-40':
       section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
       offset:
         x: 48
@@ -200,7 +200,7 @@ return model =
       width: [0,8,8,0]
       height: [0,8,8,0]
       texture: [12,2,12]
-    "body40-20":
+    'body40-20':
       section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
       offset:
         x: 48

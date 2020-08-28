@@ -1,5 +1,5 @@
 return model =
-  name: 'spawning'
+  name: 'spawning-1'
   size: 0.5
   tori: main:
     radius: 100
