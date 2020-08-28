@@ -1,5 +1,5 @@
 return model =
-  name: 'structure1'
+  name: 'connect-structure-1'
   size: 0.5
   tori: main:
     radius: 100
@@ -15,7 +15,7 @@ return model =
       z: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     width: [20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20]
     height: [10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10]
-    texture: [[1],[1],[10],[1],[1],[1],[1],[10],[1],[1],[1],[1],[10],[1],[1],[1],[1],[10],[1],[1],[1]]
+    texture: [1,1,10,1,1,1,1,10,1,1,1,1,10,1,1,1,1,10,1,1,1]
   bodies:
     bumpers:
       section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
@@ -50,11 +50,11 @@ return model =
         y: -3
         z: 0
       doubleside: true
-      length: [100]
+      length: 100
       width: [20,20]
-      angle: [45]
+      angle: 45
       position: [0,0,0,50]
-      texture: [1]
+      texture: 1
       bump:
         position: 10
         size: 30
@@ -64,11 +64,11 @@ return model =
         y: -3
         z: 0
       doubleside: true
-      length: [100]
+      length: 100
       width: [20,20]
       angle: [-45]
       position: [0,0,0,50]
-      texture: [1]
+      texture: 1
       bump:
         position: -10
         size: 30

@@ -1,5 +1,5 @@
 return model =
-  name: 'intersect-structure'
+  name: 'joint-3-structure'
   size: 0.5
   bodies:
     main:
