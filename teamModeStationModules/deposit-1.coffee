@@ -71,7 +71,7 @@ return model =
         z: [0, 0, 0, 0, 0, 0, 0]
       width: [0, 15, 15, 10, 10, 5, 0]
       height: [0, 15, 15, 10, 10, 5, 0]
-      angle: 0
+      angle: [0]
       propeller: false
       texture: [4, 4, 10, 4, 63, 4]
     antenna:

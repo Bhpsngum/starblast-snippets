@@ -11,7 +11,7 @@ return model =
   size: 0.5
   bodies:
     main:
-      angle: 0
+      angle: [0]
       section_segments: 12
       offset:
         x: 0
@@ -25,7 +25,7 @@ return model =
       height: [0, 15, 16, 40, 20, 40, 12, 10, 0]
       texture: [6, 12, 8, e, e, 8, 12, 6]
     angle:
-      angle: -90
+      angle: [-90]
       section_segments: 12
       offset:
         x: 0

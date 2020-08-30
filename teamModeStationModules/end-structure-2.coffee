@@ -10,7 +10,7 @@ return model =
   name: 'end-structure-2'
   size: 0.5
   bodies: main:
-    angle: 0
+    angle: [0]
     section_segments: 12
     offset:
       x: 0

@@ -30,7 +30,7 @@ return model =
     height: Array(21).fill(10)
     texture: generateTexture()
   bodies: main:
-    angle: 0
+    angle: [0]
     section_segments: 12
     offset:
       x: 0

@@ -39,7 +39,7 @@ model =
 for s in [0, 90]
   a = llOl0(40)
   model.bodies["body" + s] =
-    angle: s,
+    angle: [s],
     section_segments: 12
     offset:
       x: 0

@@ -55,9 +55,9 @@ return model =
         y: -3
         z: 0
       doubleside: true
-      length: 100
+      length: [100]
       width: [20, 20]
-      angle: 45
+      angle: [45]
       position: [0, 0, 0, 50]
       texture: 1
       bump:
@@ -69,7 +69,7 @@ return model =
         y: -3
         z: 0
       doubleside: true
-      length: 100
+      length: [100]
       width: [20, 20]
       angle: [-45]
       position: [0, 0, 0, 50]
