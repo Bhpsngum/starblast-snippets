@@ -11,7 +11,7 @@ next = () =>
 e = 1 + Math.floor(next() * 3)
 generateTexture = () =>
   t = []
-  for i in [0..15]
+  for i in [0..16]
     t.push([3, 8][Number(next() < .3)])
   return t
 model =
@@ -112,10 +112,10 @@ for i in [-4..0]
       y: 25 * i
       z: 0
     position:
-      x: Array(16).fill(0)
-      y: Array(16).fill(0)
-      z: Array(16).fill(0)
-    width: Array(16).fill(15)
-    height: Array(16).fill(10)
+      x: Array(17).fill(0)
+      y: Array(17).fill(0)
+      z: Array(17).fill(0)
+    width: Array(17).fill(15)
+    height: Array(17).fill(10)
     texture: generateTexture()
 return model;

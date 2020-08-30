@@ -23,11 +23,11 @@ return model =
       y: 0
       z: 0
     position:
-      x: Array(42).fill(0)
-      y: Array(42).fill(0)
-      z: Array(42).fill(0)
-    width: Array(42).fill(30)
-    height: Array(42).fill(15)
+      x: Array(43).fill(0)
+      y: Array(43).fill(0)
+      z: Array(43).fill(0)
+    width: Array(43).fill(30)
+    height: Array(43).fill(15)
     texture: generateTexture()
   bodies: sphere:
     section_segments: 8
@@ -36,7 +36,7 @@ return model =
       y: 0
       z: 0
     position:
-      x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      x: Array(12).fill(0)
       y: [-160, -150, -100, -85, -70, -50, -20, 20, 50, 70, -50, -50]
       z: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     width: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0]
