@@ -6,11 +6,6 @@ b = 12345
 lOO0O = size - 1
 lOIll = 1 / size
 e = 1 + Math.floor(((seed * a + b) & lOO0O) * lOIll * 4)
-generateTexture = () =>
-  t = []
-  for i in [0..42]
-    t.push([e, 10][Number((i - 2) % 5 == 0)])
-  return t
 return model =
   name: 'end-structure-1'
   size: 0.5
@@ -28,7 +23,7 @@ return model =
       z: Array(21).fill(0)
     width: Array(21).fill(20)
     height: Array(21).fill(10)
-    texture: generateTexture()
+    texture: Array(43).fill(0).map(x = (j, i) => [e, 10][Number((i - 2) % 5 == 0)])
   bodies: main:
     angle: [0]
     section_segments: 12

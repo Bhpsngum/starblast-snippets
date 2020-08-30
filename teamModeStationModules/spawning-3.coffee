@@ -9,11 +9,6 @@ next = () =>
   seed = (seed * a + b) & lOO0O
   return seed * lOIll
 e = 1 + Math.floor(next() * 3)
-generateTexture = () =>
-  t = []
-  for i in [0..16]
-    t.push([3, 8][Number(next() < .3)])
-  return t
 model =
   name: 'spawning-3'
   size: 0.5
@@ -117,5 +112,5 @@ for i in [-4..0]
       z: Array(17).fill(0)
     width: Array(17).fill(15)
     height: Array(17).fill(10)
-    texture: generateTexture()
+    texture: Array(17).fill(0).map(x = () => [3, 8][Number(next() < .3)])
 return model;

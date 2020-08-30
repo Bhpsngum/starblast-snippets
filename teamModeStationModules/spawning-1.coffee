@@ -6,11 +6,6 @@ b = 12345
 lOO0O = size - 1
 lOIll = 1 / size
 e = 1 + Math.floor(((seed * a + b) & lOO0O) * lOIll * 4)
-generateTexture = () =>
-  t = []
-  for i in [0..20]
-    t.push([e, 10][Number(i%2 == 0)])
-  return t
 return model =
   name: 'spawning-1'
   size: 0.5
@@ -28,7 +23,7 @@ return model =
       z: Array(13).fill(0)
     width: Array(13).fill(30)
     height: Array(13).fill(15)
-    texture: generateTexture()
+    texture: Array(21).fill(0).map(x = (j, i) => [e, 10][Number(i%2 == 0)])
   bodies: sphere:
     section_segments: 8
     offset:

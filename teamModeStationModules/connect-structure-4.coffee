@@ -10,11 +10,6 @@ next = () =>
   return seed * lOIll
 llOl0 = (l101O) =>
   return Math.floor(next() * l101O)
-generateTexture = () =>
-  t = []
-  for s in [0..40]
-    t.push([i, 10][Number((s - 2) % 5 == 0)])
-  return t
 a = llOl0(20)
 i = 1 + llOl0(4)
 o = llOl0(20)
@@ -50,5 +45,5 @@ for s in [-4..4] by 2
       z: Array(5 + o).fill(0)
     width: Array(5 + o).fill(10)
     height: Array(5 + o).fill(o + 3)
-    texture: generateTexture()
+    texture: Array(41).fill(0).map(x = (t, s) => [i, 10][Number((s - 2) % 5 == 0)])
 return model

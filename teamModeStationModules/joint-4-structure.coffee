@@ -10,11 +10,6 @@ next = () =>
   return seed * lOIll
 llOl0 = (l101O) =>
   return Math.floor(next() * l101O)
-generateTexture = () =>
-  t = []
-  for s in [0..20]
-    t.push([i, 10][Number((s - 2) % 5 == 0)])
-  return t
 i = 1 + llOl0(4)
 model =
   name: "joint-4-structure",
@@ -34,7 +29,7 @@ model =
           z: Array(21).fill(0)
       width: Array(21).fill(20)
       height: Array(21).fill(10)
-      texture: generateTexture()
+      texture: Array(21).fill(0).map(x = (t, s) => [i, 10][Number((s - 2) % 5 == 0)])
   bodies: {}
 for s in [0, 90]
   a = llOl0(40)
