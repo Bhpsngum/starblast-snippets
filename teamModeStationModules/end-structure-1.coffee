@@ -29,7 +29,7 @@ return model =
     width: Array(21).fill(20)
     height: Array(21).fill(10)
     texture: generateTexture()
-  bodies: 'main':
+  bodies: main:
     angle: 0
     section_segments: 12
     offset:
