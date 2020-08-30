@@ -3,7 +3,7 @@ generateTexture = () =>
   for e in [0..20]
     t.push([1, 10][Number((e - 2) % 5 == 0)])
   return t
-model =
+return model =
   name: 'connect-structure-1'
   size: 0.5
   tori: main:
@@ -77,4 +77,3 @@ model =
       bump:
         position: -10
         size: 30
-return model

@@ -11,7 +11,7 @@ generateTexture = () =>
   for i in [0..20]
     t.push([e, 10][Number(i%2 == 0)])
   return t
-model =
+return model =
   name: 'spawning-1'
   size: 0.5
   tori: main:
@@ -41,4 +41,3 @@ model =
     width: [0, 30, 30, 40, 70, 90, 100, 100, 90, 60, 30, 0]
     height: [0, 30, 30, 40, 70, 90, 100, 100, 90, 60, 30, 0]
     texture: [6, 12, Array(6).fill(e), 1, 11, 12].flat()
-return model
