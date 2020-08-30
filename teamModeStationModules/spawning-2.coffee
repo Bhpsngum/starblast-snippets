@@ -1,3 +1,16 @@
+description = 'Modify this string to regenerate the model'
+size = 1 << 30
+seed = Math.random()*size
+a = 13791
+b = 12345
+lOO0O = size - 1
+lOIll = 1 / size
+e = 1 + Math.floor(((seed * a + b) & lOO0O) * lOIll * 3)
+generateTexture = () =>
+  t = []
+  for i in [0..42]
+    t.push([1, 10][Number(i%7 == 0)])
+  return t
 return model =
   name: 'spawning-2'
   size: 0.5
@@ -10,25 +23,25 @@ return model =
       y: 0
       z: 0
     position:
-      x: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-      y: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-      z: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    width: [30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30]
-    height: [15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15]
-    texture: [10,1,1,1,1,1,1,10,1,1,1,1,1,1,10,1,1,1,1,1,1,10,1,1,1,1,1,1,10,1,1,1,1,1,1,10,1,1,1,1,1,1,10]
-  bodies: 'sphere':
+      x: Array(42).fill(0)
+      y: Array(42).fill(0)
+      z: Array(42).fill(0)
+    width: Array(42).fill(30)
+    height: Array(42).fill(15)
+    texture: generateTexture()
+  bodies: sphere:
     section_segments: 8
     offset:
       x: 0
       y: 0
       z: 0
     position:
-      x: [0,0,0,0,0,0,0,0,0,0,0,0]
-      y: [-160,-150,-100,-85,-70,-50,-20,20,50,70,-50,-50]
-      z: [0,0,0,0,0,0,0,0,0,0,0,0]
-    width: [0,20,20,40,70,90,100,100,90,60,30,0]
-    height: [0,20,20,40,70,90,100,100,90,60,30,0]
-    texture: [6,1,3,3,3,3,3,3,1,11,12]
+      x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      y: [-160, -150, -100, -85, -70, -50, -20, 20, 50, 70, -50, -50]
+      z: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    width: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0]
+    height: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0]
+    texture: [6, 1, Array(6).fill(e), 1, 11, 12].flat()
   wings:
     topjoin:
       offset:
@@ -36,11 +49,11 @@ return model =
         y: 0
         z: 80
       doubleside: true
-      length: 100
-      width: [50,20]
-      angle: 60
-      position: [0,0]
-      texture: 63
+      length: [100]
+      width: [50, 20]
+      angle: [60]
+      position: [0, 0]
+      texture: [63]
       bump:
         position: 0
         size: 30
@@ -50,11 +63,11 @@ return model =
         y: 0
         z: 0
       doubleside: true
-      length: 100
-      width: [50,20]
-      angle: 0
-      position: [0,0]
-      texture: 63
+      length: [100]
+      width: [50, 20]
+      angle: [0]
+      position: [0, 0]
+      texture: [63]
       bump:
         position: 10
         size: 30
@@ -64,11 +77,11 @@ return model =
         y: 0
         z: -80
       doubleside: true
-      length: 100
-      width: [50,20]
+      length: [100]
+      width: [50, 20]
       angle: [-60]
-      position: [0,0]
-      texture: 63
+      position: [0, 0]
+      texture: [63]
       bump:
         position: 0
         size: 30
