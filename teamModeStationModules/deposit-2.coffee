@@ -1,4 +1,16 @@
-return model =
+description = 'Modify this string to regenerate the model'
+size = 1 << 30
+seed = Math.random()*size
+a = 13791
+b = 12345
+lOO0O = size - 1
+lOIll = 1 / size
+next = () =>
+  seed = (seed * a + b) & lOO0O
+  return seed * lOIll
+llOl0 = (l101O) =>
+  return Math.floor(next() * l101O)
+model =
   name: 'deposit-2'
   size: 0.5
   bodies:
@@ -57,198 +69,19 @@ return model =
       angle: 0
       propeller: false
       texture: [4,4,10,4,63,4]
-    'body0-40':
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
+for i in [0..40] by 20
+  for s in [-40..40] by 20
+    model.bodies["body" + i + s] =
+      section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320]
       offset:
-        x: 0
-        y: -76
-        z: 38
+          x: 1.2 * i
+          y: 1.6 * s - 12
+          z: 38
       position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,63,12]
-    'body0-20':
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 0
-        y: -44
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,4,12]
-    body00:
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 0
-        y: -12
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,63,12]
-    body020:
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 0
-        y: 20
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,1,12]
-    body040:
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 0
-        y: 52
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,4,12]
-    'body20-40':
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 24
-        y: -76
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,63,12]
-    'body20-20':
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 24
-        y: -44
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,63,12]
-    body200:
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 24
-        y: -12
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,2,12]
-    body2020:
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 24
-        y: 20
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,3,12]
-    body2040:
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 24
-        y: 52
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,4,12]
-    'body40-40':
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 48
-        y: -76
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,2,12]
-    'body40-20':
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 48
-        y: -44
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,3,12]
-    body400:
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 48
-        y: -12
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,3,12]
-    body4020:
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 48
-        y: 20
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,2,12]
-    body4040:
-      section_segments: [40,45,50,130,135,140,220,225,230,310,315,320]
-      offset:
-        x: 48
-        y: 52
-        z: 38
-      position:
-        x: [0,0,0,0,0]
-        y: [-7,-5,10,12]
-        z: [0,0,0,0]
-      width: [0,8,8,0]
-      height: [0,8,8,0]
-      texture: [12,4,12]
+          x: [0, 0, 0, 0, 0]
+          y: [-7, -5, 10, 12]
+          z: [0, 0, 0, 0]
+      width: [0, 8, 8, 0]
+      height: [0, 8, 8, 0]
+      texture: [12, [1, 63][Number(next() < .3)] + llOl0(4), 12]
+return model;
