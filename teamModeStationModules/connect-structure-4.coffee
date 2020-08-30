@@ -1,6 +1,5 @@
 return model =
-  type: 'structure'
-  rotate: true
+  name: 'connect-structure-4'
   size: 0.5
   tori:
     circle0:

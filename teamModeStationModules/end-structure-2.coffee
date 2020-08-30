@@ -1,7 +1,5 @@
 return model =
   name: 'end-structure-2'
-  rotate: 5.649928562343121
-  transparent: true
   size: 0.5
   bodies: main:
     angle: 0
