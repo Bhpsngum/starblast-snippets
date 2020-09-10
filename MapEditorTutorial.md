@@ -1,4 +1,4 @@
-# Starblast Map Editor Tutorial and links
+# Starblast Map Editor tutorial and links
 made by Bhpsngum
 ## Links
 * **Main version:** Main version of the tool: https://bhpsngum.github.io/starblast/mapeditor/
@@ -19,7 +19,7 @@ made by Bhpsngum
 | 3 | Random asteroid drawer | Enable random asteroid size drawer | R |
 | 3a | Random asteroid drawer's options | Random Asteroid drawer's options (from left to right: min and max) | No |
 | 3b | Random Asteroid in Brush | When brush size is larger than 1, fill a block of same asteroids or all randomly | No |
-| 4 | Brush size | Toggle Brush size (from 0 to the current map size, fill up a square of size 2\*n+1 which your mouse cursor at the center) | No |
+| 4 | Brush size | Toggle Brush size (from 0 to the current map size, fill up a square of size 2\*n+1 with your mouse cursor at the center) | No |
 | 5 | Mirror Options Area | Toggle asymmetrical drawing (from left to right: horizontal, vertical and secret feature | No |
 | 6 | Color Area | Map Editor Color Selection (from left to right: Asteroid, background and border color) | No |
 | 7 | Clear Map | Clear all asteroids in the current map | No |
