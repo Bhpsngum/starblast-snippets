@@ -30,5 +30,5 @@ made by Bhpsngum
 | 12 | Feedback | Give us a feedback | No |
 | 13 | Permalink | Copy permalink to clipboard | No |
 | 14 | Export Map as Image | Export map screenshot as a PNG (\*.png) file | Ctrl + I |
-| 15 | Copy Map screenshot | Copy Map screenshot as as a PNG (\*.png) file to CLipboard | No |
-| 16 | Tutorial | Map Editor Tutorial (this site) | No |
+| 15 | Copy Map screenshot | Copy Map screenshot as as a PNG (\*.png) file to Clipboard | No |
+| 16 | Tutorial | View Map Editor Tutorial (this site) | No |
