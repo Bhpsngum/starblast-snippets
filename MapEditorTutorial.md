@@ -9,6 +9,7 @@ made by Bhpsngum
 
   *Big Note:* All of those versions are using the data from the same origin, so consider before accessing the beta version if you don't want to accidentally lose your map data.
 * **Feedback Link:** https://docs.google.com/forms/d/e/1FAIpQLSe-NQ8QTj0bnX65LMT8NbO9ppEYRtgQ1Fa3AwJX-GfTFHUQSw/viewform?usp=sf_link
+* **Tutorial link (this page):** https://github.com/Bhpsngum/starblast/blob/master/MapEditorTutorial.md
 ## All UIs information and tutorials
 ### Menu Bar
 **Position:** Always in the top position of the map editor
