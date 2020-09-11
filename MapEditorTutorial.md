@@ -11,7 +11,8 @@ made by Bhpsngum
 * **Feedback Link:** https://docs.google.com/forms/d/e/1FAIpQLSe-NQ8QTj0bnX65LMT8NbO9ppEYRtgQ1Fa3AwJX-GfTFHUQSw/viewform?usp=sf_link
 ## All UIs information and tutorials
 ### Menu Bar
-**Position:** Always in the top of the ship editor
+**Position:** Always in the top of the map editor
+![Preview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu.png)
 | Index | Name | Description | Shortcut |
 | - | - | - | - |
 | 1 | Map size Input | Toggle map size (from 20 to 200 and must be even | No |
