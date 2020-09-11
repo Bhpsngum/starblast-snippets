@@ -12,8 +12,8 @@ made by Bhpsngum
 * **Tutorial link (this page):** https://github.com/Bhpsngum/starblast/blob/master/MapEditorTutorial.md
 ## All UIs information and tutorials
 ### Menu Bar
-**Position:** Always in the top position of the map editor
-![Preview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu.png)
+**Position:** Always in the top position of the tool.
+![MenuPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu.png)
 | Index | Name | Description | Shortcut |
 | - | - | - | - |
 | 1 | Map size Input | Toggle map size (from 20 to 200 and must be even) | No |
@@ -34,3 +34,10 @@ made by Bhpsngum
 | 14 | Export Map as Image | Export map screenshot as a PNG (\*.png) file | Ctrl + I |
 | 15 | Copy Map screenshot | Copy Map screenshot as as a PNG (\*.png) file to Clipboard | No |
 | 16 | Tutorial | View Map Editor Tutorial (this site) | No |
+## Information section
+**Position:** Always at the bottom position of the tool.
+![InfoPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/InfoMenu.png)
+| Index | Description |
+| - | - |
+| 1 | View the (x,y) position ((0,0) at the top left of the map and (map size - 1, map size -1) at the bottom right of the map) and asteroid size in that cell (or no asteroids) |
+| 2 | Whenever you hover the sections that are containing information, it will be displayed here |
