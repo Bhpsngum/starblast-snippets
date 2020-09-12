@@ -34,6 +34,7 @@ made by Bhpsngum
 | 14 | Export Map as Image | Export map screenshot as a PNG (\*.png) file | Ctrl + I |
 | 15 | Copy Map screenshot | Copy Map screenshot as as a PNG (\*.png) file to Clipboard | No |
 | 16 | Tutorial | View Map Editor Tutorial (this site) | No |
+| 17 | Changelog | View the modify log of Map Editor from the beginning | No |
 ## Information section
 **Position:** Always at the bottom position of the tool.
 ![InfoPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEInfo.png)
@@ -41,3 +42,16 @@ made by Bhpsngum
 | - | - |
 | 1 | View the (x;y) position ((0;0) at the top left of the map and (map size - 1; map size -1) at the bottom right of the map) and asteroid size in that cell (or no asteroids) |
 | 2 | Whenever you hover the sections that are containing information, it will be displayed here |
+## Map
+**Position:** You can spot it position obviously, so this info is not needed
+**Introduction:**
+* Left-Click in any cell in the map to apply the asteroid to that cell
+* Right-click in any cell to remove existing asteroid from that cell
+* You can hold and drag your mouse for asteroid trails
+* Use these keyboard shortcuts for navigation:
+| Button | Moving direction |
+| - | - |
+| W / Arrow Up Button | Up |
+| S / Arrow Down Button | Down |
+| A / Arrow Left Button | Left |
+| D / Arrow Right Button | Right |
