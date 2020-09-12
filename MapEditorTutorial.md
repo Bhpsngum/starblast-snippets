@@ -44,7 +44,7 @@ made by Bhpsngum
 | 2 | Whenever you hover the sections that are containing information, it will be displayed here |
 ## Map
 **Position:** You can spot it position obviously, so this info is not needed
-[!MapPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMap.png)
+![MapPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMap.png)
 
 **Introduction:**
 * Left-Click in any cell in the map to apply the asteroid to that cell
