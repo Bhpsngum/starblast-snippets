@@ -44,11 +44,14 @@ made by Bhpsngum
 | 2 | Whenever you hover the sections that are containing information, it will be displayed here |
 ## Map
 **Position:** You can spot it position obviously, so this info is not needed
+[!MapPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMap.png)
+
 **Introduction:**
 * Left-Click in any cell in the map to apply the asteroid to that cell
 * Right-click in any cell to remove existing asteroid from that cell
 * You can hold and drag your mouse for asteroid trails
 * Use these keyboard shortcuts for navigation:
+
 | Button | Moving direction |
 | - | - |
 | W / Arrow Up Button | Up |
