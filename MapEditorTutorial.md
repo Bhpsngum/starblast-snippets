@@ -10,6 +10,7 @@ made by Bhpsngum
   *Big Note:* All of those versions are using the data from the same origin, so consider before accessing the beta version if you don't want to accidentally lose your map data.
 * **Feedback Link:** https://docs.google.com/forms/d/e/1FAIpQLSe-NQ8QTj0bnX65LMT8NbO9ppEYRtgQ1Fa3AwJX-GfTFHUQSw/viewform?usp=sf_link
 * **Tutorial link (this page):** https://github.com/Bhpsngum/starblast/blob/master/MapEditorTutorial.md
+* **Changelog link:** https://bhpsngum.github.io/starblast/mapeditor/changelog.html
 ## All UIs information and tutorials
 ### Menu Bar
 **Position:** Always in the top position of the tool.
@@ -34,7 +35,7 @@ made by Bhpsngum
 | 14 | Export Map as Image | Export map screenshot as a PNG (\*.png) file | Ctrl + I |
 | 15 | Copy Map screenshot | Copy Map screenshot as as a PNG (\*.png) file to Clipboard | No |
 | 16 | Tutorial | View Map Editor Tutorial (this site) | No |
-| 17 | Changelog | View the modify log of Map Editor from the beginning | No |
+| 17 | Changelog | View the update's log of Map Editor from the beginning | No |
 ## Information section
 **Position:** Always at the bottom position of the tool.
 ![InfoPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEInfo.png)
