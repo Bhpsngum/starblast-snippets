@@ -8,7 +8,7 @@ made by Bhpsngum
 * **Old version:** For anyone who can't use the main version: https://bhpsngum.github.io/starblast/mapeditor/old.html
 
   *Big Note:* All of those versions are using the data from the same origin, so consider before accessing the beta version if you don't want to accidentally lose your map data.
-* **Feedback Link:** https://docs.google.com/forms/d/e/1FAIpQLSe-NQ8QTj0bnX65LMT8NbO9ppEYRtgQ1Fa3AwJX-GfTFHUQSw/viewform?usp=sf_link
+* **Feedback Link:** https://bhpsngum.github.io/starblast/mapeditor/?feedback
 * **Tutorial link (this page):** https://github.com/Bhpsngum/starblast/blob/master/MapEditorTutorial.md
 * **Changelog link:** https://bhpsngum.github.io/starblast/mapeditor/changelog.html
 ## All UIs information and tutorials
@@ -25,17 +25,19 @@ made by Bhpsngum
 | 4 | Brush size Input | Toggle Brush size (from 0 to current map size, fill up a square of size 2\*n+1 with your mouse cursor at the center) | No |
 | 5 | Mirror Options Area | Toggle asymmetrical drawing (from left to right: horizontal, vertical and secret feature | No |
 | 6 | Color Inputs Area | Map Editor Color Selection (from left to right: Asteroid, background and border color) | No |
-| 7 | Clear Map | Clear all asteroids in the current map | No |
-| 8 | Export Map as Text | Export map as a text/plain (\*.txt) file | Ctrl + S |
-| 9 | Copy Map | Copy current map pattern to clipboard | No |
-| 10 | Import Map | Import map from file (accept text/plain (\*.txt/\*.text) and text/javascript (\*.js) format) | No |
-| 11 | Random Maze Generator | Generate Random Maze according to the current map size. By [rvan-der](https://github.com/rvan-der) | No |
-| 12 | Feedback | Give us a feedback | No |
-| 13 | Permalink | Copy permalink to clipboard | No |
-| 14 | Export Map as Image | Export map screenshot as a PNG (\*.png) file | Ctrl + I |
-| 15 | Copy Map screenshot | Copy Map screenshot as as a PNG (\*.png) file to Clipboard | No |
-| 16 | Tutorial | View Map Editor Tutorial (this site) | No |
-| 17 | Changelog | View the update's log of Map Editor from the beginning | No |
+| 7 | Undo | Undo previous actions in the map |
+| 8 | Redo | Redo undid actions in the map |
+| 9 | Clear Map | Clear all asteroids in the current map | No |
+| 10 | Export Map as Text | Export map as a text/plain (\*.txt) file | Ctrl + S |
+| 11 | Copy Map | Copy current map pattern to clipboard | No |
+| 12 | Import Map | Import map from file (accept text/plain (\*.txt/\*.text) and text/javascript (\*.js) format) | No |
+| 13 | Random Maze Generator | Generate Random Maze according to the current map size. By [rvan-der](https://github.com/rvan-der) | No |
+| 14 | Feedback | Give us a feedback | No |
+| 15 | Permalink | Copy permalink to clipboard | No |
+| 16 | Export Map as Image | Export map screenshot as a PNG (\*.png) file | Ctrl + I |
+| 17 | Copy Map screenshot | Copy Map screenshot as as a PNG (\*.png) file to Clipboard | No |
+| 18 | Tutorial | View Map Editor Tutorial (this site) | No |
+| 19 | Changelog | View the update's log of Map Editor from the beginning | No |
 ## Information section
 **Position:** Always at the bottom position of the tool.
 ![InfoPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEInfo.png)
