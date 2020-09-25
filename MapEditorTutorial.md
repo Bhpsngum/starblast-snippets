@@ -45,6 +45,8 @@ made by Bhpsngum
 | - | - |
 | 1 | View the (x;y) position ((0;0) at the top left of the map and (map size - 1; map size -1) at the bottom right of the map) and asteroid size in that cell (or no asteroids) |
 | 2 | Whenever you hover the sections that are containing information, it will be displayed here |
+
+**Note:** Undo and redo's information will not be shown if they're unavailable at that time
 ## Map
 **Position:** You can spot it position obviously, so this info is not needed
 ![MapPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMap.png)
