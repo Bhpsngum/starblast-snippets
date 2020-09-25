@@ -25,12 +25,12 @@ made by Bhpsngum
 | 4 | Brush size Input | Toggle Brush size (from 0 to current map size, fill up a square of size 2\*n+1 with your mouse cursor at the center) | No |
 | 5 | Mirror Options Area | Toggle asymmetrical drawing (from left to right: horizontal, vertical and secret feature | No |
 | 6 | Color Inputs Area | Map Editor Color Selection (from left to right: Asteroid, background and border color) | No |
-| 7 | Undo | Undo previous actions in the map |
-| 8 | Redo | Redo undid actions in the map |
+| 7 | Undo | Undo previous actions in the map | Ctrl + Z |
+| 8 | Redo | Redo undid actions in the map | Ctrl + Y |
 | 9 | Clear Map | Clear all asteroids in the current map | No |
 | 10 | Export Map as Text | Export map as a text/plain (\*.txt) file | Ctrl + S |
-| 11 | Copy Map | Copy current map pattern to clipboard | No |
-| 12 | Import Map | Import map from file (accept text/plain (\*.txt/\*.text) and text/javascript (\*.js) format) | No |
+| 11 | Copy Map | Copy current map pattern to clipboard | Ctrl + C |
+| 12 | Import Map | Import map from file (accept text/plain (\*.txt/\*.text) and text/javascript (\*.js) format) | Ctrl + O |
 | 13 | Random Maze Generator | Generate Random Maze according to the current map size. By [rvan-der](https://github.com/rvan-der) | No |
 | 14 | Feedback | Give us a feedback | No |
 | 15 | Permalink | Copy permalink to clipboard | No |
