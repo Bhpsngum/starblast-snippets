@@ -17,7 +17,7 @@ made by Bhpsngum
 #### Map Tab
 ![MapTab](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu0.png)
 
-A: Hide/Show the Map Menu
+A: Show/Hide the Map Menu
 | Index | Name | Description | Shortcut |
 | - | - | - | - |
 | 1 | Export Map as Text | Export map as a text/plain (\*.txt) file | Ctrl + S |
