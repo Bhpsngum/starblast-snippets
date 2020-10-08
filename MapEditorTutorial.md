@@ -15,7 +15,7 @@ made by Bhpsngum
 ### Menu Bar
 **Position:** Always in the top position of the tool and divides into 4 Tabs:
 #### Map Tab
-![MapTab](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu0.png)
+![MapTab1](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu0.png)
 
 A: Show/Hide the Map Menu
 | Index | Name | Description | Shortcut |
@@ -27,7 +27,7 @@ A: Show/Hide the Map Menu
 | 5 | Copy Map screenshot | Copy Map screenshot as as a PNG (\*.png) file to Clipboard (May not work in some browsers) | No |
 | 6 | Permalink | Copy map permalink to clipboard | No |
 #### Edit Tab
-![MapTab](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu1.png)
+![MapTab2](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu1.png)
 | Index | Name | Description | Shortcut |
 | - | - | - | - |
 | 1 | Map size Input | Toggle map size (from 20 to 200 and must be even) | No |
@@ -42,13 +42,26 @@ A: Show/Hide the Map Menu
 | 7 | Redo | Redo undid actions in the map | Ctrl + Y |
 | 8 | Clear Map | Clear all asteroids in the current map | No |
 | 9 | Random Maze Generator | Generate Random Maze according to the current map size. By [rvan-der](https://github.com/rvan-der) | No |
-
+#### Decoration Tab
+![MapTab3](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu2.png)
 | Index | Name | Description | Shortcut |
 | - | - | - | - |
-| 6 | Color Inputs Area | Map Editor Color Selection (from left to right: Asteroid, background and border color) | No |
-| 14 | Feedback | Give us a feedback | No |
-| 18 | Tutorial | View Map Editor Tutorial (this site) | No |
-| 19 | Changelog | View the update's log of Map Editor from the beginning | No |
+| 1 | Asteroid Color input | Toggle Asteroid Color | No |
+| 2 | Background Color input | Toggle Background Color | No |
+| 3 | Upload custom background image from file | Upload your own background image from file (accepts all image formats) | No |
+| 4 | Upload custom background image from URL | Upload your own background image from URL | No |
+| 4a | Toggle full tool / map only image display | Adjust background image for map only or the whole tool | No |
+| 4a1 | Export Settings with background image | Export the map with or without the background image (Only available in Map Only Selection) | No |
+| 4a2 | Opacity input | Toggle background image opacity (0 to 1 - Only available in Map Only Selection) | No |
+| 4b | Clear background image | Clear current custom background image | No |
+| 5 | Line Color input | Toggle Line Color | No |
+#### Decoration Tab
+![MapTab4](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu3.png)
+| Index | Name | Description | Shortcut |
+| - | - | - | - |
+| 1 | Feedback | Give us a feedback | No |
+| 2 | Tutorial | View Map Editor Tutorial (this site) | No |
+| 3 | Changelog | View the update's log of Map Editor from the beginning | No |
 ## Information section
 **Position:** Always at the bottom position of the tool.
 ![InfoPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEInfo.png)
