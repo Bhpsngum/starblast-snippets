@@ -75,6 +75,8 @@ A: Show/Hide the Map Menu
 **Position:** You can spot it position obviously, so this info is not needed
 ![MapPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMap.png)
 
+*A blank 20x20 map with custom background image applied*
+
 **Introduction:**
 * Left-Click in any cell in the map to apply the asteroid to that cell
 * Right-click in any cell to remove existing asteroid from that cell
