@@ -1,5 +1,6 @@
 # Starblast Map Editor tutorial and links
 made by Bhpsngum
+
 ## Links
 * **Main version:** Main version of the tool: https://bhpsngum.github.io/starblast/mapeditor/
 * **Beta version:** Beta version and early access to new features before they appear in the main version: https://bhpsngum.github.io/starblast/mapeditor/beta/
@@ -12,6 +13,31 @@ made by Bhpsngum
 * **Tutorial link (this page):** https://github.com/Bhpsngum/starblast/blob/master/MapEditorTutorial.md
 * **Changelog link:** https://bhpsngum.github.io/starblast/mapeditor/changelog.html
 ## All UIs information and tutorials
+
+<details>
+  <summary markdown="span">Table of contents</summary>
+  
+  <details>
+ <summary markdown="span">Menu Bar</summary>
+ 
+   **[Menu Bar](#menu-bar)**
+ 
+   * **[Map Tab](#map-tab)**
+    
+   * **[Edit Tab](#edit-tab)**
+   
+   * **[Decoration Tab](#decoration-tab)**
+   
+   * **[Miscellaneous Tab](#miscellaneous-tab)**
+   
+  </details>
+  
+  **[Information section](#information-section)**
+   
+  **[Map](#map)**
+  
+</details>
+
 ### Menu Bar
 **Position:** Always in the top position of the tool and divides into 4 Tabs:
 #### Map Tab
@@ -55,7 +81,7 @@ A: Show/Hide the Map Menu
 | 4a2 | Opacity input | Toggle background image opacity (0 to 1 - Only available in Map Only Selection) | No |
 | 4b | Clear background image | Clear current custom background image | No |
 | 5 | Line Color input | Toggle Line Color | No |
-#### Decoration Tab
+#### Miscellaneous Tab
 ![MapTab4](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu3.png)
 | Index | Name | Description | Shortcut |
 | - | - | - | - |
