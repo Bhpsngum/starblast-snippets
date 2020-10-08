@@ -77,8 +77,9 @@ A: Show/Hide the Map Menu
 | 3 | Upload custom background image from file | Upload your own background image from file (accepts all image formats) | No |
 | 4 | Upload custom background image from URL | Upload your own background image from URL | No |
 | 4a | Toggle full tool / map only image display | Adjust background image for map only or the whole tool | No |
-| 4a1 | Export Settings with background image | Export the map with or without the background image (Only available in Map Only Selection) | No |
-| 4a2 | Opacity input | Toggle background image opacity (0 to 1 - Only available in Map Only Selection) | No |
+| 4a1 | Export Settings with background image | Export the map with or without the background image | No |
+| 4a2 | Opacity input | Toggle background image opacity (0 to 1) | No |
+| | | ***Note:*** 4a1 and 4a2 features are only available in Map Only Selection |
 | 4b | Clear background image | Clear current custom background image | No |
 | 5 | Line Color input | Toggle Line Color | No |
 #### Miscellaneous Tab
