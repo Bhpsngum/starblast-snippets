@@ -13,8 +13,20 @@ made by Bhpsngum
 * **Changelog link:** https://bhpsngum.github.io/starblast/mapeditor/changelog.html
 ## All UIs information and tutorials
 ### Menu Bar
-**Position:** Always in the top position of the tool.
-![MenuPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu.png)
+**Position:** Always in the top position of the tool and divides into 4 Tabs:
+#### Map Tab
+![MapTab](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu0.png)
+
+A: Hide/Show the Map Menu
+| Index | Name | Description | Shortcut |
+| - | - | - | - |
+| 1 | Export Map as Text | Export map as a text/plain (\*.txt) file | Ctrl + S |
+| 2 | Copy Map | Copy current map pattern to clipboard | Ctrl + C |
+| 3 | Import Map | Import map from file (accept text/plain (\*.txt/\*.text) and text/javascript (\*.js) format) | Ctrl + O |
+| 4 | Export Map as Image | Export map screenshot as a PNG (\*.png) file | Ctrl + I |
+| 5 | Copy Map screenshot | Copy Map screenshot as as a PNG (\*.png) file to Clipboard | No |
+| 6 | Permalink | Copy permalink to clipboard | No |
+
 | Index | Name | Description | Shortcut |
 | - | - | - | - |
 | 1 | Map size Input | Toggle map size (from 20 to 200 and must be even) | No |
@@ -28,14 +40,8 @@ made by Bhpsngum
 | 7 | Undo | Undo previous actions in the map | Ctrl + Z |
 | 8 | Redo | Redo undid actions in the map | Ctrl + Y |
 | 9 | Clear Map | Clear all asteroids in the current map | No |
-| 10 | Export Map as Text | Export map as a text/plain (\*.txt) file | Ctrl + S |
-| 11 | Copy Map | Copy current map pattern to clipboard | Ctrl + C |
-| 12 | Import Map | Import map from file (accept text/plain (\*.txt/\*.text) and text/javascript (\*.js) format) | Ctrl + O |
 | 13 | Random Maze Generator | Generate Random Maze according to the current map size. By [rvan-der](https://github.com/rvan-der) | No |
 | 14 | Feedback | Give us a feedback | No |
-| 15 | Permalink | Copy permalink to clipboard | No |
-| 16 | Export Map as Image | Export map screenshot as a PNG (\*.png) file | Ctrl + I |
-| 17 | Copy Map screenshot | Copy Map screenshot as as a PNG (\*.png) file to Clipboard | No |
 | 18 | Tutorial | View Map Editor Tutorial (this site) | No |
 | 19 | Changelog | View the update's log of Map Editor from the beginning | No |
 ## Information section
