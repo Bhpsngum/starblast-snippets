@@ -25,7 +25,7 @@ A: Hide/Show the Map Menu
 | 3 | Import Map | Import map from file (accept text/plain (\*.txt/\*.text) and text/javascript (\*.js) format) | Ctrl + O |
 | 4 | Export Map as Image | Export map screenshot as a PNG (\*.png) file | Ctrl + I |
 | 5 | Copy Map screenshot | Copy Map screenshot as as a PNG (\*.png) file to Clipboard (May not work in some browsers) | No |
-| 6 | Permalink | Copy permalink to clipboard | No |
+| 6 | Permalink | Copy map permalink to clipboard | No |
 #### Edit Tab
 ![MapTab](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu1.png)
 | Index | Name | Description | Shortcut |
