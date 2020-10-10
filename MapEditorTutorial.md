@@ -1,6 +1,17 @@
 # Starblast Map Editor tutorial and links
 made by Bhpsngum
 
+<details>
+  <summary markdown="span">Table of contents</summary>
+
+  **[Links](#links)**
+
+  **[All UIs information and tutorials](#all-uis-information-and-tutorials)**
+
+  **[Commonly asked questions](#commonly-asked-questions)**
+
+</details>
+
 ## Links
 * **Main version:** Main version of the tool: https://bhpsngum.github.io/starblast/mapeditor/
 * **Beta version:** Beta version and early access to new features before they appear in the main version: https://bhpsngum.github.io/starblast/mapeditor/beta/
@@ -16,26 +27,26 @@ made by Bhpsngum
 
 <details>
   <summary markdown="span">Table of contents</summary>
-  
+
   <details>
  <summary markdown="span">Menu Bar</summary>
- 
+
    **[Menu Bar](#menu-bar)**
- 
+
    * **[Map Tab](#map-tab)**
-    
+
    * **[Edit Tab](#edit-tab)**
-   
+
    * **[Decoration Tab](#decoration-tab)**
-   
+
    * **[Miscellaneous Tab](#miscellaneous-tab)**
-   
+
   </details>
-  
+
   **[Information section](#information-section)**
-   
+
   **[Map](#map)**
-  
+
 </details>
 
 ### Menu Bar
@@ -99,12 +110,14 @@ A: Show/Hide the Map Menu
 
 **Note:** Undo and redo's information will not be shown if they're unavailable at that time
 ## Map
-**Position:** You can spot it position obviously, so this info is not needed
+### Position
+You can spot it position obviously, so this info is not needed
 ![MapPreview](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMap.png)
 
 *A blank 20x20 map with custom background image applied*
 
-**Introduction:**
+### Introduction
+**PCs/Tablets:**
 * Left-Click in any cell in the map to apply the asteroid to that cell
 * Right-click in any cell to remove existing asteroid from that cell
 * You can hold and drag your mouse for asteroid trails
@@ -116,3 +129,31 @@ A: Show/Hide the Map Menu
 | S / Arrow Down Button | Down |
 | A / Arrow Left Button | Left |
 | D / Arrow Right Button | Right |
+
+**Mobile/Touch devices:**
+* Touch in any cell in the map to apply the asteroid to that cell
+* Touch and move with one finger for asteroid trails
+* Touch and move with more than one finger to navigate in the map
+
+## Commonly asked questions
+
+### 1. Why i can't see the asteroids in my map although the map isn't blank?
+**Answer:** This problem occurs when your asteroid color is set to - intentionally or somehow unintentionally - the same color as the background.
+
+**How to fix**: Navigate to the [Decoration Tab](#decoration-tab) and change the asteroid color (the first box from left to right).
+### 2. Why my tool doesn't have "Copy Image" features although it's listed above?
+**Answer:** Copy Image feature requires higher technic than text copying, if "Copy Image" button doesn't appear in your site, it means that your browser doesn't meet the requirements for this feature to operate (usually there's a notification in the Menu Bar if it happens).
+
+**How to fix:** Switch to another browser, or, update your browser to the latest version.
+### 3. Why can't I use the tool in IE (Internet Explorer)?
+**Answer:** We've stopped supporting this browser since ME 2.0 as IE will be ~~killed~~stopped on 17 August, 2021 by Microsoft. If you're a fan of it, sorry about that :(
+
+**How to fix:** Switch to another browser.
+### 4. How can i contact or give you a feedback?
+**Answer:** We recommend you to use the feedback link listed in [links](#links) or you can use these contact information below:
+* Email: bhpsngumtrongwikipediatiengvie@gmail.com
+* Discord: @Bhpsngum#2623
+### 5. Can i help developing this tool?
+**Answer:** Yes. This tool is still in development, so if you have enough Web Making Skills (HTML, CSS, JS) and think that you can do this work, use the feedback to tell us to apply :)
+
+**Remember:** You *won't receive any payments or cash for your work*. This tool is a *community resource* and contributed by the community. You will be credited if you've done fair enough contributions in this tool.
