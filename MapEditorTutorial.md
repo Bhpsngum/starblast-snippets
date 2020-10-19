@@ -84,6 +84,7 @@ A: Show/Hide the Map Menu
 | 8 | Random Maze Generator | Generate Random Maze according to the current map size. By [rvan-der](https://github.com/rvan-der) | No |
 #### Advanced Tab
 **Note:** Instruction for this tab can be found in the [Advanced](#Advanced) section
+
 ![MapTab4](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu2.png)
 | Index | Name | Description | Shortcut |
 | - | - | - | - |
