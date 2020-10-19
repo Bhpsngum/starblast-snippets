@@ -84,7 +84,7 @@ A: Show/Hide the Map Menu
 | 8 | Random Maze Generator | Generate Random Maze according to the current map size. By [rvan-der](https://github.com/rvan-der) | No |
 #### Advanced Tab
 **Note:** Instruction for this tab can be found in the [Advanced](#Advanced) section
-![MapTab4](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu3.png)
+![MapTab4](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu2.png)
 | Index | Name | Description | Shortcut |
 | - | - | - | - |
 | 1a | Default Brush(es) | Brush(es) that are initially installed in the tool | No |
@@ -151,7 +151,8 @@ You can spot it position obviously, so this info is not needed
 ## Advanced
 ### Custom Brush
 Feel boring with the default brushes? Map Editor now provides the ability to create your own custom brush (with coding skill required).
-You can submit your own custom brush through the feedback link to have a chance to be added in the tool as default brushes.
+
+You can submit your own custom brush through the feedback link so that it will has a chance to be added in the tool as default brushes.
 #### Interface
 #### Features and examples
 ## Commonly asked questions
