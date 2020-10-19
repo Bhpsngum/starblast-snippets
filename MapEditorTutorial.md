@@ -83,7 +83,7 @@ A: Show/Hide the Map Menu
 | 7 | Clear Map | Clear all asteroids in the current map | No |
 | 8 | Random Maze Generator | Generate Random Maze according to the current map size. By [rvan-der](https://github.com/rvan-der) | No |
 #### Advanced Tab
-**Note:** Instruction for this tab can be found in the [Advanced](#Advanced) section
+**Note:** Instructions for this tab can be found in the [Advanced](#Advanced) section
 
 ![MapTab4](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu2.png)
 | Index | Name | Description | Shortcut |
@@ -93,7 +93,8 @@ A: Show/Hide the Map Menu
 | 2 | Add Custom Brush | Add your custom brush | No |
 | 3 | Edit Custom Brush | Edit the selected custom brush | No |
 | 4 | Remove Custom Brush | Remove the selected custom brush | No |
-|  |  | **Note:** Default brushes cannot be edited or removed |  |
+
+**Note:** Default brushes cannot be edited or removed
 #### Decoration Tab
 ![MapTab4](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu3.png)
 | Index | Name | Description | Shortcut |
