@@ -7,6 +7,8 @@ made by Bhpsngum
   **[Links](#links)**
 
   **[All UIs information and tutorials](#all-uis-information-and-tutorials)**
+  
+  **[Advanced](#advanced)**
 
   **[Commonly asked questions](#commonly-asked-questions)**
 
@@ -36,6 +38,8 @@ made by Bhpsngum
    * **[Map Tab](#map-tab)**
 
    * **[Edit Tab](#edit-tab)**
+   
+   * **[Advanced Tab](#advanced-tab)**
 
    * **[Decoration Tab](#decoration-tab)**
 
@@ -73,14 +77,24 @@ A: Show/Hide the Map Menu
 | 3a | Minium Random Size | Toggle minimum Asteroid size (0 to Maximum Asteroid Size) | No |
 | 3b | Maximum Random Size | Toggle maximum Asteroid size (Minimum Asteroid Size to 9) | No |
 | 3c | Random Asteroid in Brush | When brush size is larger than 1, fill a block of same asteroid size or all randomly | No |
-| 4 | Brush size Input | Toggle Brush size (from 0 to current map size, fill up a square of size 2\*n+1 with your mouse cursor at the center) | No |
-| 5 | Mirror Options Area | Toggle asymmetrical drawing (from left to right: horizontal, vertical and secret feature | No |
-| 6 | Undo | Undo previous actions in the map | Ctrl + Z |
-| 7 | Redo | Redo undid actions in the map | Ctrl + Y |
-| 8 | Clear Map | Clear all asteroids in the current map | No |
-| 9 | Random Maze Generator | Generate Random Maze according to the current map size. By [rvan-der](https://github.com/rvan-der) | No |
+| 4 | Mirror Options Area | Toggle asymmetrical drawing (from left to right: horizontal, vertical and secret feature | No |
+| 5 | Undo | Undo previous actions in the map | Ctrl + Z |
+| 6 | Redo | Redo undid actions in the map | Ctrl + Y |
+| 7 | Clear Map | Clear all asteroids in the current map | No |
+| 8 | Random Maze Generator | Generate Random Maze according to the current map size. By [rvan-der](https://github.com/rvan-der) | No |
+#### Advanced Tab
+**Note:** Instruction for this tab can be found in the [Advanced](#Advanced) section
+![MapTab4](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu3.png)
+| Index | Name | Description | Shortcut |
+| - | - | - | - |
+| 1a | Default Brush(es) | Brush(es) that are initially installed in the tool | No |
+| 1b | Custom Brush(es) | Brush(es) that are added by user | No |
+| 2 | Add Custom Brush | Add your custom brush | No |
+| 3 | Edit Custom Brush | Edit the selected custom brush | No |
+| 4 | Remove Custom Brush | Remove the selected custom brush | No |
+|  |  | **Note:** Default brushes cannot be edited or removed |  |
 #### Decoration Tab
-![MapTab3](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu2.png)
+![MapTab4](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu3.png)
 | Index | Name | Description | Shortcut |
 | - | - | - | - |
 | 1 | Asteroid Color input | Toggle Asteroid Color | No |
@@ -94,7 +108,7 @@ A: Show/Hide the Map Menu
 | 4b | Clear background image | Clear current custom background image | No |
 | 5 | Line Color input | Toggle Line Color | No |
 #### Miscellaneous Tab
-![MapTab4](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu3.png)
+![MapTab5](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu4.png)
 | Index | Name | Description | Shortcut |
 | - | - | - | - |
 | 1 | Feedback | Give us a feedback | No |
@@ -134,7 +148,12 @@ You can spot it position obviously, so this info is not needed
 * Touch in any cell in the map to apply the asteroid to that cell
 * Touch and move with one finger for asteroid trails
 * Touch and move with more than one finger to navigate in the map
-
+## Advanced
+### Custom Brush
+Feel boring with the default brushes? Map Editor now provides the ability to create your own custom brush (with coding skill required).
+You can submit your own custom brush through the feedback link to have a chance to be added in the tool as default brushes.
+#### Interface
+#### Features and examples
 ## Commonly asked questions
 
 ### 1. Why i can't see the asteroids in my map although the map isn't blank?
