@@ -7,7 +7,7 @@ made by Bhpsngum
   **[Links](#links)**
 
   **[All UIs information and tutorials](#all-uis-information-and-tutorials)**
-  
+
   **[Advanced](#advanced)**
 
   **[Commonly asked questions](#commonly-asked-questions)**
@@ -38,7 +38,7 @@ made by Bhpsngum
    * **[Map Tab](#map-tab)**
 
    * **[Edit Tab](#edit-tab)**
-   
+
    * **[Advanced Tab](#advanced-tab)**
 
    * **[Decoration Tab](#decoration-tab)**
@@ -154,7 +154,7 @@ You can spot it position obviously, so this info is not needed
 ## Advanced
 (Beta)
 ### Custom Brush
-Feel boring with the default brushes? Map Editor now provides the ability to create your own custom brush (with coding skill required).
+Feel boring with the default brushes? Map Editor now provides the ability to create your own custom brush (with JavaScript (ECMAScript) a.k.a JS coding skill required).
 
 You can submit your own custom brush through the feedback link so that it will has a chance to be added in the tool as default brushes.
 #### Interface
@@ -194,16 +194,16 @@ Whenever user clicks or drags to one cell, brush commands will be fired with the
 * **`Asteroids`:** access asteroid properties and values:
   * **`set(x,y,size)`:** Set a cell at position (`x`;`y`) with asteroid size `size`
   * **`get(x,y)`:** Get asteroids size at a cell at position (`x`;`y`), returns a number representing the asteroid size at that cell
-  
+
   *Note:* 0<=`x`,`y`<current map size and 0<=`size`<=9, should be integers
-  
+
   For example: `StarblastMap.Asteroids.set(0,8,3)` will set a cell at position (0;8) with asteroid size 3
-  
+
   and `StarblastMap.Asteroids.get(0,8)` will return 3 (in the next user action)
   * **`size`:** User's selection of predefined asteroid size range for randomization:
-  
+
     **`min`**: minimum randomized size ([Edit Tab](#edit-tab) option 3a)
-    
+
     **`max`**: maximum randomized size ([Edit Tab](#edit-tab) option 3b)
 * **`size`:** A number represents the current map size
 * **`Brush`:** An object represent some brush's properties:
@@ -225,7 +225,7 @@ These happens if Map Editor fails, partially or completely, to set/get a cell's 
 * **Found non-integer argument(s): (Warning)** (e.g 2 last warnings) Detailed as above, usually happens when you passed non-integer values, but it doesn't excess the limit (e.g: 0.5;1.25). In that case the values will be modified:
 
   If it's the coordinates, it will be rounded **down** to the nearest integer, e.g 1.5 ---> 1; 6.9 ---> 6
-  
+
   If it's an asteroids size, it will be rounded to the nearest interger, e.g 8.5 ---> 9, 6.1 ---> 6
 #### Example: Made a simple brush
 ## Commonly asked questions
