@@ -93,8 +93,9 @@ A: Show/Hide the Map Menu
 | 2 | Add Custom Brush | Add your custom brush | No |
 | 3 | Edit Custom Brush | Edit the selected custom brush | No |
 | 4 | Remove Custom Brush | Remove the selected custom brush | No |
+| 5 | Brush Size Input | Toggle Brush size (0 to current map size) | No |
 
-**Note:** Default brushes cannot be edited or removed
+**Note:** Default brushes cannot be modified or removed
 #### Decoration Tab
 ![MapTab4](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu3.png)
 | Index | Name | Description | Shortcut |
@@ -151,12 +152,82 @@ You can spot it position obviously, so this info is not needed
 * Touch and move with one finger for asteroid trails
 * Touch and move with more than one finger to navigate in the map
 ## Advanced
+(Beta)
 ### Custom Brush
 Feel boring with the default brushes? Map Editor now provides the ability to create your own custom brush (with coding skill required).
 
 You can submit your own custom brush through the feedback link so that it will has a chance to be added in the tool as default brushes.
 #### Interface
-#### Features and examples
+![MECBInterface](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MECBInterface.png)
+
+Select the brush from the list
+
+To create a new brush, click the create button ([Advanced Tab](#advanced-tab) option 2)
+
+To edit the existing **custom** (not default) brush, select it and choose edit (option 3)
+
+and to remove, click Remove (option 4)
+
+Whenever you are editing or creating, it will show you the interface shown in the picture above with those infos:
+
+(Notes: * means that it's a required section)
+
+* **Name:** Brush name
+* **Icon:** Brush icon with a Font Awesome Free name ([click here to search](https://fontawesome.com/icons?d=gallery))
+* **Author:** Brush author
+* **Code:**\* The code to be executed
+
+Click **Save** to save the edits, **Cancel** to discard them
+#### Features
+**Note:** If the option does not reference to any tab, it's automatically referenced to [Advanced Tab](#advanced-tab)
+
+Whenever user clicks or drags to one cell, brush commands will be fired with these parameters:
+
+**`Cell` Object:** an object represent the selected cell, contains these values:
+| Values | Description |
+| - | - |
+| x | X Coordinate |
+| y | Y Coordinate |
+| size | Asteroid size to be applied to that cell (changable through the execution) |
+
+**`StarblastMap` Object:** an object that contains most of the features, containing these properties:
+* **`Asteroids`:** access asteroid properties and values:
+  * **`set(x,y,size)`:** Set a cell at position (`x`;`y`) with asteroid size `size`
+  * **`get(x,y)`:** Get asteroids size at a cell at position (`x`;`y`), returns a number representing the asteroid size at that cell
+  
+  *Note:* 0<=`x`,`y`<current map size and 0<=`size`<=9, should be integers
+  
+  For example: `StarblastMap.Asteroids.set(0,8,3)` will set a cell at position (0;8) with asteroid size 3
+  
+  and `StarblastMap.Asteroids.get(0,8)` will return 3 (in the next user action)
+  * **`size`:** User's selection of predefined asteroid size range for randomization:
+  
+    **`min`**: minimum randomized size ([Edit Tab](#edit-tab) option 3a)
+    
+    **`max`**: maximum randomized size ([Edit Tab](#edit-tab) option 3b)
+* **`size`:** A number represents the current map size
+* **`Brush`:** An object represent some brush's properties:
+  * **`size`:** brush size (option 5)
+  * **`isRandomized`:** A boolean value represents the value from option 3c in [Edit Tab](#edit-tab)
+* **`Utils`:** An object containing some functions that makes your life easier:
+  * **`random(n)`:** Random an integer x with 0<=x<n
+  * **`randomInRange(a,b)`:** Random an interger between a and b
+### Errors & Warnings
+![MECBErrors](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MECBErrors.png)
+#### How to see them
+Press F12 to open DevTools, Navigate to Console and evrything will be displayed there as the image above
+#### Execution Errors & Warnings
+These happen when your code runs failed or violate some rules, this can be any types.
+#### Modification Errors & Warnings
+These happens if Map Editor fails, partially or completely, to set/get a cell's data.
+* **Invalid argument(s): (Error)** Will come along with more detailed information, happens when you passed something wrong (usually non-numbers or numbers that excess the map size limit) into the function
+* **Cannot modify the Asteroid: (Error)** This is a rare case of the error above, happens when Map Editor cannot parse your input values for processing. (It always includes the values inputed in the error)
+* **Found non-integer argument(s): (Warning)** Detailed as above, usually happens when you passed non-integer values, but it doesn't excess the limit (e.g: 0.5;1.25). In that case the values will be modified:
+
+  If it's the coordinates, it will be rounded **down** to the nearest integer, e.g 1.5 ---> 1; 6.9 ---> 6
+  
+  If it's an asteroids size, it will be rounded to the nearest interger, e.g 8.5 ---> 9, 6.1 ---> 6
+#### Example: Made a simple brush
 ## Commonly asked questions
 
 ### 1. Why i can't see the asteroids in my map although the map isn't blank?
