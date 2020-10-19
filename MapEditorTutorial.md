@@ -215,7 +215,7 @@ Whenever user clicks or drags to one cell, brush commands will be fired with the
 ### Errors & Warnings
 ![MECBErrors](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MECBErrors.png)
 #### How to see them
-Press F12 to open DevTools, Navigate to Console and evrything will be displayed there as the image above
+Press F12 to open DevTools, navigate to Console Tab and evrything will be displayed there like the image above
 #### Execution Errors & Warnings
 These happen when your code runs failed or violate some rules, this can be any types.
 #### Modification Errors & Warnings
