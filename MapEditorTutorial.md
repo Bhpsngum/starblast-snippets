@@ -184,11 +184,12 @@ Click **Save** to save the edits, **Cancel** to discard them
 Whenever user clicks or drags to one cell, brush commands will be fired with these parameters:
 
 **`Cell` Object:** an object represent the selected cell, contains these values:
-| Values | Description |
-| - | - |
-| x | X Coordinate |
-| y | Y Coordinate |
-| size | Asteroid size to be applied to that cell (changable through the execution) |
+| Value | Type | Description |
+| - | - | - |
+| x | Integer | X Coordinate |
+| y | Integer | Y Coordinate |
+| size | Integer | Asteroid size to be applied to that cell (changable through the execution) |
+| isRemoved | Boolean | `true` if user right-click into the cell (usually to remove the asteroid instantly) and vice versa |
 
 **`StarblastMap` Object:** an object that contains most of the features, containing these properties:
 * **`Asteroids`:** access asteroid properties and values:
