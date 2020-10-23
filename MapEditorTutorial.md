@@ -61,10 +61,10 @@ made by Bhpsngum
 A: Show/Hide the Map Menu
 | Index | Name | Description | Shortcut |
 | - | - | - | - |
-| 1 | Export Map as Text | Export map as a text/plain (\*.txt) file | Ctrl + S |
-| 2 | Copy Map | Copy current map pattern to clipboard | Ctrl + C |
-| 3 | Import Map | Import map from file (accept text/plain (\*.txt/\*.text) and text/javascript (\*.js) format) | Ctrl + O |
-| 4 | Export Map as Image | Export map screenshot as a PNG (\*.png) file | Ctrl + I |
+| 1 | Export Map as Text | Export map as a text/plain (\*.txt) file | Ctrl(Cmd) + S |
+| 2 | Copy Map | Copy current map pattern to clipboard | Ctrl(Cmd) + C |
+| 3 | Import Map | Import map from file (accept text/plain (\*.txt/\*.text) and text/javascript (\*.js) format) | Ctrl(Cmd) + O |
+| 4 | Export Map as Image | Export map screenshot as a PNG (\*.png) file | Ctrl(Cmd) + I |
 | 5 | Copy Map screenshot | Copy Map screenshot as as a PNG (\*.png) file to Clipboard (May not work in some browsers) | No |
 | 6 | Permalink | Copy map permalink to clipboard | No |
 #### Edit Tab
@@ -78,8 +78,8 @@ A: Show/Hide the Map Menu
 | 3b | Maximum Random Size | Toggle maximum Asteroid size (Minimum Asteroid Size to 9) | No |
 | 3c | Random Asteroid in Brush | When brush size is larger than 1, fill a block of same asteroid size or all randomly | No |
 | 4 | Mirror Options Area | Toggle asymmetrical drawing (from left to right: horizontal, vertical and secret feature | No |
-| 5 | Undo | Undo previous actions in the map | Ctrl + Z |
-| 6 | Redo | Redo undid actions in the map | Ctrl + Y |
+| 5 | Undo | Undo previous actions in the map | Ctrl(Cmd) + Z |
+| 6 | Redo | Redo undid actions in the map | Ctrl(Cmd) + Y |
 | 7 | Clear Map | Clear all asteroids in the current map | No |
 | 8 | Random Maze Generator | Generate Random Maze according to the current map size. By [rvan-der](https://github.com/rvan-der) | No |
 #### Advanced Tab
@@ -109,7 +109,9 @@ A: Show/Hide the Map Menu
 | 4a2 | Opacity input | Toggle background image opacity (0 to 1) | No |
 | | | ***Note:*** 4a1 and 4a2 features are only available in Map Only Selection |
 | 4b | Clear background image | Clear current custom background image | No |
-| 5 | Line Color input | Toggle Line Color | No |
+| 5 | Border Color input | Toggle Map Border Color | No |
+| 6 | Show/Hide map border | Toggle show/hide map border | Ctrl(Cmd) + B |
+
 #### Miscellaneous Tab
 ![MapTab5](https://raw.githubusercontent.com/Bhpsngum/img-src/master/MEMenu4.png)
 | Index | Name | Description | Shortcut |
@@ -221,9 +223,8 @@ Press F12 to open DevTools, navigate to Console Tab and everything will be displ
 These happen when your code runs failed or violate some rules, this can be any types.
 #### Modification Errors & Warnings
 These happens if Map Editor fails, partially or completely, to set/get a cell's data.
-* **Invalid argument(s): (Error)** (e.g 4th and 6th errors) Will come along with more detailed information, happens when you passed something wrong (usually non-numbers or numbers that excess the map size limit) into the function
-* **Cannot modify the Asteroid: (Error)** (e.g 5th error) This is a rare case of the error above, happens when Map Editor cannot parse your input values for processing. (It always includes the values inputed in the error)
-* **Found non-integer argument(s): (Warning)** (e.g 2 last warnings) Detailed as above, usually happens when you passed non-integer values, but it doesn't excess the limit (e.g: 0.5;1.25). In that case the values will be modified:
+* **Invalid argument(s): (Error)** (e.g last 2 errors) Will come along with more detailed information, happens when you passed something wrong (usually non-numbers or numbers that excess the map size limit) into the function
+* **Found non-integer argument(s): (Warning)** (e.g last 2 warnings) Detailed as above, usually happens when you passed non-integer values, but it doesn't excess the limit (e.g: 0.5;1.25). In that case the values will be modified:
 
   If it's the coordinates, it will be rounded **down** to the nearest integer, e.g 1.5 ---> 1; 6.9 ---> 6
 
