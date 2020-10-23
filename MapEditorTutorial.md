@@ -223,8 +223,8 @@ Press F12 to open DevTools, navigate to Console Tab and everything will be displ
 These happen when your code runs failed or violate some rules, this can be any types.
 #### Modification Errors & Warnings
 These happens if Map Editor fails, partially or completely, to set/get a cell's data.
-* **Invalid argument(s): (Error)** (e.g last 2 errors) Will come along with more detailed information, happens when you passed something wrong (usually non-numbers or numbers that excess the map size limit) into the function
-* **Found non-integer argument(s): (Warning)** (e.g last 2 warnings) Detailed as above, usually happens when you passed non-integer values, but it doesn't excess the limit (e.g: 0.5;1.25). In that case the values will be modified:
+* **(Error)Invalid argument(s):** (e.g last 2 errors) Will come along with more detailed information, happens when you passed something wrong (usually non-numbers or numbers that excess the map size limit) into the function
+* **(Warning)Found non-integer argument(s):** (e.g last 2 warnings) Detailed as above, usually happens when you passed non-integer values, but it doesn't excess the limit (e.g: 0.5;1.25). In that case the values will be modified:
 
   If it's the coordinates, it will be rounded **down** to the nearest integer, e.g 1.5 ---> 1; 6.9 ---> 6
 
