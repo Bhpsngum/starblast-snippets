@@ -1,11 +1,11 @@
 this.options = {
   max_players: 120
 }
-lOlO0.prototype.modStarted = function (t){
+l1l11.prototype.modStarted = function (t){
   id = t.id;
   return this.modding.game.options=t.options,this.modding.modStarted(t.id+"@"+this.address);
 }
-lOlO0.prototype.shipDisconnected = function(t) {
+l1l11.prototype.shipDisconnected = function(t) {
     var e=this.modding.game.findShip(t.id);
     if (e != null) {
       diedPlayers.push(e);
