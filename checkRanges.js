@@ -10,10 +10,15 @@ game.checkRanges = function(mode,...ticks){
     case "multi":
       ticks = ticks.map(i => {
         i=i||{};
-        return {tick: Number(i.tick), task: i.task}
-      }).filter(i => !isNaN(i.tick) && i.tick > 0 && typeof i.task == "function");
+        return {tick: Number(i.tick), catch: i.catch, not: i.not}
+      }).filter(i => !isNaN(i.tick) && i.tick > 0);
       let tick_count = [];
-      ticks.forEach(tick => game.step % tick.tick === 0 && (tick.task.bind(this.modding.context)(tick.tick, game.step), tick_count.push(tick.tick)));
+      ticks.forEach(tick => {
+        if (game.step % tick.tick === 0) {
+          typeof tick.catch == "function" && tick.catch.call(this.modding.context, tick.tick, game.step);
+          tick_count.push(tick.tick);
+        } else typeof tick.not == "function" && tick.not.call(this.modding.context, tick.tick, game.step);
+      });
       return (tick_count.length === 0)?[1]:tick_count;
     default:
       throw new Error("Invalid Mode!");
