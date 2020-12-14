@@ -6,6 +6,7 @@ const round_time_min = 10*60;
 
 var Spectator_101 = '{"name":"Spectator","level":1,"model":1,"size":1,"zoom":0.2,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":1,"speed":[250,250],"rotation":[100,100],"acceleration":[100,100]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,1,1,0],"height":[0,1,1,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Spectator","level":1,"model":1,"code":101,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":1,"speed":[250,250],"rotation":[100,100],"acceleration":[100,100]}},"shape":[0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02],"lasers":[],"radius":0.02}}';
 var Player_201 = '{"name":"Player","level":2,"model":1,"size":4,"zoom":1,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":300,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,100,100,0],"height":[0,100,100,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Player","level":2,"model":1,"code":201,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":300,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"shape":[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],"lasers":[],"radius":8}}';
+var Safe_Player_202 = '{"name":"Safe Player","level":2,"model":2,"size":4,"zoom":1,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":30000,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,100,100,0],"height":[0,100,100,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Safe Player","level":2,"model":2,"code":202,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":30000,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"shape":[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],"lasers":[],"radius":8}}';
 
 var vocabulary = [
   {icon: "I", text: "Attack",key:"A"},
@@ -30,7 +31,7 @@ var vocabulary = [
 ];
 
 this.options = {
-  ships: [Spectator_101, Player_201],
+  ships: [Spectator_101, Player_201, Safe_Player_202],
   reset_tree: true,
   max_level: 1,
   map_size: map_size,
@@ -91,13 +92,22 @@ var main_game = function (game) {
           }
           else setStats(ship, "You are alive.");
         }
-        (ship.idle) && ship.set({idle:false});
+        (ship.idle) && ship.set({idle:!1});
       }
       if (Rounds.logTimers) {
-        if (Rounds.time > 0) {
-          if (Rounds.time % 60 === 0) Rounds.setSafeZones();
-          announce("Number of safe grids left: "+grids.length, "Enter the safe zone before it's too late!", "Time left: " + FormatTime([Math.floor(Rounds.time/3600),Math.floor((Rounds.time%3600)/60)]));
-          Rounds.time = Math.max(Rounds.time - 30, 0);
+        if (Rounds.time >= 0) {
+          game.ships.forEach(ship => {
+            let t = 201 + Number(grids.map(x => checkSafe(ship, x)).indexOf(!0) != -1);
+            if (ship.type != 101 && (ship.type != t || ship.custom.type != t)) {
+              ship.custom.type = t;
+              ship.set({type: t});
+            }
+          });
+          if (Rounds.time % 60 === 0) {
+            Rounds.setSafeZones();
+            announce("Number of safe zones left: "+grids.length, "Enter the blue zone before it's too late!", "Time left: " + FormatTime([Math.floor(Rounds.time/3600),Math.floor((Rounds.time%3600)/60)]));
+          }
+          Rounds.time-= 30;
         }
         else Rounds.end();
       }
@@ -117,7 +127,6 @@ var FormatTime = function(array) {
 }
 var transform = {
   zoom: () => 10/map_size,
-  scale: 1.5,
   X: x => x+map_size*5,
   Y: y => -y+map_size*5
 };
@@ -130,13 +139,13 @@ var Rounds = {
     this.logTimers = false;
     if (!game.custom.ended) {
       for (let ship of game.ships) {
-        ship.custom.init = !1;
-        if (grids.map(x => checkSafe(ship, x)).indexOf(true) == -1 && ship.type == 201 && !skip) {
+        if (ship.custom.type == 201 && !skip) {
           ship.custom.in_game = !1;
           ship.custom.death = !0;
           ship.rankings = total_players;
           ship.set({score:total_players});
         }
+        ship.custom.init = !1;
       }
       count();
       game.ships.forEach(ship => {
@@ -165,6 +174,7 @@ var Rounds = {
     grids.forEach(grid => game.removeObject("safeZoneMarker"+grid.join("&")));
     game.setUIComponent({id:"radar_background",components: []});
     announce("Round "+this.count+"!");
+    game.ships.forEach(ship => (ship.custom.init = !1));
     count();
     updateScoreboard(game);
     setTimeout(function(){
@@ -227,10 +237,10 @@ var setStats = function(ship, ...stats) {
 this.tick = function (game) {
   if (game.step % 30 === 0) {
     game.ships.forEach(ship => ship.idle && ship.set({idle:true}));
-    if (wait > 0) {
+    if (wait >= 0) {
       if (game.ships.length == players) {
-        announce("Game starting in: "+FormatTime([Math.floor(wait/3600), Math.floor((wait%3600)/60)]));
-        wait = Math.max(wait - 30, 0);
+        (wait % 60 === 0) && announce("Game starting in: "+FormatTime([Math.floor(wait/3600), Math.floor((wait%3600)/60)]));
+        wait-= 30;
       }
       else {
         wait = waiting_time;
@@ -254,7 +264,7 @@ this.event = function (event, game) {
     case "ship_destroyed":
       ship.custom.in_game = !1;
       ship.custom.death = !0;
-      updateScoreboard(game);
+      started && updateScoreboard(game);
       break;
   }
 }
