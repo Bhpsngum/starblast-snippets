@@ -92,7 +92,6 @@ var main_game = function (game) {
           }
           else setStats(ship, "You are alive.");
         }
-        (ship.idle) && ship.set({idle:!1});
       }
       if (Rounds.logTimers) {
         if (Rounds.time >= 0) {
@@ -211,16 +210,16 @@ scoreboard = {
 var updateScoreboard = function(game){
   scoreboard.components = [];
   game.ships.filter(ship => ship.custom.in_game).slice(0,10).forEach((ship,i) => scoreboard.components.push(
-    {type: "player", id: ship.id, position: [0,i*10+1.5,100,7], color: dfl_tcl},
-    {type: "text", value: ship.score, position: [0,i*10+1.5,90,7], color:dfl_tcl, align: "right"}
+    {type: "text", value: ship.score, position: [0,i*10+1.5,90,7], color:dfl_tcl, align: "right"},
+    {type: "player", id: ship.id, position: [0,i*10+1.5,100,7], color: dfl_tcl}
   ));
   outputScoreboard(game);
 };
 
 var outputScoreboard = function(game) {
   for (let ship of game.ships) {
-    let o = [...scoreboard.components], t = scoreboard.components.map(x => (x.id != null)?x.id:-1).indexOf(ship.id);
-    if (t != -1) scoreboard.components.splice(t,0,{type:"box",position:scoreboard.components[t].position,fill:"hsla(210,24.3%,29%,0.5)"});
+    let o = [...scoreboard.components], f = scoreboard.components.map(x => (x.id != null)?x.id:-1), t = f.indexOf(ship.id);
+    if (t != -1) scoreboard.components.splice(t-1,0,{type:"box",position:[0,f.filter(x => x != -1).indexOf(ship.id)*10,100,10],fill:"hsla(210,24.3%,29%,0.5)"});
     ship.setUIComponent(scoreboard);
     scoreboard.components = [...o];
   }
@@ -236,7 +235,6 @@ var setStats = function(ship, ...stats) {
 }
 this.tick = function (game) {
   if (game.step % 30 === 0) {
-    game.ships.forEach(ship => ship.idle && ship.set({idle:true}));
     if (wait >= 0) {
       if (game.ships.length == players) {
         (wait % 60 === 0) && announce("Game starting in: "+FormatTime([Math.floor(wait/3600), Math.floor((wait%3600)/60)]));
@@ -250,7 +248,8 @@ this.tick = function (game) {
     else {
       game.setOpen(false);
       for (let ship of game.ships) {
-        ship.set({x:rand(map_size*10),y:rand(map_size*10),type:201,idle:false});
+        let ts = getPosition(rand(dim),rand(dim));
+        ship.set({x:ts[0],y:ts[1],type:201});
         ship.custom.in_game = !0
       }
       started = !0;
