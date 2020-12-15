@@ -4,9 +4,14 @@ const map_size = 20;
 const round_time_max = 30*60;
 const round_time_min = 10*60;
 
+const PermaSafe = true; // ships can't be knocked out when standing in blue zones
+
 var Spectator_101 = '{"name":"Spectator","level":1,"model":1,"size":1,"zoom":0.2,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":1,"speed":[250,250],"rotation":[100,100],"acceleration":[100,100]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,1,1,0],"height":[0,1,1,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Spectator","level":1,"model":1,"code":101,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":1,"speed":[250,250],"rotation":[100,100],"acceleration":[100,100]}},"shape":[0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02],"lasers":[],"radius":0.02}}';
 var Player_201 = '{"name":"Player","level":2,"model":1,"size":4,"zoom":1,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":300,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,100,100,0],"height":[0,100,100,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Player","level":2,"model":1,"code":201,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":300,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"shape":[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],"lasers":[],"radius":8}}';
 var Safe_Player_202 = '{"name":"Safe Player","level":2,"model":2,"size":4,"zoom":1,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":30000,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,100,100,0],"height":[0,100,100,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Safe Player","level":2,"model":2,"code":202,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":30000,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"shape":[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],"lasers":[],"radius":8}}';
+
+var ships = [Spectator_101, Player_201];
+PermaSafe && ships.push(Safe_Player_202);
 
 var vocabulary = [
   {icon: "I", text: "Attack",key:"A"},
@@ -31,7 +36,7 @@ var vocabulary = [
 ];
 
 this.options = {
-  ships: [Spectator_101, Player_201, Safe_Player_202],
+  ships: ships,
   reset_tree: true,
   max_level: 1,
   map_size: map_size,
@@ -96,7 +101,7 @@ var main_game = function (game) {
       if (Rounds.logTimers) {
         if (Rounds.time >= 0) {
           game.ships.forEach(ship => {
-            let t = 201 + Number(grids.map(x => checkSafe(ship, x)).indexOf(!0) != -1);
+            let t = 201 + Number(checkSafeZones(ship) && PermaSafe);
             if (ship.type != 101 && (ship.type != t || ship.custom.type != t)) {
               ship.custom.type = t;
               ship.set({type: t});
@@ -114,6 +119,7 @@ var main_game = function (game) {
     }
   }
 }
+var checkSafeZones = ship => grids.map(x => checkSafe(ship, x)).indexOf(!0) != -1;
 var GameOver = function (ship, Winner) {
   let stats = {};
   if (Winner.length < 1) stats["Game results"] = "It's a draw!";
@@ -138,7 +144,7 @@ var Rounds = {
     this.logTimers = false;
     if (!game.custom.ended) {
       for (let ship of game.ships) {
-        if (ship.custom.type == 201 && !skip) {
+        if ((PermaSafe?(ship.custom.type == 201):!checkSafeZones(ship)) && !skip) {
           ship.custom.in_game = !1;
           ship.custom.death = !0;
           ship.rankings = total_players;
