@@ -5,8 +5,8 @@ based on the famous traditional game Musical Chairs
 
 /* Configurable values - You can edit this section while waiting for players! */
 var waiting_time = 15; // lobby waiting time when there are enough players (in seconds, non-zero - of course)
-var players = 10; // Number of players (minimum 10);
-var map_size = 20; // Map size (must be even, minimum 20)
+var players = 10; // Number of players (minimum 10), One-time edit only
+var map_size = 20; // Map size (must be even, minimum 20), One-time edit only
 var round_time_max = 30; // First round duration (in seconds, minimum 30)
 var round_time_min = 10; // Last round duration (in seconds, minimum 10)
 
