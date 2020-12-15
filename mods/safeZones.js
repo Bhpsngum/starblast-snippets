@@ -1,17 +1,76 @@
-const waiting_time = 15*60;
-const players = 10;
-const map_size = 20;
-const round_time_max = 30*60;
-const round_time_min = 10*60;
+/*
+SAFE ZONE MOD by Bhpsngum
+based on the famous traditional game Musical Chairs
+*/
 
-const PermaSafe = true; // ships can't be knocked out when standing in blue zones
+/* Configurable values */
+const waiting_time = 15*60; // lobby waiting time when theere are enough players
+const players = 10; // Number of players
+const map_size = 20; // Map size (must be even)
+const round_time_max = 30*60; // First round's duration
+const round_time_min = 10*60; // Last round's duration
 
-var Spectator_101 = '{"name":"Spectator","level":1,"model":1,"size":1,"zoom":0.2,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":1,"speed":[250,250],"rotation":[100,100],"acceleration":[100,100]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,1,1,0],"height":[0,1,1,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Spectator","level":1,"model":1,"code":101,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":1,"speed":[250,250],"rotation":[100,100],"acceleration":[100,100]}},"shape":[0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02],"lasers":[],"radius":0.02}}';
-var Player_201 = '{"name":"Player","level":2,"model":1,"size":4,"zoom":1,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":300,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,100,100,0],"height":[0,100,100,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Player","level":2,"model":1,"code":201,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":300,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"shape":[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],"lasers":[],"radius":8}}';
-var Safe_Player_202 = '{"name":"Safe Player","level":2,"model":2,"size":4,"zoom":1,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":30000,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,100,100,0],"height":[0,100,100,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Safe Player","level":2,"model":2,"code":202,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":30000,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"shape":[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],"lasers":[],"radius":8}}';
+const PermaSafe = true; // if true => ships can't be knocked out when standing in blue zones
 
-var ships = [Spectator_101, Player_201];
-PermaSafe && ships.push(Safe_Player_202);
+/* Danger zone! Do not touch the rest of the code! */
+
+// Spectator ship
+var Spectator_201 = '{"name":"Spectator","level":2,"model":1,"size":1,"zoom":0.2,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":1,"speed":[250,250],"rotation":[100,100],"acceleration":[100,100]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,1,1,0],"height":[0,1,1,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Spectator","level":2,"model":1,"code":201,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":1,"speed":[250,250],"rotation":[100,100],"acceleration":[100,100]}},"shape":[0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02],"lasers":[],"radius":0.02}}';
+
+var player_ship_level = 1;
+// Player ships
+var Player_101 = '{"name":"Player","level":1,"model":1,"size":4,"zoom":1,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":300,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,100,100,0],"height":[0,100,100,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Player","level":1,"model":1,"code":101,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":300,"speed":[200,200],"rotation":[100,100],"acceleration":[100,100]}},"shape":[8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8],"lasers":[],"radius":8}}';
+
+var ships = [];
+
+ships.push(Player_101);
+
+var ship_count = ships.length;
+
+// Adding safe ships
+var mod = function(ship, handler) {
+  typeof handler == "function" && [[],["typespec"]].forEach(i => {
+    let param = ship;
+    i.forEach(j => (param = param[j]));
+    handler(param);
+  });
+}
+if (PermaSafe) for (let i = 0; i < ship_count; i++) {
+  let ship = JSON.parse(ships[i]);
+  mod(ship, function(s) {
+    s.level = player_ship_level;
+    s.model = i + 1;
+    s.specs = {
+      shield: {
+        capacity: [1e3,1e3],
+        reload: [1e3,1e3]
+      },
+      generator: {
+        capacity: [1e-3,1e-3],
+        reload: [1e-3,1e-3]
+      },
+      ship: {
+        mass: 100,
+        speed: [200,200],
+        rotation: [100,100],
+        acceleration: [100,100]
+      }
+    }
+  });
+  ship.typespec.code = ship.level * 100 + ship.model;
+  ships[i] = JSON.stringify(ship);
+  mod(ship, function(s) {
+    s.name = "Safe " + s.name;
+    s.model += ship_count;
+    s.specs.ship.mass = 1e4;
+  });
+  ship.typespec.code = ship.level * 100 + ship.model;
+  ships.push(JSON.stringify(ship));
+}
+
+ships.push(Spectator_201);
+
+var Spectate_ship = 201;
 
 var vocabulary = [
   {icon: "I", text: "Attack",key:"A"},
@@ -40,6 +99,7 @@ this.options = {
   reset_tree: true,
   max_level: 1,
   map_size: map_size,
+  choose_ship: new Array(ship_count).fill(0).map(i => player_ship_level*100+1+i),
   custom_map: "",
   max_players: players,
   vocabulary: vocabulary,
@@ -93,16 +153,17 @@ var main_game = function (game) {
           if (!ship.custom.in_game) {
             if (ship.custom.death) setStats(ship, "You are dead.");
             else setStats(ship, "You are now spectating.");
-            ship.set({type:101});
+            ship.set({type:Spectate_ship});
           }
           else setStats(ship, "You are alive.");
         }
+        else if (!ship.custom.in_game && ship.type != Spectate_ship) ship.set({type:Spectate_ship});
       }
       if (Rounds.logTimers) {
         if (Rounds.time >= 0) {
           game.ships.forEach(ship => {
-            let t = 201 + Number(checkSafeZones(ship) && PermaSafe);
-            if (ship.type != 101 && (ship.type != t || ship.custom.type != t)) {
+            let xs = ship.type - 100, t = 100 + (xs > ship_count?(xs - ship_count):xs) + Number(checkSafeZones(ship) && PermaSafe)*ship_count;
+            if (ship.type != Spectate_ship && (ship.type != t || ship.custom.type != t)) {
               ship.custom.type = t;
               ship.set({type: t});
             }
@@ -143,15 +204,15 @@ var Rounds = {
   end: function(skip) {
     this.logTimers = false;
     if (!game.custom.ended) {
-      for (let ship of game.ships) {
-        if ((PermaSafe?(ship.custom.type == 201):!checkSafeZones(ship)) && !skip) {
+      !skip && game.ships.forEach(ship => {
+        if (ship.type != Spectate_ship && !checkSafeZones(ship)) {
           ship.custom.in_game = !1;
           ship.custom.death = !0;
           ship.rankings = total_players;
           ship.set({score:total_players});
         }
         ship.custom.init = !1;
-      }
+      });
       count();
       game.ships.forEach(ship => {
         if (ship.custom.in_game) {
@@ -225,7 +286,7 @@ var updateScoreboard = function(game){
 var outputScoreboard = function(game) {
   for (let ship of game.ships) {
     let o = [...scoreboard.components], f = scoreboard.components.map(x => (x.id != null)?x.id:-1), t = f.indexOf(ship.id);
-    if (t != -1) scoreboard.components.splice(t-1,0,{type:"box",position:[0,f.filter(x => x != -1).indexOf(ship.id)*10,100,10],fill:"hsla(210,24.3%,29%,0.5)"});
+    if (t != -1) scoreboard.components.splice(t-1,0,{type:"box",position:[0,f.filter(x => x != -1).indexOf(ship.id)*10+1,100,8],fill:"hsla(210,24.3%,29%,0.5)"});
     ship.setUIComponent(scoreboard);
     scoreboard.components = [...o];
   }
@@ -255,7 +316,7 @@ this.tick = function (game) {
       game.setOpen(false);
       for (let ship of game.ships) {
         let ts = getPosition(rand(dim),rand(dim));
-        ship.set({x:ts[0],y:ts[1],type:201});
+        ship.set({x:ts[0],y:ts[1]});
         ship.custom.in_game = !0
       }
       started = !0;
