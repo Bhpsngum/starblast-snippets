@@ -3,14 +3,18 @@ SAFE ZONES MOD by Bhpsngum
 based on the famous traditional game Musical Chairs
 */
 
-/* Configurable values (line 9 -> line 38) */
+/* Configurable values (line 8 -> line 42) */
 /* You can edit some properties in this section while waiting for other players! */
 
-var waiting_time = 15;
+var waiting_time = 90;
 // lobby waiting time when there are enough players (in seconds, non-zero - of course)
 
-var players = 10;
-// Number of players (minimum 10), One-time edit only
+var min_players = 10;
+// Number of minium players (minimum 2, default 10), One-time edit only
+
+var max_players = "maximum";
+// Number of players (maximum based on map size, default 10), One-time edit only
+// you can type "maximum" for applying maximum players based on server's capacity
 
 var map_size = 20;
 // Map size (must be even, minimum 20), One-time edit only
@@ -38,7 +42,7 @@ var SpawnMode = "random";
 
 /* Danger zone! Do not touch the rest of the code! */
 
-map_size = Math.floor(Math.min(Number(map_size)||20,20)/2)*2;
+map_size = Math.floor(Math.max(Number(map_size)||20,20)/2)*2;
 
 var vocabulary = [
   {icon: "I", text: "Attack",key:"A"},
@@ -127,27 +131,37 @@ else {
   let smt = Number(SpawnMode) || 0;
   Spawn.mode = Math.floor(Math.min(Math.max(smt, 0), Spawn.modes.length-1));
 }
-waiting_time = Math.max((Number(waiting_time)||15),0);
+waiting_time = Math.max((Number(waiting_time)||90),0);
 round_time_max = Math.max((Number(round_time_max)||30),30);
 round_time_min = Math.min(Math.max((Number(round_time_min)||10),10), round_time_max);
-players = Math.max(Number(players)||10,2);
+max_players = (((max_players||"").toString().toLowerCase() == "maximum")?dim**2:Math.min(Math.max(Number(max_players)||10,2),dim**2));
 
-var infos = [
-  ["Map size",map_size],
-  ["Total zones",dim**2],
-  ["Number of players",players],
-  ["Waiting time",setSecond(waiting_time)],
-  ["First match duration",setSecond(round_time_max)],
-  ["Last match duration",setSecond(round_time_min)],
-  ["Permanent Safety",PermaSafe],
-  ["Spawning Mode",Spawn.mode+" ("+Spawn.names[Spawn.mode]+")"]
-];
-let max_len = Math.max(...infos.map(i => i[0].length));
+var infos, max_len;
+var updateinfo = function() {
+  dim = game.options.map_size/2;
+  min_players = Math.min(Math.max(Number(min_players)||10,2),game.options.max_players);
+  infos = [
+    ["Map size",game.options.map_size],
+    ["Total zones",dim**2],
+    ["Required players",min_players],
+    ["Maxium players", game.options.max_players],
+    ["Waiting time",setSecond(waiting_time)],
+    ["First match duration",setSecond(round_time_max)],
+    ["Last match duration",setSecond(round_time_min)],
+    ["Permanent Safety",PermaSafe],
+    ["Spawning Mode",Spawn.mode+" ("+Spawn.names[Spawn.mode]+")"]
+  ];
+  max_len = Math.max(...infos.map(i => i[0].length));
+}
+
 echo("\nSAFE ZONES MOD - by Bhpsngum");
-echo("based on the famous traditional game Musical Chairs");
-echo("---------- MATCH INFO ----------");
-infos.forEach(u => echo(u[0] + new Array(max_len-u[0].length).fill(" ").join("")+" : "+u[1]));
-echo(" ");
+echo("based on the famous traditional game Musical Chairs\n");
+
+var log = function() {
+  echo("\n---------- MATCH INFO ----------");
+  infos.forEach(u => echo(u[0] + new Array(max_len-u[0].length).fill(" ").join("")+" : "+u[1]));
+  echo(" ");
+}
 
 var showMatchInfo = function() {
   let len = 10, adjust = 1, pos = j => len*(j+1)+adjust, lent = len - adjust*2;
@@ -325,7 +339,7 @@ var Rounds = {
       }
     }
   },
-  getTimer: () => toTick((round_time_max-round_time_min)/(players-2)*(total_players-2) + round_time_min),
+  getTimer: () => toTick((round_time_max-round_time_min)/(joined_players-2)*(total_players-2) + round_time_min),
   start: function() {
     this.count++
     grids.forEach(grid => game.removeObject("safeZoneMarker"+grid.join("&")));
@@ -402,26 +416,33 @@ let safeZoneMarker = {
   emissiveColor: 0x4ce5fe,
   transparent: true
 };
+var _init_, joined_players;
 
 // Main functions
 this.options = {
   ships: ships,
+  root_mode: "",
   reset_tree: true,
   max_level: 1,
   map_size: map_size,
   choose_ship: new Array(ship_count).fill(0).map((j,i) => player_ship_level*100+1+i),
   custom_map: "",
-  max_players: players,
+  max_players: max_players,
   vocabulary: vocabulary,
   radar_zoom: 1,
   friendly_colors: 1
 }
 this.tick = function (game) {
+  if (!_init_) {
+    updateinfo();
+    log();
+    _init_ = true;
+  }
   if (game.step % 30 === 0) {
     if (wait >= 0) {
-      let ps = `Waiting for more players (${game.ships.length}/${players})`
-      if (game.ships.length >= players) {
-        (wait % 60 === 0) && announce(ps,"Game starting in: "+FormatTime([Math.floor(wait/3600), Math.floor((wait%3600)/60)]));
+      let required = min_players-game.ships.length, ps = "Waiting for more players" + ((required > 0)?` (${required} needed)`:"");
+      if (game.ships.length >= min_players) {
+        (wait % 60 === 0) && announce(ps,FormatTime([Math.floor(wait/3600), Math.floor((wait%3600)/60)]));
         wait-= 30;
       }
       else {
@@ -432,6 +453,7 @@ this.tick = function (game) {
     }
     else {
       game.setOpen(false);
+      joined_players = game.ships.length;
       for (let ship of game.ships) {
         Spawn.set(ship);
         ship.custom.in_game = !0;
