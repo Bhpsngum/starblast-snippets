@@ -49,6 +49,7 @@ Global Scope Variables:
 
 Game properties:
   game.execAliens
+  game.moddingPath
 
 */
 
