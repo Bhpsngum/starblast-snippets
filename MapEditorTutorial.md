@@ -246,7 +246,7 @@ These happens if Map Editor fails, partially or completely, to set/get a cell's 
 **How to fix:** Switch to another browser.
 ### 4. How can i contact or give you a feedback?
 **Answer:** We recommend you to use the feedback link listed in [links](#links) or you can use these contact information below:
-* Email: bhpsngumtrongwikipediatiengvie@gmail.com
+* Email: bhpsngumproductions@gmail.com
 * Discord: @Bhpsngum#2623
 ### 5. Can i help developing this tool?
 **Answer:** Yes. This tool is still in development, so if you have enough Web Making Skills (HTML, CSS, JS) and think that you can do this work, use the feedback to tell us to apply :)
