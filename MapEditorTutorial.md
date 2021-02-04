@@ -202,14 +202,16 @@ Whenever user clicks or drags to one cell, brush commands will be fired with the
 
   *Note:*  
   * `x` and `y` should be restricted to the current coordinate perspective, defined in `type`:
+  
   type 0: Map Index 0<=`x`,`y`<=9, should be integers
 
   type 1: Cartesian Coordinates, -`size`\*5<=`x`,`y`<=`size`\*5-1
 
   and 0<=`size`<=9, should be integers
-  For example: `StarblastMap.Asteroids.set(0,8,3)` will set a cell at position (0;8) with asteroid size 3
+  
+  For example: `StarblastMap.Asteroids.set(0,8,3,0)` will set a cell at position (0;8) (in Map Index) with asteroid size 3
 
-  and `StarblastMap.Asteroids.get(0,8)` will return 3 (in the next user action)
+  and `StarblastMap.Asteroids.get(0,8,0)` will return 3 (in the next user action)
   * **`size`:** User's selection of predefined asteroid size range for randomization:
 
     **`min`**: minimum randomized size ([Edit Tab](#edit-tab) option 3a)
