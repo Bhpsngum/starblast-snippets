@@ -181,7 +181,9 @@ Whenever you are editing or creating, it will show you the interface shown in th
 
 Click **Save** to save the edits, **Cancel** to discard them
 #### Features
-**Note:** If the option does not reference to any tab, it's automatically referenced to [Advanced Tab](#advanced-tab)
+**Note:**
+* If the option does not reference to any tab, it's automatically referenced to [Advanced Tab](#advanced-tab)
+* Coordinates perspective depends on its current context
 
 Whenever user clicks or drags to one cell, brush commands will be fired with these parameters:
 
@@ -195,11 +197,16 @@ Whenever user clicks or drags to one cell, brush commands will be fired with the
 
 **`StarblastMap` Object:** an object that contains most of the features, containing these properties:
 * **`Asteroids`:** access asteroid properties and values:
-  * **`set(x,y,size)`:** Set a cell at position (`x`;`y`) with asteroid size `size`
-  * **`get(x,y)`:** Get asteroids size at a cell at position (`x`;`y`), returns a number representing the asteroid size at that cell
+  * **`set(x,y,size,type)`:** Set a cell at position (`x`;`y`) with asteroid size `size`
+  * **`get(x,y,type)`:** Get asteroids size at a cell at position (`x`;`y`), returns a number representing the asteroid size at that cell
 
-  *Note:* 0<=`x`,`y`<current map size and 0<=`size`<=9, should be integers
+  *Note:*  
+  * `x` and `y` should be restricted to the current coordinate perspective, defined in `type`:
+  type 0: Map Index 0<=`x`,`y`<=9, should be integers
 
+  type 1: Cartesian Coordinates, -`size`\*5<=`x`,`y`<=`size`\*5-1
+
+  and 0<=`size`<=9, should be integers
   For example: `StarblastMap.Asteroids.set(0,8,3)` will set a cell at position (0;8) with asteroid size 3
 
   and `StarblastMap.Asteroids.get(0,8)` will return 3 (in the next user action)
