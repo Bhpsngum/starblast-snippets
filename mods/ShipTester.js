@@ -4,12 +4,15 @@ this.options = {
   survival_level:8,
   map_size: 30
 };
+var allow_t8s = false;
+var allow_admin_ships = false;
+var admin_ships = [];
 var setPicker = function(ship, isActive) {
   isActive = !!isActive;
   ship.custom.isActive = isActive;
   ship.setUIComponent({
     id: "chooser",
-    position: [2,40,8,14],
+    position: [2,20,8,14],
     visible: true,
     clickable: true,
     shortcut: "P",
@@ -19,10 +22,46 @@ var setPicker = function(ship, isActive) {
       { type: "text",position:[20,70,60,20],value:"[P]",color:"#CDE"}
     ]
   });
+  ship.setUIComponent({
+    id: "f-stats",
+    position: [2,40,8,14],
+    visible: true,
+    clickable: true,
+    shortcut: "F",
+    components: [
+      { type: "box",position:[0,0,100,100],fill:"#456",stroke:"#CDE",width:2},
+      { type: "text",position:[10,35,80,30],value:"Full stats",color:"#CDE"},
+      { type: "text",position:[20,70,60,20],value:"[F]",color:"#CDE"}
+    ]
+  });
+  ship.setUIComponent({
+    id: "e-stats",
+    position: [2,60,8,14],
+    visible: true,
+    clickable: true,
+    shortcut: "E",
+    components: [
+      { type: "box",position:[0,0,100,100],fill:"#456",stroke:"#CDE",width:2},
+      { type: "text",position:[10,35,80,30],value:"Empty Stats",color:"#CDE"},
+      { type: "text",position:[20,70,60,20],value:"[E]",color:"#CDE"}
+    ]
+  });
+  ship.setUIComponent({
+    id: "fillgems",
+    position: [2,80,8,14],
+    visible: true,
+    clickable: true,
+    shortcut: "G",
+    components: [
+      { type: "box",position:[0,0,100,100],fill:"#456",stroke:"#CDE",width:2},
+      { type: "text",position:[10,35,80,30],value:"Fill gems",color:"#CDE"},
+      { type: "text",position:[20,70,60,20],value:"[G]",color:"#CDE"}
+    ]
+  });
   if (isActive) {
     ship.setUIComponent({
       id: "revert",
-      position: [2,60,8,14],
+      position: [12,20,8,14],
       visible: true,
       clickable: true,
       shortcut: "L",
@@ -41,7 +80,7 @@ var setPicker = function(ship, isActive) {
     })
   }
   else {
-    ship.setUIComponent({id:"revert",visible:false});
+    ship.setUIComponent({id:"revert",visible:false,clickable: false,shortcut:""});
     for (let i=0;i<10;i++) ship.setUIComponent({id:"k"+i.toString(),visible:false});
     ship.setUIComponent({id:"chooser-notif",visible: false})
   }
@@ -62,14 +101,15 @@ var setRequest = function (ship, add) {
       visible: true,
       clickable: false,
       components: [
-        {type: "text", position: [0,0,100,30], value: "Enter ship code to pick:", color: "#cde"},
-        {type: "text", position: [0,30,100,30], value: "Ship code = ship level * 100 + ship model", color: "#cde"},
+        {type: "text", position: [0,0,100,20], value: "Enter ship code to pick:", color: "#cde"},
+        {type: "text", position: [0,20,100,20], value: "Ship code = ship level x 100 + ship model", color: "#cde"},
+        {type: "text", position: [0,40,100,20], value: "e.g: code 101 => level 1 & model 1", color: "#cde"},
         {type: "text", position: [0,60,100,40], value: request||"", color: "#cde"}
       ]
     });
     if (request.length >= 3) {
       request = parseInt(request);
-      ship.set({type: request});
+      if ((allow_t8s || request < 800) && (allow_admin_ships || admin_ships.indexOf(request) == -1)) ship.set({type: request});
       request = "";
       setPicker(ship, false);
     }
@@ -98,10 +138,18 @@ this.event = function(event, game) {
         case "revert":
           setRequest(ship, -1);
           break;
+        case "f-stats":
+          ship.set({stats:88888888});
+          break;
+        case "e-stats":
+          ship.set({stats:0});
+          break;
+        case "fillgems":
+          ship.set({crystals: 20*(Math.trunc(ship.type/100)**2)});
+          break;
         default:
           if (id.match(/^k\d$/) != null) setRequest(ship,id[1]);
       }
       break;
   }
-  console.log(event);
 }
