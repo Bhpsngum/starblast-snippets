@@ -139,7 +139,7 @@ this.event = function(event, game) {
           setRequest(ship, -1);
           break;
         case "f-stats":
-          ship.set({stats:88888888});
+          ship.set({stats:88888888,shield: 1e4, generator: 1e5});
           break;
         case "e-stats":
           ship.set({stats:0});
