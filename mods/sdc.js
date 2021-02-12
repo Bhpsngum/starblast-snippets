@@ -23,7 +23,7 @@ this.options = {
   ships: ships,
   reset_tree: false,
   max_players: 16,
-  radar_zoom: 1,
+  radar_zoom: map_size/arena_radius/2,
   weapons_store: false,
   max_level: 1,
   asteroids_strength: 1e6,
@@ -98,7 +98,7 @@ var main_game = function(game) {
       let rsize = 10/map_size*r;
       ship.setUIComponent({
         id: "radar_background",
-        components: grids.map(x => ({type:"round",position:[t(x[0]),t(x[1]),rsize*2,rsize*2],width:1,stroke: "hsla(240,100%,50%,1)", fill: "hsla(180,100%,50%,0.5)"}))
+        components: grids.map(x => ({type:"round",position:[t(x[0]),t(x[1]),rsize*2,rsize*2],width:1,stroke: "hsla(240,100%,50%,1)", fill: "hsla(0, 0%, 0%, 0)"}))
       });
       ship.custom.currentNode = 4;
       ship.set({x:0,y:0});
@@ -119,7 +119,7 @@ var main_game = function(game) {
             visible: true,
             clickable: false,
             components: [
-              {type: "text", position: [0,0,100,20], value: "Out of the safe zones", color: "#cde"},
+              {type: "text", position: [0,0,100,20], value: "Warning: Out of the safe zones", color: "#cde"},
             ]
           });
           rekt(ship, dps);
