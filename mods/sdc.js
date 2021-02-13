@@ -58,7 +58,7 @@ var dist = function(x1,y1,x2,y2) {
   return Math.sqrt((x1-x2)**2+(y1-y2)**2);
 }
 var max = function(ship, type) {
-  ship.set({type:type,crystals: 20*(Math.trunc(type/100)**2)*gem_ratio,stats:88888888,shield: 1e4, generator: 1e5});
+  ship.set({type:type,crystals: 20*(Math.trunc(type/100)**2)*gem_ratio,stats:88888888,shield: 1e4, generator: 0});
 }
 
 function rekt(ship,num){
