@@ -4,6 +4,7 @@ var items_required = 3; // Item needs to be collected to earn one shot
 var detective_reload_time = 10; // Delay between each detective's shots
 var player_laser_speed = 300; // Speed of each player's shots (execpt murderers)
 var murderer_reload_time = 5; // Delay between each murderer's shots
+var waiting_time = 10; //waiting time when server get enough players (in seconds)
 var regen_factor = 0; // regen factor of the players (inlcuding murderers)
 /* End of editable fields */
 
@@ -46,7 +47,7 @@ var specs = JSON.stringify({
   recoil: 0,
   number: 1,
   error: 0
-})
+});
 var mod = function(ship, handler) {
   typeof handler == "function" && [[],["typespec"]].forEach(i => {
     let param = ship;
@@ -56,12 +57,29 @@ var mod = function(ship, handler) {
 }
 
 var Template = '{"size":2.4,"bodies":{"body":{"section_segments":12,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-90,-100,-60,-10,0,20,50,80,100,90],"z":[0,0,0,0,0,0,0,0,0,0,0]},"width":[0,5,20,25,35,40,40,35,30,0],"height":[0,5,40,45,40,60,70,60,30,0],"texture":[10,2,10,2,3,13,13,63,12],"propeller":true,"laser":{}},"front":{"section_segments":8,"offset":{"x":0,"y":-20,"z":0},"position":{"x":[0,0,0,0,0],"y":[-90,-85,-70,-60,-20],"z":[0,0,0,0,0]},"width":[0,40,45,10,12],"height":[0,15,18,8,12],"texture":[8,63,4,4,4],"propeller":true},"propeller":{"section_segments":10,"offset":{"x":40,"y":40,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-20,-15,0,10,20,25,30,40,70,60],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,10,15,15,15,10,10,20,15,0],"height":[0,10,15,15,15,10,10,18,8,0],"texture":[4,4,10,3,3,63,4,63,12],"propeller":true},"sides":{"section_segments":6,"angle":90,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-80,-75,-60,-50,-10,10,50,60,75,80],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,30,35,10,12,12,10,35,30,0],"height":[0,10,12,8,12,12,8,12,10,0],"texture":[4,63,4,4,4,4,4,63,4]},"cockpit":{"section_segments":12,"offset":{"x":0,"y":-20,"z":30},"position":{"x":[0,0,0,0,0,0,0,0],"y":[-50,-20,0,10,30,50],"z":[0,0,0,0,0,0]},"width":[0,12,18,20,15,0],"height":[0,20,22,24,20,0],"texture":[9]}},"wings":{"top":{"doubleside":true,"offset":{"x":0,"y":20,"z":15},"length":[70],"width":[70,30],"angle":[90],"position":[0,30],"texture":[63],"bump":{"position":10,"size":30}},"top2":{"doubleside":true,"offset":{"x":0,"y":51,"z":5},"length":[70],"width":[50,20],"angle":[90],"position":[0,60],"texture":[63],"bump":{"position":10,"size":30}}},"typespec":{"code":null,"shape":[5.28,5.25,5.332,5.393,4.944,1.997,1.745,1.556,1.435,3.587,3.81,3.779,3.838,3.84,3.779,3.81,3.587,3.205,3.571,3.9,5.132,5.888,5.835,5.551,4.886,5.808,4.886,5.551,5.835,5.888,5.132,3.9,3.571,3.205,3.587,3.81,3.779,3.838,3.84,3.779,3.81,3.587,1.435,1.556,1.745,1.997,4.944,5.393,5.332,5.25],"lasers":[{"x":0,"y":-4.8,"z":0,"angle":0,"spread":0,"error":0,"recoil":0}],"radius":5.888}}';
-var names = ["Innocent", "Detective", "Murderer"];
+
+  var roles = [
+    {
+      name: "Innocent",
+      description: "Collect "+items_required+" energy refills to have a chance to kill the murderers!",
+      percentage: 40
+    },
+    {
+      name: "Detective",
+      description: "Find and kill all the murderers!",
+      percentage: 20
+    },
+    {
+      name: "Murderer",
+      description: "Kill all detectives and innocents to win the game!",
+      percentage: 20
+    }
+  ]
 
 var ships = Array(3).fill(0).map((v,i) => {
   let pship = JSON.parse(Template);
   mod(pship, function(ship){
-    ship.name = names[i];
+    ship.name = roles[i].name;
     ship.level = 1;
     ship.model = i+1;
     Object.assign(ship,JSON.parse(specs));
@@ -297,7 +315,7 @@ var map = "999999999999999999999999999999999999999999999999999999999999999999999
 this.options = {
   // see documentation for options reference
   root_mode: "",
-  name: "Starblast Murder Mystery",
+  map_name: "Starblast Murder Mystery",
   ships: ships,
   reset_tree: true,
   max_players: 30,
@@ -309,7 +327,7 @@ this.options = {
   lives: 0,
   custom_map: map
 };
-var coords = [], bmap = map.split("\n");
+var coords = [], bmap = map.split("\n"), dfl_tcl = "hsla(210, 50%, 87%, 1)";
 var rand = function(num) {
   return Math.floor(Math.random()*num)
 }
@@ -318,15 +336,101 @@ for (let i = 0; i<bmap.length ; i++)
     let t = Number(bmap[i][j]);
     (!t || isNaN(t)) && coords.push([i,j])
   }
-randomSpawn = function () {
-  let [x,y] = coords[rand(coords.length)];
+var randomSpawn = function () {
+  let [y,x] = coords[rand(coords.length)];
   return {x: (x*2-game.options.map_size+1)*5,y: (game.options.map_size-y*2-1)*5}
 }
-
-this.tick = function(game) {
+var FormatTime = function(array) {
+  return array.map(i => i<10?"0"+i.toString():i).join(":");
+}
+var toTick = sec => sec*60;
+var wait = toTick(waiting_time), min_players = 5, total_players;
+var announce = function(ship,...data) {
+  ship.setUIComponent({
+    id: "message",
+    position: [25,10,50,50],
+    visible: true,
+    components: data.map((j,i) => ({type:"text",position:[0,10*i,100,10],value:j,color:dfl_tcl}))
+  });
+}
+var setStats = function(ship, ...stats) {
+  game.setUIComponent({
+    id: "stat",
+    position: [3,28,17,15],
+    visible: true,
+    components: [stats/*, "Survivors: "+total_players*/].flat().map((j,i) => ({type: "text",position:[0,33*i,80,33],value:j,color:dfl_tcl}))
+  });
+}
+var game_players = Array(roles.length).fill(0);
+var initialization = function(game) {
+  roles[0].description = "Collect "+items_required+" energy refills to have a chance to kill the murderers!";
+  this.tick = waiting
+}, waiting = function (game) {
+  if (game.step % 30 === 0) {
+    if (wait >= 0) {
+      game.ships.forEach(ship => ship.set({invulnerable: 60, generator: 0}));
+      let required = min_players-game.ships.length, ps = "Waiting for more players" + ((required > 0)?` (${required} needed)`:"");
+      if (game.ships.length >= min_players) {
+        (wait % 60 === 0) && announce(game,ps,FormatTime([Math.floor(wait/3600), Math.floor((wait%3600)/60)]));
+        wait-= 30;
+      }
+      else {
+        wait = toTick(waiting_time);
+        announce(game,ps);
+      }
+      // showMatchInfo();
+    }
+    else {
+      game.setOpen(false);
+      joined_players = game.ships.length;
+      var players = roles.reverse().map(i=>Math.floor(joined_players*i.percentage/100)), randlist = game.ships.map((v,i) => i);
+      players[2] = joined_players - players[0] - players[1];
+      Preset: while (true) {
+        let i = 0;
+        while (players[i] === 0)
+          if (i == players.length-1 || players.length == 0) break Preset;
+          else i++;
+        let index = rand(randlist.length), ship = game.ships[randlist[index]];
+        ship.custom.role = i;
+        ship.set(Object.assign(randomSpawn(),{generator:0,type:100+roles.length-i,shield:shield}));
+        announce(ship, "You are the "+roles[i].name+"!", roles[i].description);
+        console.log(i);
+        setTimeout(function(){
+          announce(ship,"");
+        },3000);
+        randlist.splice(index,1);
+        players[i]--;
+      }
+      this.tick = main_game;
+    }
+  }
+}, main_game = function(game) {
+  for (let ship of game.ships) {
+    let role = ship.custom.role;
+    if (!roles[role]) ship.gameover({"Sorry":"This game is running"});
+    else {
+      game_players[role]++;
+      setStats(ship, "Role: "+roles[role].name)
+    }
+  }
   if (game.step % (energy_delay*60) === 0) {
     let f = randomSpawn();
     f.code = 90;
     game.addCollectible(f);
+  }
+  if (false) this.tick = ended
+}, ended = function (game) {
+  this.tick = null
+}
+this.tick = initialization;
+
+this.event = function(event, game) {
+  let ship = event.ship;
+  if (ship) switch(event.name) {
+    case "ship_destroyed":
+      let killer = event.killer?event.killer.name:"", message = "You've "+(killer?"been killed by":"killed yourself"), sc = {};
+      sc[message] = killer;
+      ship.gameover(sc);
+      break;
   }
 }
