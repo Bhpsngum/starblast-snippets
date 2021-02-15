@@ -1,11 +1,11 @@
 /* Editable fields */
-var energy_delay = 3; // Delay between each item spawns (in seconds)
+var energy_delay = 1; // Delay between each item spawns (in seconds)
 var items_required = 3; // Item needs to be collected to earn one shot
 var detective_reload_time = 10; // Delay between each detective's shots
 var player_laser_speed = 300; // Speed of each player's shots (execpt murderers)
 var murderer_reload_time = 5; // Delay between each murderer's shots
 var waiting_time = 10; //waiting time when server get enough players (in seconds)
-var regen_factor = 0; // regen factor of the players (inlcuding murderers)
+var regen_factor = false; // regen factor of the players (inlcuding murderers)
 /* End of editable fields */
 
 /*
@@ -58,25 +58,25 @@ var mod = function(ship, handler) {
 
 var Template = '{"size":2.4,"bodies":{"body":{"section_segments":12,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-90,-100,-60,-10,0,20,50,80,100,90],"z":[0,0,0,0,0,0,0,0,0,0,0]},"width":[0,5,20,25,35,40,40,35,30,0],"height":[0,5,40,45,40,60,70,60,30,0],"texture":[10,2,10,2,3,13,13,63,12],"propeller":true,"laser":{}},"front":{"section_segments":8,"offset":{"x":0,"y":-20,"z":0},"position":{"x":[0,0,0,0,0],"y":[-90,-85,-70,-60,-20],"z":[0,0,0,0,0]},"width":[0,40,45,10,12],"height":[0,15,18,8,12],"texture":[8,63,4,4,4],"propeller":true},"propeller":{"section_segments":10,"offset":{"x":40,"y":40,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-20,-15,0,10,20,25,30,40,70,60],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,10,15,15,15,10,10,20,15,0],"height":[0,10,15,15,15,10,10,18,8,0],"texture":[4,4,10,3,3,63,4,63,12],"propeller":true},"sides":{"section_segments":6,"angle":90,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-80,-75,-60,-50,-10,10,50,60,75,80],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,30,35,10,12,12,10,35,30,0],"height":[0,10,12,8,12,12,8,12,10,0],"texture":[4,63,4,4,4,4,4,63,4]},"cockpit":{"section_segments":12,"offset":{"x":0,"y":-20,"z":30},"position":{"x":[0,0,0,0,0,0,0,0],"y":[-50,-20,0,10,30,50],"z":[0,0,0,0,0,0]},"width":[0,12,18,20,15,0],"height":[0,20,22,24,20,0],"texture":[9]}},"wings":{"top":{"doubleside":true,"offset":{"x":0,"y":20,"z":15},"length":[70],"width":[70,30],"angle":[90],"position":[0,30],"texture":[63],"bump":{"position":10,"size":30}},"top2":{"doubleside":true,"offset":{"x":0,"y":51,"z":5},"length":[70],"width":[50,20],"angle":[90],"position":[0,60],"texture":[63],"bump":{"position":10,"size":30}}},"typespec":{"code":null,"shape":[5.28,5.25,5.332,5.393,4.944,1.997,1.745,1.556,1.435,3.587,3.81,3.779,3.838,3.84,3.779,3.81,3.587,3.205,3.571,3.9,5.132,5.888,5.835,5.551,4.886,5.808,4.886,5.551,5.835,5.888,5.132,3.9,3.571,3.205,3.587,3.81,3.779,3.838,3.84,3.779,3.81,3.587,1.435,1.556,1.745,1.997,4.944,5.393,5.332,5.25],"lasers":[{"x":0,"y":-4.8,"z":0,"angle":0,"spread":0,"error":0,"recoil":0}],"radius":5.888}}';
 
-  var roles = [
-    {
-      name: "Innocent",
-      description: "Collect "+items_required+" energy refills to have a chance to kill the murderers!",
-      percentage: 40
-    },
-    {
-      name: "Detective",
-      description: "Find and kill all the murderers!",
-      percentage: 20
-    },
-    {
-      name: "Murderer",
-      description: "Kill all detectives and innocents to win the game!",
-      percentage: 20
-    }
-  ]
+var roles = [
+  {
+    name: "Murderer",
+    description: "Kill all detectives and innocents to win the game!",
+    percentage: 20
+  },
+  {
+    name: "Detective",
+    description: "Find and kill all the murderers!",
+    percentage: 20
+  },
+  {
+    name: "Innocent",
+    description: "Collect "+items_required+" energy refills to have a chance to kill the murderers!",
+    percentage: 40
+  }
+]
 
-var ships = Array(3).fill(0).map((v,i) => {
+var ships = Array(roles.length).fill(0).map((v,i) => {
   let pship = JSON.parse(Template);
   mod(pship, function(ship){
     ship.name = roles[i].name;
@@ -90,7 +90,7 @@ var ships = Array(3).fill(0).map((v,i) => {
   return pship
 });
 
-mod(ships[0], function(ship){
+mod(ships[2], function(ship){
   ship.specs.generator.reload = [1e-30,1e-30]
 });
 
@@ -99,7 +99,7 @@ mod(ships[1], function(ship){
   ship.specs.generator.reload = [t,t];
 });
 
-mod(ships[2], function(ship){
+mod(ships[0], function(ship){
   let t = capacity/murderer_reload_time, g = capacity+100;
   ship.specs.generator = {
     capacity: [g,g],
@@ -108,8 +108,8 @@ mod(ships[2], function(ship){
   Object.assign(ship.specs.ship,dash);
 });
 let h = [1e-30, 1e-30];
-ships[2].bodies.body.laser.speed = h;
-ships[2].typespec.lasers[0].speed = h;
+ships[0].bodies.body.laser.speed = h;
+ships[0].typespec.lasers[0].speed = h;
 
 ships = ships.map(ship=>JSON.stringify(ship));
 var map = "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n"+
@@ -229,10 +229,10 @@ var map = "999999999999999999999999999999999999999999999999999999999999999999999
 "999                            11   9              9       9                      911911191191111119911111191191119119          1           1                              99999999999999     9   1  999\n"+
 "999                                  9            9       9                       919111191119111119911111911191111919                   1         9999999999999999        999999999999999   99      999\n"+
 "999                                   9          9       9               1        991111191111911119911119111191111199                            999999999999999999       99199999999999999999      999\n"+
-"999                      9             9                9         9      1        999999999999991119911199999999999999               9            999999999999999999    1  99999999999999999  9      999\n"+
-"999                       9             9              9          9                             91199119                    1        9   1        999999999999999999        999999999999999   9   1  999\n"+
-"999                        9      1      9            9           9                              919919                              9   1        999999999111199999              999999999   9      999\n"+
-"999                         9             9          9            9                               9999                               9            999999991111199999               999999999 99   1  999\n"+
+"999                      9             9                9         9      1        999999999999991119911199999999999999               9            999999999999999999    1  99999999999999999119      999\n"+
+"999                       9             9              9          9                             91199119                    1        9   1        999999999999999999        9999999999999991119   1  999\n"+
+"999                        9      1      9            9           9                              919919                              9   1        999999999111199999              9999999991119      999\n"+
+"999                         9             9          9            9                               9999                               9            999999991111199999               999999999199   1  999\n"+
 "999                          9             9        9             9                                99                      1         9            999999991199999999               999999999999      999\n"+
 "999                           9    11       9                     9                                                                  9            999999991199999999                999999    9      999\n"+
 "999                            9     1       9                    9                                                                  9            999999991199999999                99999     9      999\n"+
@@ -317,13 +317,16 @@ this.options = {
   root_mode: "",
   map_name: "Starblast Murder Mystery",
   ships: ships,
+  starting_ship: 103,
+  lives: 5,
   reset_tree: true,
   max_players: 30,
   map_size: 200,
   asteroids_strength: 1e6,
   crystal_value: 0,
+  radar_zoom: 200*2,
   auto_refill: true,
-  shield_regen_factor: regen_factor,
+  shield_regen_factor: regen_factor===false?shield/20:regen_factor,
   lives: 0,
   custom_map: map
 };
@@ -363,14 +366,14 @@ var setStats = function(ship, ...stats) {
 }
 var game_players = Array(roles.length).fill(0);
 var initialization = function(game) {
-  roles[0].description = "Collect "+items_required+" energy refills to have a chance to kill the murderers!";
+  roles[2].description = "Collect "+items_required+" energy refills to have a chance to kill the murderers!";
   this.tick = waiting
 }, waiting = function (game) {
   if (game.step % 30 === 0) {
+    game.ships.forEach(ship => ship.set({invulnerable: 60, generator: 0}));
     if (wait >= 0) {
-      game.ships.forEach(ship => ship.set({invulnerable: 60, generator: 0}));
       let required = min_players-game.ships.length, ps = "Waiting for more players" + ((required > 0)?` (${required} needed)`:"");
-      if (game.ships.length >= min_players) {
+      if (required <= 0) {
         (wait % 60 === 0) && announce(game,ps,FormatTime([Math.floor(wait/3600), Math.floor((wait%3600)/60)]));
         wait-= 30;
       }
@@ -383,7 +386,7 @@ var initialization = function(game) {
     else {
       game.setOpen(false);
       joined_players = game.ships.length;
-      var players = roles.reverse().map(i=>Math.floor(joined_players*i.percentage/100)), randlist = game.ships.map((v,i) => i);
+      var players = roles.map(i=>Math.floor(joined_players*i.percentage/100)), randlist = game.ships.map((v,i) => i);
       players[2] = joined_players - players[0] - players[1];
       Preset: while (true) {
         let i = 0;
@@ -392,9 +395,8 @@ var initialization = function(game) {
           else i++;
         let index = rand(randlist.length), ship = game.ships[randlist[index]];
         ship.custom.role = i;
-        ship.set(Object.assign(randomSpawn(),{generator:0,type:100+roles.length-i,shield:shield}));
+        ship.set(Object.assign(randomSpawn(),{generator:0,type:100+i+1,shield:shield}));
         announce(ship, "You are the "+roles[i].name+"!", roles[i].description);
-        console.log(i);
         setTimeout(function(){
           announce(ship,"");
         },3000);
@@ -405,15 +407,22 @@ var initialization = function(game) {
     }
   }
 }, main_game = function(game) {
-  for (let ship of game.ships) {
-    let role = ship.custom.role;
-    if (!roles[role]) ship.gameover({"Sorry":"This game is running"});
-    else {
-      game_players[role]++;
-      setStats(ship, "Role: "+roles[role].name)
+  if (game.step % 30 === 0) {
+    for (let ship of game.ships) {
+      let rolei = ship.custom.role, role = roles[rolei];
+      if (!role) {
+        if (ship.alive) {
+          if (ship.custom.pstats) ship.gameover(ship.custom.pstats);
+          else ship.gameover({"Sorry":"This game is running"});
+        }
+      }
+      else {
+        game_players[rolei]++;
+        setStats(ship, "Role: "+role.name)
+      }
     }
   }
-  if (game.step % (energy_delay*60) === 0) {
+  if (game.step % (energy_delay*60) === 0 && game.collectibles.length < 50) {
     let f = randomSpawn();
     f.code = 90;
     game.addCollectible(f);
@@ -430,7 +439,8 @@ this.event = function(event, game) {
     case "ship_destroyed":
       let killer = event.killer?event.killer.name:"", message = "You've "+(killer?"been killed by":"killed yourself"), sc = {};
       sc[message] = killer;
-      ship.gameover(sc);
+      ship.custom.role = null;
+      ship.custom.pstats = sc;
       break;
   }
 }
