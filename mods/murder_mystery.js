@@ -5,6 +5,7 @@ var detective_reload_time = 10; // Delay between each detective's shots
 var player_laser_speed = 300; // Speed of each player's shots (execpt murderers)
 var murderer_reload_time = 5; // Delay between each murderer's shots
 var waiting_time = 10; //waiting time when server get enough players (in seconds)
+var game_duration = 20; // duration of the game (in minutes)
 var regen_factor = false; // regen factor of the players (inlcuding murderers)
 /* End of editable fields */
 
@@ -57,7 +58,7 @@ var mod = function(ship, handler) {
 }
 
 var Template = '{"size":2.4,"bodies":{"body":{"section_segments":12,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-90,-100,-60,-10,0,20,50,80,100,90],"z":[0,0,0,0,0,0,0,0,0,0,0]},"width":[0,5,20,25,35,40,40,35,30,0],"height":[0,5,40,45,40,60,70,60,30,0],"texture":[10,2,10,2,3,13,13,63,12],"propeller":true,"laser":{}},"front":{"section_segments":8,"offset":{"x":0,"y":-20,"z":0},"position":{"x":[0,0,0,0,0],"y":[-90,-85,-70,-60,-20],"z":[0,0,0,0,0]},"width":[0,40,45,10,12],"height":[0,15,18,8,12],"texture":[8,63,4,4,4],"propeller":true},"propeller":{"section_segments":10,"offset":{"x":40,"y":40,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-20,-15,0,10,20,25,30,40,70,60],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,10,15,15,15,10,10,20,15,0],"height":[0,10,15,15,15,10,10,18,8,0],"texture":[4,4,10,3,3,63,4,63,12],"propeller":true},"sides":{"section_segments":6,"angle":90,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-80,-75,-60,-50,-10,10,50,60,75,80],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,30,35,10,12,12,10,35,30,0],"height":[0,10,12,8,12,12,8,12,10,0],"texture":[4,63,4,4,4,4,4,63,4]},"cockpit":{"section_segments":12,"offset":{"x":0,"y":-20,"z":30},"position":{"x":[0,0,0,0,0,0,0,0],"y":[-50,-20,0,10,30,50],"z":[0,0,0,0,0,0]},"width":[0,12,18,20,15,0],"height":[0,20,22,24,20,0],"texture":[9]}},"wings":{"top":{"doubleside":true,"offset":{"x":0,"y":20,"z":15},"length":[70],"width":[70,30],"angle":[90],"position":[0,30],"texture":[63],"bump":{"position":10,"size":30}},"top2":{"doubleside":true,"offset":{"x":0,"y":51,"z":5},"length":[70],"width":[50,20],"angle":[90],"position":[0,60],"texture":[63],"bump":{"position":10,"size":30}}},"typespec":{"code":null,"shape":[5.28,5.25,5.332,5.393,4.944,1.997,1.745,1.556,1.435,3.587,3.81,3.779,3.838,3.84,3.779,3.81,3.587,3.205,3.571,3.9,5.132,5.888,5.835,5.551,4.886,5.808,4.886,5.551,5.835,5.888,5.132,3.9,3.571,3.205,3.587,3.81,3.779,3.838,3.84,3.779,3.81,3.587,1.435,1.556,1.745,1.997,4.944,5.393,5.332,5.25],"lasers":[{"x":0,"y":-4.8,"z":0,"angle":0,"spread":0,"error":0,"recoil":0}],"radius":5.888}}';
-
+var Ghost_104 = '{"name":"Ghost","level":1,"model":4,"size":1,"zoom":0.2,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":1,"speed":[250,250],"rotation":[100,100],"acceleration":[100,100]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,1,1,0],"height":[0,1,1,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Ghost","level":1,"model":4,"code":104,"specs":{"shield":{"capacity":[690,690],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":1,"speed":[250,250],"rotation":[100,100],"acceleration":[100,100]}},"shape":[0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02,0.02],"lasers":[],"radius":0.02}}';
 var roles = [
   {
     name: "Murderer",
@@ -75,11 +76,13 @@ var roles = [
     percentage: 40
   }
 ]
-
+var getRole = function(id) {
+  return (roles[id]||{}).name||"Ghost";
+}
 var ships = Array(roles.length).fill(0).map((v,i) => {
   let pship = JSON.parse(Template);
   mod(pship, function(ship){
-    ship.name = roles[i].name;
+    ship.name = getRole(i);
     ship.level = 1;
     ship.model = i+1;
     Object.assign(ship,JSON.parse(specs));
@@ -112,6 +115,7 @@ ships[0].bodies.body.laser.speed = h;
 ships[0].typespec.lasers[0].speed = h;
 
 ships = ships.map(ship=>JSON.stringify(ship));
+ships.push(Ghost_104);
 var map = "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n"+
 "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n"+
 "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999\n"+
@@ -343,7 +347,8 @@ var randomSpawn = function () {
   let [y,x] = coords[rand(coords.length)];
   return {x: (x*2-game.options.map_size+1)*5,y: (game.options.map_size-y*2-1)*5}
 }
-var FormatTime = function(array) {
+var FormatTime = function(time) {
+  var array = [Math.floor(time/3600), Math.floor((time%3600)/60)]
   return array.map(i => i<10?"0"+i.toString():i).join(":");
 }
 var toTick = sec => sec*60;
@@ -356,17 +361,21 @@ var announce = function(ship,...data) {
     components: data.map((j,i) => ({type:"text",position:[0,10*i,100,10],value:j,color:dfl_tcl}))
   });
 }
-var setStats = function(ship, ...stats) {
-  game.setUIComponent({
+
+var setStats = function(ship) {
+  ship.alive && ship.setUIComponent({
     id: "stat",
     position: [3,28,17,15],
     visible: true,
-    components: [stats/*, "Survivors: "+total_players*/].flat().map((j,i) => ({type: "text",position:[0,33*i,80,33],value:j,color:dfl_tcl}))
+    components: [
+      "Role: "+getRole(ship.custom.role),
+      "Time left: "+FormatTime(game_time)
+    ].flat().map((j,i) => ({type: "text",position:[0,33*i,80,33],value:j,color:dfl_tcl}))
   });
 }
-var game_players = Array(roles.length).fill(0);
+var game_players = Array(roles.length).fill(0), game_time;
 var initialization = function(game) {
-  roles[2].description = "Collect "+items_required+" energy refills to have a chance to kill the murderers!";
+  roles[2].description = "Collect "+items_required+" energy refill"+(items_required==1?"s":"")+" to have a chance to kill the murderers!";
   this.tick = waiting
 }, waiting = function (game) {
   if (game.step % 30 === 0) {
@@ -374,7 +383,7 @@ var initialization = function(game) {
     if (wait >= 0) {
       let required = min_players-game.ships.length, ps = "Waiting for more players" + ((required > 0)?` (${required} needed)`:"");
       if (required <= 0) {
-        (wait % 60 === 0) && announce(game,ps,FormatTime([Math.floor(wait/3600), Math.floor((wait%3600)/60)]));
+        (wait % 60 === 0) && announce(game,ps,FormatTime(wait));
         wait-= 30;
       }
       else {
@@ -395,31 +404,32 @@ var initialization = function(game) {
           else i++;
         let index = rand(randlist.length), ship = game.ships[randlist[index]];
         ship.custom.role = i;
+        ship.custom.role_init = i;
+        ship.custom.frags = Array(roles.length).fill(0);
         ship.set(Object.assign(randomSpawn(),{generator:0,type:100+i+1,shield:shield}));
-        announce(ship, "You are the "+roles[i].name+"!", roles[i].description);
+        announce(ship, "You are the "+getRole(i)+"!", roles[i].description);
         setTimeout(function(){
           announce(ship,"");
         },3000);
         randlist.splice(index,1);
         players[i]--;
       }
+      game_time = toTick(game_duration*60);
       this.tick = main_game;
     }
   }
 }, main_game = function(game) {
   if (game.step % 30 === 0) {
+    game_players = Array(roles.length).fill(0);
     for (let ship of game.ships) {
       let rolei = ship.custom.role, role = roles[rolei];
-      if (!role) {
-        if (ship.alive) {
-          if (ship.custom.pstats) ship.gameover(ship.custom.pstats);
-          else ship.gameover({"Sorry":"This game is running"});
-        }
-      }
-      else {
-        game_players[rolei]++;
-        setStats(ship, "Role: "+role.name)
-      }
+      if (!role) ship.set({type: 104});
+      else if (ship.alive) game_players[rolei]++
+    }
+    if (game_time < 0 || game_players[0] == 0 || game_players[1] + game_players[2] == 0) ended.call(this, game);
+    else {
+      game.step % 60 === 0 && game.ships.forEach(setStats);
+      game_time-=30
     }
   }
   if (game.step % (energy_delay*60) === 0 && game.collectibles.length < 50) {
@@ -427,8 +437,22 @@ var initialization = function(game) {
     f.code = 90;
     game.addCollectible(f);
   }
-  if (false) this.tick = ended
 }, ended = function (game) {
+  let murderers = game_players[0], innocents = game_players[1]+game_players[2], winner;
+  if (game_time < 0) winner = murderers>innocents?0:2;
+  else winner = murderers == 0?2:0;
+  announce(game, "Game finished!",getRole(winner)+" team wins!");
+  setTimeout(function(){
+    for (let ship of game.ships) {
+      let ed = {
+        "Winner": getRole(winner),
+        "Your current role": getRole(ship.custom.role),
+        "Your first role": getRole(ship.custom.role_init)
+      }
+      if (Array.isArray(ship.custom.frags)) ship.custom.frags.forEach((v,i) => (ed[getRole(i)+"s killed"] = v));
+      ship.gameover(ed)
+    }
+  },5000);
   this.tick = null
 }
 this.tick = initialization;
@@ -437,9 +461,11 @@ this.event = function(event, game) {
   let ship = event.ship;
   if (ship) switch(event.name) {
     case "ship_destroyed":
-      let killer = event.killer?event.killer.name:"", message = "You've "+(killer?"been killed by":"killed yourself"), sc = {};
+      let kil = event.killer,killer = kil?(kil.name||"Unknown"):"", message = "You've "+(killer?"been killed by":"killed yourself"), sc = {};
       sc[message] = killer;
+      if (kil && roles[((kil||{}).custom||{}).role]) kil.custom.frags[kil.custom.role]++;
       ship.custom.role = null;
+      ship.set({type: 104});
       ship.custom.pstats = sc;
       break;
   }
