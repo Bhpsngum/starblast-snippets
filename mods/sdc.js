@@ -3,10 +3,10 @@ var fixed_gems = 500;
 var arena_radius = 20;
 var edge_dps = 100; // damage per second when standing in the edge of the safe zone
 var dps_increase = 50; //dps increase per 10 blocks farther from the safe zone
-var break_interval = 1/6; // in minutes
+var break_interval = 1; // in minutes
 var duel_countdown = 10; // countdown before duel starts (in seconds)
-var duel_duration = 1/6; // in minutes
-var game_duration = 1; // in minutes
+var duel_duration = 3; // in minutes
+var game_duration = 30; // in minutes
 
 /* TODO:
 - game duration: `game duration` (waiting for the last `duel_duration` to over or all last duels to be done)
@@ -52,7 +52,7 @@ var setPicker = function(ship, isActive) {
     clickable: isActive,
     shortcut: "P",
     components: [
-      { type: "box",position:[0,0,100,100],fill:"#456",stroke:dfl_tcl,width:2},
+      { type: "box",position:[0,0,100,100],fill:fill,stroke:dfl_tcl,width:2},
       { type: "text",position:[10,35,80,30],value:"Change ship",color:dfl_tcl},
       { type: "text",position:[20,70,60,20],value:"[P]",color:dfl_tcl}
     ]
@@ -69,7 +69,7 @@ var setPicker = function(ship, isActive) {
       { type: "text",position:[20,70,60,20],value:"[R]",color:dfl_tcl}
     ]
   });
-}, dfl_tcl = "hsla(210, 50%, 87%, 1)", toTick = min => min*3600, r = arena_radius * 10, d = 2000/3 - 2*r, pos = function(x) {
+}, dfl_tcl = "hsla(210, 50%, 87%, 1)", lcolor = "hsla(0, 0%, 100%, 1)", fill = "hsl(210, 20%, 33%, 1)", black = "hsla(0, 0%, 0%, 1)", toTick = min => min*3600, r = arena_radius * 10, d = 2000/3 - 2*r, pos = function(x) {
   return -1000 + (r + d/2)*(2*x + 1);
 }, t = function(x) {
   let o = x+map_size*5, zoom = 10/map_size, rsize = zoom*r;
@@ -91,21 +91,21 @@ var setPicker = function(ship, isActive) {
     if (ddraws !== 0) return ddraws;
     return a.id - b.id;
   });
-  var t = ["Wins","Loses","Draws"], c = [120, 0, 60], scoreboard = {
+  var t = ["Wins","Loses","Draws"], c = [120, 0, 60], tcl = [black, dfl_tcl, black], scoreboard = {
     id: "scoreboard",
     visible: true,
     position: [0,0,100,100],
     components: [
       {type: "box", position:[0,0,100,100/11], fill: "hsla(210, 20%, 33%, 1)"},
-      {type: "text", position: [0,0,100,100/11], color: "hsla(0, 0%, 100%, 1)", value: "Players", align: "left"},
+      {type: "text", position: [0,0,100,100/11], color: lcolor, value: "Players", align: "left"},
       ...t.map((field,i) => [
         {type: "box", position:[70+10*i,0,10,100/11], fill: "hsla("+c[i]+", 100%, 50%, 1)"},
-        {type: "text", position: [70+10*i,0,10,100/11], color: dfl_tcl, value: field[0]}
+        {type: "text", position: [70+10*i,0,10,100/11], color: tcl[i], value: field[0]}
       ]).flat(),
       ...leaderboard.slice(0,10).map((info,i) => [
-        {type: "player", position: [0,(i+1)*100/11,100,100/11], id: info.id, color: dfl_tcl, align: "left"},
+        {type: "player", position: [0,(i+1)*100/11,100,100/11], id: info.id, color: lcolor, align: "left"},
         ...t.map((stat,j) => [
-          {type: "text", position: [70+10*j,(i+1)*100/11,10,100/11], color: dfl_tcl, value: getStat(game.findShip(info.id), stat.toLowerCase()), align: "right"}
+          {type: "text", position: [70+10*j,(i+1)*100/11,10,100/11], color: lcolor, value: getStat(game.findShip(info.id), stat.toLowerCase()), align: "right"}
         ]).flat()
       ]).flat(),
     ]
@@ -115,13 +115,13 @@ var setPicker = function(ship, isActive) {
     if (index == -1) {
       index = 9;
       csc.components.splice(csc.components.length-4,4,
-        {type: "player", position: [0,1000/11,100,100/11], id: ship.id, color: dfl_tcl, align: "left"},
+        {type: "player", position: [0,1000/11,100,100/11], id: ship.id, color: lcolor, align: "left"},
         ...t.map((stat,j) => [
           {type: "text", position: [70+10*j,1000/11,10,100/11], color: dfl_tcl, value: getStat(ship, stat.toLowerCase()), align: "right"}
         ]).flat()
       );
     }
-    csc.components.push({type:"box",position:[0,(index+1)*100/11,100,100/11],fill:"hsla(210, 24%, 29%, 0.5)"});
+    csc.components.unshift({type:"box",position:[0,(index+1)*100/11,100,100/11],fill:"hsla(210, 24%, 29%, 0.5)"});
     ship.setUIComponent(csc);
   }
 }, dist = function(x1,y1,x2,y2) {
@@ -186,6 +186,16 @@ var setPicker = function(ship, isActive) {
         id: "radar_background",
         components: grids.map(x => ({type:"round",position:[t(x[0]),t(x[1]),rsize*2,rsize*2],width:1,stroke: "hsla(240,100%,50%,1)", fill: "hsla(0, 0%, 0%, 0)"}))
       });
+      ship.setUIComponent({
+        id: "block",
+        visible: true,
+        clickable: false,
+        position: [4,3,12,6],
+        components:[
+          {type:'box',position:[0,0,100,100],fill:dfl_tcl},
+          {type: "text", position: [0,0,100,100], value: "We don't use points here.", color: black}
+        ]
+      })
       ship.custom.joined = true;
     }
   }
@@ -421,7 +431,7 @@ var initialization = function(game) {
     }
     else i++;
   }
-  this.tick = game_break;
+  this.tick = waiting;
   game.ships.forEach(clearInds);
 }
 this.tick = initialization;
