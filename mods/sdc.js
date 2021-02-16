@@ -1,17 +1,14 @@
 var gem_ratio = false;
 var fixed_gems = 500;
 var arena_radius = 20;
-var dps = 100;
+var dps = 100; // damage per second when standing in danger zone
 var break_interval = 1; // in minutes
 var duel_duration = 3; // in minutes
 var game_duration = 30; // in minutes
 
 /* TODO:
-- interval between each game: `break_interval`
-- duration each duel: `duel_duration`
 - game duration: `game duration` (waiting for the last `duel_duration` to over or all last duels to be done)
 - Leaderboad with W/L/D. staying only
-- odd players: the odd one: red ui " no opponent found, wait for next match"
 - better ship selection ui without bugging the client
 */
 
@@ -51,9 +48,21 @@ var setPicker = function(ship, isActive) {
     clickable: isActive,
     shortcut: "P",
     components: [
-      { type: "box",position:[0,0,100,100],fill:"#456",stroke:"#CDE",width:2},
-      { type: "text",position:[10,35,80,30],value:"Change ship",color:"#CDE"},
-      { type: "text",position:[20,70,60,20],value:"[P]",color:"#CDE"}
+      { type: "box",position:[0,0,100,100],fill:"#456",stroke:dfl_tcl,width:2},
+      { type: "text",position:[10,35,80,30],value:"Change ship",color:dfl_tcl},
+      { type: "text",position:[20,70,60,20],value:"[P]",color:dfl_tcl}
+    ]
+  });
+  ship.setUIComponent({
+    id: "ready",
+    position: [2,60,8,14],
+    visible: isActive,
+    clickable: isActive,
+    shortcut: "R",
+    components: [
+      { type: "box",position:[0,0,100,100],fill:"#456",stroke:dfl_tcl,width:2},
+      { type: "text",position:[10,35,80,30],value:(ship.custom.ready?"Not":"")+" Ready",color:dfl_tcl},
+      { type: "text",position:[20,70,60,20],value:"[R]",color:dfl_tcl}
     ]
   });
 }
@@ -113,7 +122,7 @@ var setNode = function(ship, node) {
 var announce = function(ship, ...data) {
   ship.setUIComponent({
     id: "message",
-    position: [25,10,50,50],
+    position: [25,15,50,50],
     visible: true,
     components: data.map((j,i) => ({type:"text",position:[0,10*i,100,10],value:j,color:dfl_tcl}))
   });
@@ -141,12 +150,11 @@ var check = function(game) {
         if (t === lobby) setNode(ship, lobby);
         else {
           setPicker(ship, false);
-          warn(ship, "Warning: Out of the safe zones!");
+          ship.custom.warn = "Warning: Out of the safe zones!";
           game.step % 60 === 0 && rekt(ship, dps);
         }
       }
       else {
-        ship.setUIComponent({id: "warn", visible: false});
         if (t === lobby) {
           setPicker(ship, true);
           max(ship);
@@ -154,43 +162,47 @@ var check = function(game) {
         }
         else setPicker(ship, false);
       }
+      warn(ship);
       ship.custom.currentNode = t;
       waitnextround(ship);
       if (ship.custom.pendingTp) ship.custom.pendingTp = false;
     }
   }
-}, waitnextround = function (ship) {
-  if (round_started && ship.custom.currentNode === lobby) {
+}, waitnextround = function (ship, forced) {
+  if (round_started && ship.custom.currentNode === lobby || forced) {
     let w = "";
-    if (ship.custom.warn) w = "No opponents found!";
+    if (ship.custom.wait) w = "No opponents found!";
     else {
-      w = "You "
+      w = "You ";
       for (let i of ["Win","Lose","Draw"]) {
         if (ship.custom["just"+i]) {
-          w+=i;
+          w+=i.toLowerCase();
           break;
         }
       }
-      w+=" the last round!";
+      if (w == "You ") w = "";
+      else w+=" the last round!";
     }
-    w && warn(ship, w);
+    if (w) ship.custom.warn = w;
     announce(ship, "Waiting for the next round");
   }
-}, warn = function (ship, message) {
-  ship.setUIComponent({
+}, warn = function (ship) {
+  if (ship.custom.warn) ship.setUIComponent({
     id: "warn",
     position: [25,5,50,30],
     visible: true,
     clickable: false,
     components: [
-      {type: "text", position: [0,0,100,20], value: message, color: "hsla(60,100%,50%,1)"},
+      {type: "text", position: [0,0,100,20], value: ship.custom.warn, color: "hsla(60,100%,50%,1)"},
     ]
   });
+  else ship.setUIComponent({id:"warn", visible: false});
 }, clearInds = function(ship) {
   ship.custom.justWin = false;
   ship.custom.justLose = false;
   ship.custom.justDraw = false;
-  ship.custom.warn = false;
+  ship.custom.wait = false;
+  ship.custom.ready = false;
 }, setStats = function(ship, ...stats) {
   ship.setUIComponent({
     id: "stat",
@@ -247,15 +259,17 @@ var initialization = function(game) {
     }
     else {
       round_started = true;
-      let players = Math.trunc(Math.min(8,game.ships.length/2))*2, rlist = game.ships.map((v,i) => i), lob = grids.map((v,i) => i).filter(i => i!= lobby);
+      let ready = game.ships.filter(ship => ship.custom.ready), players = Math.trunc(Math.min(8,ready.length/2))*2, rlist = ready.map(ship => ship.id), lob = grids.map((v,i) => i).filter(i => i!= lobby);
       for (let i = 0 ; i < players; i++) {
-        let index = rand(rlist.length), ship = game.ships[rlist[index]];
+        let index = rand(rlist.length), ship = game.findShip(rlist[index]);
         setNode(ship, lob[Math.trunc(i/2)]);
-        ship.custom.warn = false;
+        ship.custom.wait = false;
+        ship.custom.warn = "";
         announce(ship, "");
         rlist.splice(index, 1);
       }
-      rlist.forEach(i => (game.ships[i].custom.warn = true));
+      if (ready.length < 2) game.ships.forEach(ship => ship.custom.warn = "Not enough players ready!");
+      else rlist.forEach(i => ((game.findShip(i)||{}).custom.wait = true));
       game_time = toTick(duel_duration);
       this.tick = main_game;
     }
@@ -269,14 +283,31 @@ var initialization = function(game) {
     }
     if (game_time < 0 || game.ships.filter(ship => ship.custom.currentNode == 4).length == game.ships.length) {
       round_started = false;
-      game.ships.forEach(clearInds);
       setStats(game,"");
       this.tick = endgame;
     }
   }
 }, endgame = function (game) {
+  check(game);
   if (game.step - started <= toTick(game_duration + duel_duration/2)) {
     break_time = toTick(break_interval);
+    let st = game.ships.filter(ship => ship.custom.currentNode !== lobby && ship.custom.ready), idx = st.map(i => i.custom.currentNode), i = 0;
+    while (idx.length > i) {
+      let f = idx[i], l = idx.lastIndexOf(f);
+      if (i != l && l != -1) {
+        st[i].custom.justDraw = true;
+        st[i].custom.draws = (st[i].custom.draws||0) + 1;
+        st[l].custom.justDraw = true;
+        st[l].custom.draws = (st[l].custom.draws||0) + 1;
+        waitnextround(st[i], true);
+        waitnextround(st[l], true);
+        idx.splice(l,1);
+        idx.splice(i,1);
+        st.splice(l,1);
+        st.splice(i,1);
+      }
+      else i++;
+    }
     this.tick = game_break;
   }
   else {
@@ -284,6 +315,7 @@ var initialization = function(game) {
     game.ships.forEach(ship => ship.gameover({"Bruh":"Lmao"}));
     this.tick = null;
   }
+  game.ships.forEach(clearInds);
 }
 this.tick = initialization;
 this.event = function(event, game) {
@@ -294,9 +326,21 @@ this.event = function(event, game) {
       switch (id) {
         case "chooser":
           if (ship.custom.currentNode === lobby) {
-            max(ship, ship_codes[ship_codes.indexOf(ship.type)+1]||ship_codes[0]);
-            ship.set({generator: 0});
+            if (!ship.custom.ready) {
+              max(ship, ship_codes[ship_codes.indexOf(ship.type)+1]||ship_codes[0]);
+              ship.set({generator: 0});
+            }
+            else {
+              let t = "You can't change ships when you're ready!";
+              ship.custom.warn = t;
+              setTimeout(function(){
+                if (ship.custom.warn == t) ship.custom.warn = "";
+              },3000);
+            }
           }
+          break;
+        case "ready":
+          ship.custom.ready = !ship.custom.ready;
           break;
       }
       break;
