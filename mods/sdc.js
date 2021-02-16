@@ -9,8 +9,7 @@ var duel_duration = 3; // in minutes
 var game_duration = 30; // in minutes
 
 /* TODO:
-- game duration: `game duration` (waiting for the last `duel_duration` to over or all last duels to be done)
-- Leaderboad with W/L/D. staying only
+- vocabularies
 - better ship selection ui without bugging the client
 */
 
