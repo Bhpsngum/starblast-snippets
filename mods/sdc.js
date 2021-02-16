@@ -318,11 +318,14 @@ var initialization = function(game) {
     check(game, true);
     updatescoreboard(game);
     let rank = 1, best = leaderboard[0];
-    for (let i of leaderboard) {
+    leaderboard.forEach((i,j) => {
       let ship = game.findShip(i.id);
       if (ship != null) {
         let text = "You";
-        if (best.wins != i.wins || best.loses != i.loses || best.draws != i.draws) rank++;
+        if (best.wins != i.wins || best.loses != i.loses || best.draws != i.draws) {
+          best = rank[j];
+          rank++
+        }
         ship.custom.rank = rank;
         if (rank == 1) text += " win";
         else {
@@ -337,7 +340,7 @@ var initialization = function(game) {
         text+="!";
         announce(ship, "Game finished!","",text);
       }
-    }
+    });
     setTimeout(function(){
       game.ships.forEach(ship => ship.gameover({
         "Rank": ship.custom.rank||"Unranked",
