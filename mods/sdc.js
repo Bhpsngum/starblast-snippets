@@ -1,7 +1,8 @@
 var gem_ratio = false;
 var fixed_gems = 500;
 var arena_radius = 20;
-var dps = 100; // damage per second when standing in danger zone
+var edge_dps = 100; // damage per second when standing in the edge of the safe zone
+var dps_increase = 50; //dps increase per 10 blocks farther from the safe zone
 var break_interval = 1; // in minutes
 var duel_duration = 3; // in minutes
 var game_duration = 30; // in minutes
@@ -60,8 +61,8 @@ var setPicker = function(ship, isActive) {
     clickable: isActive,
     shortcut: "R",
     components: [
-      { type: "box",position:[0,0,100,100],fill:"#456",stroke:dfl_tcl,width:2},
-      { type: "text",position:[10,35,80,30],value:(ship.custom.ready?"Not":"")+" Ready",color:dfl_tcl},
+      { type: "box",position:[0,0,100,100],fill:"hsla("+(ship.custom.ready?120:0)+",100%,50%,1)",stroke:dfl_tcl,width:2},
+      { type: "text",position:[10,35,80,30],value:(ship.custom.ready?"":"Not")+" Ready",color:dfl_tcl},
       { type: "text",position:[20,70,60,20],value:"[R]",color:dfl_tcl}
     ]
   });
@@ -146,12 +147,13 @@ var check = function(game) {
     for (let ship of game.ships) {
       let t = ship.custom.currentNode;
       if (grids.map((v,i) => i).indexOf(t) == -1 || !round_started) t = lobby;
-      if (dist(ship.x, ship.y, ...grids[t]) > r && !ship.custom.pendingTp) {
+      let distance = dist(ship.x, ship.y, ...grids[t]) - r;
+      if (distance > 0 && !ship.custom.pendingTp) {
         if (t === lobby) setNode(ship, lobby);
         else {
           setPicker(ship, false);
           ship.custom.warn = "Warning: Out of the safe zones!";
-          game.step % 60 === 0 && rekt(ship, dps);
+          game.step % 60 === 0 && rekt(ship, edge_dps + dps_increase*(distance/10));
         }
       }
       else {
@@ -198,9 +200,7 @@ var check = function(game) {
   });
   else ship.setUIComponent({id:"warn", visible: false});
 }, clearInds = function(ship) {
-  ship.custom.justWin = false;
-  ship.custom.justLose = false;
-  ship.custom.justDraw = false;
+  setStates(ship, false, false, false);
   ship.custom.wait = false;
   ship.custom.ready = false;
 }, setStats = function(ship, ...stats) {
@@ -210,6 +210,9 @@ var check = function(game) {
     visible: true,
     components: stats.flat().map((j,i) => ({type: "text",position:[0,33*i,80,33],value:j,color:dfl_tcl}))
   });
+}, setStates = function (ship, ...states) {
+  let r = ["Win","Lose","Draw"];
+  for (let i = 0; i < states.length; i++) ship.custom["just"+r[i]] = states[i];
 }
 var break_time = toTick(break_interval), game_time = toTick(duel_duration), started, round_started = false;
 var initialization = function(game) {
@@ -295,9 +298,9 @@ var initialization = function(game) {
     while (idx.length > i) {
       let f = idx[i], l = idx.lastIndexOf(f);
       if (i != l && l != -1) {
-        st[i].custom.justDraw = true;
+        setStates(st[i], false, false, true);
         st[i].custom.draws = (st[i].custom.draws||0) + 1;
-        st[l].custom.justDraw = true;
+        setStates(st[l], false, false, true);
         st[l].custom.draws = (st[l].custom.draws||0) + 1;
         waitnextround(st[i], true);
         waitnextround(st[l], true);
@@ -345,15 +348,19 @@ this.event = function(event, game) {
       }
       break;
     case "ship_destroyed":
-      setNode(ship, lobby);
-      ship.custom.loses = (ship.custom.loses||0) + 1;
-      ship.custom.justLose = true;
-      if (!killer) killer = game.ships.filter(i => i.custom.currentNode = ship.custom.currentNode && i.custom.currentNode != lobby)[0];
-      if (killer) {
-        killer.custom.wins = (killer.custom.wins||0) + 1;
-        setNode(killer, lobby);
-        killer.custom.justWin = true;
+      if (round_started && ship.custom.currentNode !== lobby && ship.custom.ready) {
+        ship.custom.loses = (ship.custom.loses||0) + 1;
+        setStates(ship, false, true, false);
+        if (!killer) killer = game.ships.filter(i => i.id !== ship.id && i.custom.currentNode === ship.custom.currentNode && i.custom.currentNode !== lobby)[0];
+        if (killer) {
+          killer.custom.wins = (killer.custom.wins||0) + 1;
+          setNode(killer, lobby);
+          setStates(killer, true, false, false);
+          killer.custom.ready = false;
+        }
       }
+      ship.custom.ready = false;
+      setNode(ship, lobby);
       break;
     case "ship_spawned":
       setNode(ship, lobby);
