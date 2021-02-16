@@ -3,9 +3,10 @@ var fixed_gems = 500;
 var arena_radius = 20;
 var edge_dps = 100; // damage per second when standing in the edge of the safe zone
 var dps_increase = 50; //dps increase per 10 blocks farther from the safe zone
-var break_interval = 1; // in minutes
-var duel_duration = 3; // in minutes
-var game_duration = 30; // in minutes
+var break_interval = 1/6; // in minutes
+var duel_countdown = 10; // countdown before duel starts (in seconds)
+var duel_duration = 1/6; // in minutes
+var game_duration = 1; // in minutes
 
 /* TODO:
 - game duration: `game duration` (waiting for the last `duel_duration` to over or all last duels to be done)
@@ -40,6 +41,8 @@ this.options = {
   asteroids_strength: 1e6,
   crystal_value: 0
 }
+// game components
+
 var setPicker = function(ship, isActive) {
   isActive = !!isActive
   ship.setUIComponent({
@@ -66,49 +69,83 @@ var setPicker = function(ship, isActive) {
       { type: "text",position:[20,70,60,20],value:"[R]",color:dfl_tcl}
     ]
   });
-}
-var dfl_tcl = "hsla(210, 50%, 87%, 1)";
-var toTick = min => min*3600;
-let r = arena_radius * 10, d = 2000/3 - 2*r, pos = function(x) {
+}, dfl_tcl = "hsla(210, 50%, 87%, 1)", toTick = min => min*3600, r = arena_radius * 10, d = 2000/3 - 2*r, pos = function(x) {
   return -1000 + (r + d/2)*(2*x + 1);
-}
-var t = function(x) {
+}, t = function(x) {
   let o = x+map_size*5, zoom = 10/map_size, rsize = zoom*r;
   return Math.max(o*zoom-rsize,0) || 0;
-}
-var grids = Array(3).fill(0).map((f,i) => Array(3).fill(0).map((v,j) => [pos(i),pos(j)])).flat();
-
-var lobby = Math.trunc((grids.length-1)/2);
-var dist = function(x1,y1,x2,y2) {
+}, grids = Array(3).fill(0).map((f,i) => Array(3).fill(0).map((v,j) => [pos(i),pos(j)])).flat(), lobby = Math.trunc((grids.length-1)/2), leaderboard = [], getStat = function(ship, stateName) {
+  return ((ship||{}).custom||{})[stateName]||0;
+}, updatescoreboard = function (game) {
+  leaderboard = game.ships.map(ship => ({
+    id: ship.id,
+    wins: getStat(ship, "wins"),
+    loses: getStat(ship, "loses"),
+    draws: getStat(ship, "draws")
+  })).sort((a,b) => {
+    let dwins = b.wins - a.wins;
+    if (dwins !== 0) return dwins;
+    let dloses = a.loses - b.loses;
+    if (dloses !== 0) return dloses;
+    let ddraws = b.draws - a.draws;
+    if (ddraws !== 0) return ddraws;
+    return a.id - b.id;
+  });
+  var t = ["Wins","Loses","Draws"], c = [120, 0, 60], scoreboard = {
+    id: "scoreboard",
+    visible: true,
+    position: [0,0,100,100],
+    components: [
+      {type: "box", position:[0,0,100,100/11], fill: "hsla(210, 20%, 33%, 1)"},
+      {type: "text", position: [0,0,100,100/11], color: "hsla(0, 0%, 100%, 1)", value: "Players", align: "left"},
+      ...t.map((field,i) => [
+        {type: "box", position:[70+10*i,0,10,100/11], fill: "hsla("+c[i]+", 100%, 50%, 1)"},
+        {type: "text", position: [70+10*i,0,10,100/11], color: dfl_tcl, value: field[0]}
+      ]).flat(),
+      ...leaderboard.slice(0,10).map((info,i) => [
+        {type: "player", position: [0,(i+1)*100/11,100,100/11], id: info.id, color: dfl_tcl, align: "left"},
+        ...t.map((stat,j) => [
+          {type: "text", position: [70+10*j,(i+1)*100/11,10,100/11], color: dfl_tcl, value: getStat(game.findShip(info.id), stat.toLowerCase()), align: "right"}
+        ]).flat()
+      ]).flat(),
+    ]
+  }
+  for (let ship of game.ships) {
+    let csc = JSON.parse(JSON.stringify(scoreboard)), index = leaderboard.slice(0,10).map(i => i.id).indexOf(ship.id);
+    if (index == -1) {
+      index = 9;
+      csc.components.splice(csc.components.length-4,4,
+        {type: "player", position: [0,1000/11,100,100/11], id: ship.id, color: dfl_tcl, align: "left"},
+        ...t.map((stat,j) => [
+          {type: "text", position: [70+10*j,1000/11,10,100/11], color: dfl_tcl, value: getStat(ship, stat.toLowerCase()), align: "right"}
+        ]).flat()
+      );
+    }
+    csc.components.push({type:"box",position:[0,(index+1)*100/11,100,100/11],fill:"hsla(210, 24%, 29%, 0.5)"});
+    ship.setUIComponent(csc);
+  }
+}, dist = function(x1,y1,x2,y2) {
   return Math.sqrt((x1-x2)**2+(y1-y2)**2);
-}
-var rand = function(num) {
+}, rand = function(num) {
   return Math.floor(Math.random()*num)
-}
-var max = function(ship, type) {
+}, max = function(ship, type) {
   let crystals = (gem_ratio === false)?fixed_gems:20*(Math.trunc(type/100)**2)*gem_ratio;
   ship.set({type:type,crystals: crystals,stats:88888888,shield: 1e4});
-}
-
-function rekt(ship,num){
+}, rekt = function (ship,num){
   if (ship.shield<num){
     let val=ship.crystals + ship.shield;
     if (val < num) ship.set({kill:true});
     else ship.set({crystals:val-num,shield:0});
   }
   else ship.set({shield:ship.shield-num});
-}
-
-let safeZoneMarker = {
+}, safeZoneMarker = {
   id: "safeZoneMarker",
   obj: "https://raw.githubusercontent.com/rvan-der/Starblast.io-modding/master/plane.obj",
   emissive: "https://raw.githubusercontent.com/bhpsngum/img-src/master/arena.png",
   emissiveColor: 0xFFFFFF,
   shininess: 0,
   transparent: true
-}
-
-var setNode = function(ship, node) {
+}, setNode = function(ship, node) {
   let nodpos = grids[node];
   if (!nodpos) {
     nodpos = grids[lobby];
@@ -119,20 +156,29 @@ var setNode = function(ship, node) {
     ship.custom.pendingTp = true;
     ship.set({x:nodpos[0],y:nodpos[1]});
   }
-}
-var announce = function(ship, ...data) {
+}, announce = function(ship, ...data) {
   ship.setUIComponent({
     id: "message",
     position: [25,15,50,50],
     visible: true,
-    components: data.map((j,i) => ({type:"text",position:[0,10*i,100,10],value:j,color:dfl_tcl}))
+    components: data.map((j,i) => {
+      let text, color;
+      if (Array.isArray(j)) {
+        text = j[0];
+        color = "hsla("+j[1]+",100%,50%,1)";
+      }
+      else {
+        text = j;
+        color = dfl_tcl
+      }
+      return {type:"text",position:[0,10*i,100,10],value:text,color:color}
+    })
   });
-}
-var FormatTime = function(time) {
+}, FormatTime = function(time, forced) {
   var array = [Math.floor(time/3600), Math.floor((time%3600)/60)]
-  return array.map(i => i<10?"0"+i.toString():i).join(":");
-}
-var check = function(game) {
+  if (forced && array[0] == 0) array.splice(0,1);
+  return array.map(i => i<10&&!forced?"0"+i.toString():i).join(":");
+}, check = function(game, forced) {
   for (let ship of game.ships) {
     if (!ship.custom.joined) {
       let rsize = 10/map_size*r;
@@ -143,20 +189,21 @@ var check = function(game) {
       ship.custom.joined = true;
     }
   }
-  if (game.step % 30 === 0) {
+  if (game.step % 30 === 0 || forced) {
     for (let ship of game.ships) {
       let t = ship.custom.currentNode;
       if (grids.map((v,i) => i).indexOf(t) == -1 || !round_started) t = lobby;
-      let distance = dist(ship.x, ship.y, ...grids[t]) - r;
+      let distance = dist(ship.x, ship.y, ...grids[t]) - r, text = "Warning: Out of the safe zones!";
       if (distance > 0 && !ship.custom.pendingTp) {
         if (t === lobby) setNode(ship, lobby);
         else {
           setPicker(ship, false);
-          ship.custom.warn = "Warning: Out of the safe zones!";
+          ship.custom.warn = text;
           game.step % 60 === 0 && rekt(ship, edge_dps + dps_increase*(distance/10));
         }
       }
       else {
+        if (ship.custom.warn == text) ship.custom.warn = "";
         if (t === lobby) {
           setPicker(ship, true);
           max(ship);
@@ -169,6 +216,7 @@ var check = function(game) {
       waitnextround(ship);
       if (ship.custom.pendingTp) ship.custom.pendingTp = false;
     }
+    updatescoreboard(game);
   }
 }, waitnextround = function (ship, forced) {
   if (round_started && ship.custom.currentNode === lobby || forced) {
@@ -183,10 +231,10 @@ var check = function(game) {
         }
       }
       if (w == "You ") w = "";
-      else w+=" the last round!";
+      else w+=" in the latest round!";
     }
     if (w) ship.custom.warn = w;
-    announce(ship, "Waiting for the next round");
+    announce(ship, "Waiting for the next round","",[("You are "+(ship.custom.ready?"":"not ")+"ready").toUpperCase(), ship.custom.ready?120:10]);
   }
 }, warn = function (ship) {
   if (ship.custom.warn) ship.setUIComponent({
@@ -213,8 +261,9 @@ var check = function(game) {
 }, setStates = function (ship, ...states) {
   let r = ["Win","Lose","Draw"];
   for (let i = 0; i < states.length; i++) ship.custom["just"+r[i]] = states[i];
-}
-var break_time = toTick(break_interval), game_time = toTick(duel_duration), started, round_started = false;
+}, break_time = toTick(break_interval), game_time = toTick(duel_duration), dc_time = toTick(duel_countdown/60), started, round_started = false, round_break = false;
+
+// game Modules
 var initialization = function(game) {
   grids.forEach((grid,j) => {
     game.setObject({
@@ -246,35 +295,97 @@ var initialization = function(game) {
   this.tick = waiting;
 }, waiting = function(game) {
   check(game);
-  if (game.ships.length >= 2) {
-    break_time = toTick(break_interval);
-    this.tick = game_break;
+  let max_time = toTick(game_duration + duel_duration/2);
+  if (!started && game.step <= max_time || game.step - started <= max_time) {
+    if (game.ships.length >= 2) {
+      break_time = toTick(break_interval);
+      round_break = true;
+      this.tick = game_break;
+    }
+    else game.step % 30 === 0 && announce(game,"Waiting for more players ("+(2-game.ships.length)+" needed)")
   }
-  else game.step % 30 === 0 && announce(game,"Waiting for more players ("+(2-game.ships.length)+" needed)")
+  else {
+    game.setOpen(false);
+    check(game, true);
+    updatescoreboard(game);
+    let rank = 1, best = leaderboard[0];
+    for (let i of leaderboard) {
+      let ship = game.findShip(i.id);
+      if (ship != null) {
+        let text = "You";
+        if (best.wins != i.wins || best.loses != i.loses || best.draws != i.draws) rank++;
+        ship.custom.rank = rank;
+        if (rank == 1) text += " win";
+        else {
+          text += "'re ranked "+rank;
+          switch(rank%10) {
+            case 1: if (Math.trunc(rank/10) != 1) {text+="st";break;}
+            case 2: if (Math.trunc(rank/10) != 1) {text+="nd";break;}
+            case 3: if (Math.trunc(rank/10) != 1) {text+="rd";break;}
+            default: text+="th";break;
+          }
+        }
+        text+="!";
+        announce(ship, "Game finished!","",text);
+      }
+    }
+    setTimeout(function(){
+      game.ships.forEach(ship => ship.gameover({
+        "Rank": ship.custom.rank||"Unranked",
+        "Wins": getStat(ship, "wins"),
+        "Loses": getStat(ship, "loses"),
+        "Draws": getStat(ship, "draws")
+      }))
+
+    },5000);
+    this.tick = null;
+  }
 }, game_break = function (game) {
   check(game);
-  if (game.ships.length < 2) this.tick = waiting;
+  if (!started) started = game.step;
+  if ((game.step - started > toTick(game_duration + duel_duration/2) && !round_break) || game.ships.length < 2) this.tick = waiting;
   else if (game.step % 30 === 0) {
-    if (!started) started = game.step;
     if (break_time >= 0) {
-      game.step % 60 === 0 && announce(game,"New round starts in: "+FormatTime(break_time));
+      if (game.step % 60 === 0) for (let ship of game.ships) announce(ship,"New round starts in: "+FormatTime(break_time),"",[("You are "+(ship.custom.ready?"":"not ")+"ready").toUpperCase(), ship.custom.ready?120:10]);
       break_time-=30;
     }
     else {
-      round_started = true;
-      let ready = game.ships.filter(ship => ship.custom.ready), players = Math.trunc(Math.min(8,ready.length/2))*2, rlist = ready.map(ship => ship.id), lob = grids.map((v,i) => i).filter(i => i!= lobby);
+      let ready = game.ships.filter(ship => ship.custom.ready && ship.alive), players = Math.trunc(Math.min(8,ready.length/2))*2, rlist = ready.map(ship => ship.id), lob = grids.map((v,i) => i).filter(i => i!= lobby);
       for (let i = 0 ; i < players; i++) {
         let index = rand(rlist.length), ship = game.findShip(rlist[index]);
         setNode(ship, lob[Math.trunc(i/2)]);
         ship.custom.wait = false;
         ship.custom.warn = "";
-        announce(ship, "");
         rlist.splice(index, 1);
       }
-      if (ready.length < 2) game.ships.forEach(ship => ship.custom.warn = "Not enough players ready!");
+      if (ready.length < 2) {
+        game.ships.forEach(ship => ship.custom.warn = "Not enough players ready!");
+        this.tick = waiting;
+        return;
+      }
       else rlist.forEach(i => ((game.findShip(i)||{}).custom.wait = true));
+      dc_time = toTick(duel_countdown/60);
+      round_started = true;
+      round_break = false;
+      this.tick = countdown;
+    }
+  }
+}, countdown = function (game) {
+  check(game);
+  if (game.step % 30 === 0) {
+    if (dc_time >= 0) {
+      if (game.step%60 === 0) {
+        for (let ship of game.ships) {
+          if (!ship.custom.wait) announce(ship, "Ready?","", FormatTime(dc_time,true));
+        }
+      }
+      game.ships.forEach(ship => ship.set({generator: 1e5, invulnerable: 60}));
+      dc_time-=30;
+    }
+    else {
+      announce(game, "");
       game_time = toTick(duel_duration);
-      this.tick = main_game;
+      this.tick = main_game
     }
   }
 }, main_game = function (game) {
@@ -292,32 +403,25 @@ var initialization = function(game) {
   }
 }, endgame = function (game) {
   check(game);
-  if (game.step - started <= toTick(game_duration + duel_duration/2)) {
-    break_time = toTick(break_interval);
-    let st = game.ships.filter(ship => ship.custom.currentNode !== lobby && ship.custom.ready), idx = st.map(i => i.custom.currentNode), i = 0;
-    while (idx.length > i) {
-      let f = idx[i], l = idx.lastIndexOf(f);
-      if (i != l && l != -1) {
-        setStates(st[i], false, false, true);
-        st[i].custom.draws = (st[i].custom.draws||0) + 1;
-        setStates(st[l], false, false, true);
-        st[l].custom.draws = (st[l].custom.draws||0) + 1;
-        waitnextround(st[i], true);
-        waitnextround(st[l], true);
-        idx.splice(l,1);
-        idx.splice(i,1);
-        st.splice(l,1);
-        st.splice(i,1);
-      }
-      else i++;
+  break_time = toTick(break_interval);
+  let st = game.ships.filter(ship => ship.custom.currentNode !== lobby && ship.custom.ready), idx = st.map(i => i.custom.currentNode), i = 0;
+  while (idx.length > i) {
+    let f = idx[i], l = idx.lastIndexOf(f);
+    if (i != l && l != -1) {
+      setStates(st[i], false, false, true);
+      st[i].custom.draws = (st[i].custom.draws||0) + 1;
+      setStates(st[l], false, false, true);
+      st[l].custom.draws = (st[l].custom.draws||0) + 1;
+      waitnextround(st[i], true);
+      waitnextround(st[l], true);
+      idx.splice(l,1);
+      idx.splice(i,1);
+      st.splice(l,1);
+      st.splice(i,1);
     }
-    this.tick = game_break;
+    else i++;
   }
-  else {
-    announce(game, "Game finished!");
-    game.ships.forEach(ship => ship.gameover({"Bruh":"Lmao"}));
-    this.tick = null;
-  }
+  this.tick = game_break;
   game.ships.forEach(clearInds);
 }
 this.tick = initialization;
