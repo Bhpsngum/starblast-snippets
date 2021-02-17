@@ -27,7 +27,24 @@ var ship_codes = [605,...ships.map(i=>JSON.parse(i).typespec.code)];
 
 var map_size = 200, rand = function(num) {
   return Math.floor(Math.random()*num)
-}, soundtracks = ["argon","crystals"];
+}, soundtracks = ["argon","crystals"], vocabulary = [
+  {text: "Duel", icon:"\u00be", key:"D"},
+  {text: "Me", icon:"\u004f", key:"E"},
+  {text: "$#%!&", icon: "\u{1f92c}", key: "F"},
+  {text: "GoodGame", icon:"\u00a3", key:"G"},
+  {text: "Hello", icon:"\u0046", key:"H"},
+  {text: "Change ship", icon:"\u0061", key:"I"},
+  {text: "Leader", icon:"\u002e", key:"L"},
+  {text: "No", icon:"\u004d", key:"N"},
+  {text: "Good", icon:"\u0051", key:"O"},
+  {text: "How?!", icon:"\u004b", key:"Q"},
+  {text: "Sorry", icon:"\u00a1", key:"S"},
+  {text: "Wait", icon:"\u0048", key:"T"},
+  {text: "You", icon:"\u004e", key:"U"},
+  {text: "Thanks", icon:"\u0041", key:"X"},
+  {text: "Yes", icon:"\u004c", key:"Y"},
+  {text: "Follow", icon:"\u0050", key:"W"},
+];
 
 this.options = {
   map_name: "SDC - Starblast Dueling Championship",
@@ -42,6 +59,7 @@ this.options = {
   max_level: 1,
   asteroids_strength: 1e6,
   crystal_value: 0,
+  vocabulary: vocabulary,
   soundtrack: soundtracks[rand(soundtracks.length)]+".mp3"
 }
 // game components
@@ -50,7 +68,7 @@ var setPicker = function(ship, isActive) {
   isActive = !!isActive
   ship.setUIComponent({
     id: "chooser",
-    position: [2,40,8,14],
+    position: [2,35,10,15],
     visible: isActive,
     clickable: isActive,
     shortcut: "P",
@@ -62,7 +80,7 @@ var setPicker = function(ship, isActive) {
   });
   ship.setUIComponent({
     id: "ready",
-    position: [2,60,8,14],
+    position: [13,35,10,15],
     visible: isActive,
     clickable: isActive,
     shortcut: "R",
