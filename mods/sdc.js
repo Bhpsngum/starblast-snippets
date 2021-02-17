@@ -10,6 +10,7 @@ var game_duration = 30; // in minutes
 
 /* TODO:
 - vocabularies
+- more ships
 - better ship selection ui without bugging the client
 */
 
@@ -24,7 +25,9 @@ ships.push(Contraband_611);
 
 var ship_codes = [605,...ships.map(i=>JSON.parse(i).typespec.code)];
 
-var map_size = 200;
+var map_size = 200, rand = function(num) {
+  return Math.floor(Math.random()*num)
+}, soundtracks = ["argon","crystals"];
 
 this.options = {
   map_name: "SDC - Starblast Dueling Championship",
@@ -38,7 +41,8 @@ this.options = {
   weapons_store: false,
   max_level: 1,
   asteroids_strength: 1e6,
-  crystal_value: 0
+  crystal_value: 0,
+  soundtrack: soundtracks[rand(soundtracks.length)]+".mp3"
 }
 // game components
 
@@ -125,8 +129,6 @@ var setPicker = function(ship, isActive) {
   }
 }, dist = function(x1,y1,x2,y2) {
   return Math.sqrt((x1-x2)**2+(y1-y2)**2);
-}, rand = function(num) {
-  return Math.floor(Math.random()*num)
 }, max = function(ship, type) {
   let crystals = (gem_ratio === false)?fixed_gems:20*(Math.trunc(type/100)**2)*gem_ratio;
   ship.set({type:type,crystals: crystals,stats:88888888,shield: 1e4});
