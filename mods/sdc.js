@@ -111,7 +111,7 @@ var setPicker = function(ship, isActive) {
     if (ddraws !== 0) return ddraws;
     return a.id - b.id;
   });
-  var t = ["Wins","Loses","Draws"], c = [120, 0, 60], tcl = [black, dfl_tcl, black], scoreboard = {
+  var t = ["Wins","Loses","Draws"], c = [120, 0, 60], tcl = [black, dfl_tcl, black], f = leaderboard.slice(0,10), indents = t.map(i => (Math.max(...f.map(x => x[i.toLowerCase()])) || 0).toString().length*5 + 2), idn = indents.map((i,j) => 100 - indents.slice(j,3).reduce((a,b)=>a+b,0)), scoreboard = {
     id: "scoreboard",
     visible: true,
     position: [0,0,100,100],
@@ -119,13 +119,13 @@ var setPicker = function(ship, isActive) {
       {type: "box", position:[0,0,100,100/11], fill: "hsla(210, 20%, 33%, 1)"},
       {type: "text", position: [0,0,100,100/11], color: lcolor, value: "Players", align: "left"},
       ...t.map((field,i) => [
-        {type: "box", position:[70+10*i,0,10,100/11], fill: "hsla("+c[i]+", 100%, 50%, 1)"},
-        {type: "text", position: [70+10*i,0,10,100/11], color: tcl[i], value: field[0]}
+        {type: "box", position:[idn[i],0,indents[i],100/11], fill: "hsla("+c[i]+", 100%, 50%, 1)"},
+        {type: "text", position: [idn[i],0,indents[i],100/11], color: tcl[i], value: field[0]}
       ]).flat(),
-      ...leaderboard.slice(0,10).map((info,i) => [
-        {type: "player", position: [0,(i+1)*100/11,100,100/11], id: info.id, color: lcolor, align: "left"},
+      ...f.map((info,i) => [
+        {type: "player", position: [0,(i+1)*100/11,idn[0],100/11], id: info.id, color: lcolor, align: "left"},
         ...t.map((stat,j) => [
-          {type: "text", position: [70+10*j,(i+1)*100/11,10,100/11], color: lcolor, value: getStat(game.findShip(info.id), stat.toLowerCase()), align: "right"}
+          {type: "text", position: [idn[j],(i+1)*100/11,indents[j],100/11], color: lcolor, value: getStat(game.findShip(info.id), stat.toLowerCase()), align: "right"}
         ]).flat()
       ]).flat(),
     ]
@@ -137,7 +137,7 @@ var setPicker = function(ship, isActive) {
       csc.components.splice(csc.components.length-4,4,
         {type: "player", position: [0,1000/11,100,100/11], id: ship.id, color: lcolor, align: "left"},
         ...t.map((stat,j) => [
-          {type: "text", position: [70+10*j,1000/11,10,100/11], color: dfl_tcl, value: getStat(ship, stat.toLowerCase()), align: "right"}
+          {type: "text", position: [idn[j],1000/11,indents[j],100/11], color: dfl_tcl, value: getStat(ship, stat.toLowerCase()), align: "right"}
         ]).flat()
       );
     }
@@ -342,7 +342,7 @@ var initialization = function(game) {
       if (ship != null) {
         let text = "You";
         if (best.wins != i.wins || best.loses != i.loses || best.draws != i.draws) {
-          best = rank[j];
+          best = i;
           rank++
         }
         ship.custom.rank = rank;
@@ -361,7 +361,7 @@ var initialization = function(game) {
       }
     });
     setTimeout(function(){
-      game.ships.forEach(ship => ship.gameover({
+      game.ships.forEach(ship => ship != null && ship.gameover({
         "Rank": ship.custom.rank||"Unranked",
         "Wins": getStat(ship, "wins"),
         "Loses": getStat(ship, "loses"),
@@ -369,7 +369,7 @@ var initialization = function(game) {
       }))
 
     },5000);
-    this.tick = null;
+    this.tick = check;
   }
 }, game_break = function (game) {
   check(game);
