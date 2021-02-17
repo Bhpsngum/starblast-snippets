@@ -9,7 +9,6 @@ var duel_duration = 3; // in minutes
 var game_duration = 30; // in minutes
 
 /* TODO:
-- vocabularies
 - more ships
 - better ship selection ui without bugging the client
 */
@@ -36,14 +35,14 @@ var map_size = 200, rand = function(num) {
   {text: "Change ship", icon:"\u0061", key:"I"},
   {text: "Leader", icon:"\u002e", key:"L"},
   {text: "No", icon:"\u004d", key:"N"},
-  {text: "Good", icon:"\u0051", key:"O"},
+  {text: "You", icon:"\u004e", key:"O"},
   {text: "How?!", icon:"\u004b", key:"Q"},
   {text: "Sorry", icon:"\u00a1", key:"S"},
   {text: "Wait", icon:"\u0048", key:"T"},
-  {text: "You", icon:"\u004e", key:"U"},
+  {text: "Lose", icon:"\u{1F948}", key:"U"},
   {text: "Thanks", icon:"\u0041", key:"X"},
   {text: "Yes", icon:"\u004c", key:"Y"},
-  {text: "Follow", icon:"\u0050", key:"W"},
+  {text: "Win", icon:"\u{1F947}", key:"W"},
 ];
 
 this.options = {
@@ -83,11 +82,11 @@ var setPicker = function(ship, isActive) {
     position: [13,35,10,15],
     visible: isActive,
     clickable: isActive,
-    shortcut: "R",
+    shortcut: "A",
     components: [
       { type: "box",position:[0,0,100,100],fill:"hsla("+(ship.custom.ready?120:0)+",100%,50%,1)",stroke:dfl_tcl,width:2},
       { type: "text",position:[10,35,80,30],value:(ship.custom.ready?"":"Not")+" Ready",color:dfl_tcl},
-      { type: "text",position:[20,70,60,20],value:"[R]",color:dfl_tcl}
+      { type: "text",position:[20,70,60,20],value:"[A]",color:dfl_tcl}
     ]
   });
 }, dfl_tcl = "hsla(210, 50%, 87%, 1)", lcolor = "hsla(0, 0%, 100%, 1)", fill = "hsl(210, 20%, 33%, 1)", black = "hsla(0, 0%, 0%, 1)", toTick = min => min*3600, r = arena_radius * 10, d = 2000/3 - 2*r, pos = function(x) {
