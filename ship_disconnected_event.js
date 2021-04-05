@@ -37,11 +37,14 @@ this.event = function(event, game) {
       function shipDisconnected({id} = {}) {
         if (modding.context.event && id) {
           var ship = game.findShip(id);
-          if (ship) {
-            modding.context.event({ name: "ship_disconnected", ship }, game);
-          }
         }
-        return shipDisconnected.old.apply(this, arguments);
+        var result = shipDisconnected.old.apply(this, arguments);
+        if (ship) {
+          try {
+            modding.context.event({ name: "ship_disconnected", ship }, game);
+          } catch (e) {}
+        }
+        return result;
       }
       shipDisconnected.old = internals.shipDisconnected;
       internals.shipDisconnected = shipDisconnected;
