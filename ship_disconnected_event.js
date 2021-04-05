@@ -1,11 +1,19 @@
-/* "ship_disconnected" event - fired when a ship is leaving
+/* "ship_disconnected" event - fired when a ship is leaving (Encapsuled version)
 Made by (123) Notus
+
+RESTRICTIONS - Do not use the values/variables/components listing below in their particular contexts:
+
+Game properties:
+  game.custom.shipDisconnected_init
 */
+
+/* Usual Modding code */
 this.tick = function(game) {
   // put your tick logic here
 }
 
 this.event = function(event, game) {
+  /* Usage example */
   switch (event.name) {
     case "ship_disconnected":
       echo(`Player left: ${event.ship.name}`);
@@ -13,10 +21,10 @@ this.event = function(event, game) {
   }
 }
 
-/* Don't touch the part below! This must be appendeded at the end of your mod code */
+/* Encapsuled part - Don't modify anything! This MUST BE appended at the end of your mod code! */
 ;(function(){
   var internals_init = function() {
-    if (game.custom.internals_init) {
+    if (game.custom.shipDisconnected_init) {
       return;
     }
     const modding = game.modding;
@@ -38,7 +46,7 @@ this.event = function(event, game) {
       shipDisconnected.old = internals.shipDisconnected;
       internals.shipDisconnected = shipDisconnected;
     }
-    game.custom.internals_init = true;
+    game.custom.shipDisconnected_init = true;
   }
   var tick = this.tick;
   this.tick = function(game) {
