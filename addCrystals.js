@@ -39,19 +39,34 @@ this.tick = function(game)
         }
       }), internals = modding[internal_key];
       if (!internals.alienCreated.old) {
-        let alienCreated =  function (){
+        let alienCreated =  function () {
           let args = arguments, tx = alienCreated.old.apply(this, args), t = args[0].request_id, alien = this.modding.game.findAlien(args[0].id);
           if (this.modding.game.aliens.find(alien => alien.request_id === t) && alien) {
             let tid = this.modding.game.custom.execAliens.indexOf(t);
-            if (tid != -1) {
-              alien.set({kill:true});
-              this.modding.game.custom.execAliens.splice(tid, 1);
-            }
+            if (tid != -1) alien.set({kill: true});
           }
           return tx;
         }
         alienCreated.old = internals.alienCreated;
         internals.alienCreated = alienCreated;
+      }
+      if (!internals.eventReceived.old) {
+        let eventReceived =  function () {
+          let args = arguments, skipped;
+          try {
+            if (args[0].data.name == "alien_destroyed") skipped = this.modding.game.custom.execAliens.indexOf(this.modding.game.findAlien(args[0].data.alien).request_id) != -1
+          }
+          catch (e) {
+            skipped = false
+          }
+          let context = this.modding.context, event = context.event;
+          if (skipped) context.event = null;
+          let x =  eventReceived.old.apply(this, args);
+          context.event = event;
+          return x
+        }
+        eventReceived.old = internals.eventReceived;
+        internals.eventReceived = eventReceived;
       }
       game.custom.execAliens = [];
       game.addCrystal = function(data)
@@ -66,7 +81,7 @@ this.tick = function(game)
       game.custom.addCrystal_init = true;
     }
     catch (e) {
-      game.modding.terminal.error("Failed to initialize 'game.addCrystal'")
+      game.modding.terminal.error(new Error("Failed to initialize 'game.addCrystal': Modding instances not found"))
     }
   }, tick = this.tick;
   this.tick = function (game) {
