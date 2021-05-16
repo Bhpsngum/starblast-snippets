@@ -1,6 +1,6 @@
 /*
 All components' objects to block some special native clickable UIs in the client
-NOTE: If you want to unblock those buttons, simply just assign another shortcut to the same button id
+NOTE: There's no way to revert the shortcuts after it's been assigned,
 Use it with your own risks
 */
 
