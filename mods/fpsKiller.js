@@ -32,7 +32,7 @@ var init = function(game) {
       tick: function (game) {
         for (let ship of game.ships) {
           if (!ship.custom.joined) {
-            queueInstructor(ship, "Welcome to the FPS Killer mod!\nPlease use fullscreen for "better" experience.\nThank you.", null, 300);
+            queueInstructor(ship, "Welcome to the FPS Killer mod!\nPlease use fullscreen for \"better\" experience.\nThank you.", null, 300);
             ship.custom.joined = true;
           }
           if (!ship.custom.updated) {
