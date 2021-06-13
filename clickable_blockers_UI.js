@@ -57,7 +57,7 @@ ship.setUIComponent({
 var key = 1; /* Enter your key number here (from 1 to 8) */
 ship.setUIComponent({
   id: "stats_upgrades_"+key+"_button_blocker",
-  position: [0,92,10,8],
+  position: [10*i-10,92,10,8],
   clickable: true,
   visible: true,
   shortcut: key.toString(),
