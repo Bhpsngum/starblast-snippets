@@ -6,7 +6,7 @@
   {"text":"Thanks","icon":"\u0041","key":"X"},
   {"text":"Sorry","icon":"\u00a1","key":"S"},
   {"text":"No Prob","icon":"\u0047","key":"P"},
-  {"text":"Good Game","icon":"\u00470047","key":"G"},
+  {"text":"Good Game","icon":"\u00a3","key":"G"},
   {"text":"You","icon":"\u004e","key":"O"},
   {"text":"Me","icon":"\u004f","key":"E"},
   {"text":"Mine","icon":"\u0044","key":"M"},
