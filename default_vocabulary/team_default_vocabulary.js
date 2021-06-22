@@ -11,7 +11,7 @@
   {"text":"Kill","icon":"\u005b","key":"K"},
   {"text":"Base","icon":"\u0034","key":"B"},
   {"text":"Hmm","icon":"\u004b","key":"Q"},
-  {"text":"Good Game","icon":"\u00470047","key":"G"},
+  {"text":"Good Game","icon":"\u00a3","key":"G"},
   {"text":"No Prob","icon":"\u0047","key":"P"},
   {"text":"Thanks","icon":"\u0041","key":"X"},
   {"text":"Sorry","icon":"\u00a1","key":"S"}
