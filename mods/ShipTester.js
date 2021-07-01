@@ -1,7 +1,8 @@
 this.options = {
   // see documentation for options reference
-  root_mode: "survival",
-  survival_level:8,
+  map_name: "Ship Tree Test",
+  root_mode: "",
+  starting_ship: 801,
   map_size: 30
 };
 var allow_t8s = false;
