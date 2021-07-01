@@ -14,6 +14,26 @@ Or just simple like this:
   next: [null,null] ## to disable original ship upgrade bar, `max_level: 2` also works
   custom_next: [301,302,303,304]
 
+RESTRICTIONS - Do not use the
+properties/components listing below in their particular contexts:
+
+`ship.custom` properties: (`ship.custom` MUST BE an object)
+  ship.custom.shipTree
+
+`game.custom` properties: (`game.custom` MUST BE an object)
+  game.custom.shipTree
+
+Components with ids:
+  "next-opt0" to "next-opt3"
+  "upgrades"
+  "page-1" and "page1"
+
+Components' shortcuts:
+  A B D E (Ship options 0 -> 3)
+  K (Close upgrade panel)
+  N (Next Page)
+  P (Previous Page)
+
 Have fun :D
 */
 
@@ -38,10 +58,11 @@ var Trisbaena_798 = '{"name":"Trisbaena","level":7.9,"model":8,"size":1.2,"Desig
 var ships=[];
 
 ships.push(Odyssey_701);
-ships.push(Shadow_X_4_791);
 ships.push(Shadow_X_3_702);
 ships.push(Bastion_703);
 ships.push(Aries_704);
+
+ships.push(Shadow_X_4_791);
 ships.push(Epiloguer_792);
 ships.push(Vuaniha_793);
 ships.push(Raigeki_794);
@@ -52,295 +73,275 @@ ships.push(Trisbaena_798);
 
 this.options = {
   // see documentation for options reference
-  ships:ships,
+  root_mode: "survival",
+  survival_level: 8,
+  ships: ships,
   reset_tree: false
 }
 
-/* Don't touch anything below and scroll to the end */
-
-game.custom_paths = new Map(((this.options||{}).reset_tree)?[]:[
-  [101,{"name":"Fly","level":1,"specs":{"shield":{"capacity":[75,100],"reload":[2,3]},"generator":{"capacity":[40,60],"reload":[10,15]},"ship":{"mass":60,"speed":[125,145],"rotation":[110,130],"acceleration":[100,120]}}}],
-  [201,{"name":"Delta-Fighter","level":2,"specs":{"shield":{"capacity":[100,150],"reload":[3,4]},"generator":{"capacity":[50,80],"reload":[15,25]},"ship":{"mass":80,"speed":[110,135],"rotation":[80,100],"acceleration":[110,120]}}}],
-  [202,{"name":"Trident","level":2,"specs":{"shield":{"capacity":[125,175],"reload":[3,5]},"generator":{"capacity":[50,80],"reload":[15,20]},"ship":{"mass":100,"speed":[110,135],"rotation":[70,85],"acceleration":[90,110]}}}],
-  [302,{"name":"Side-Fighter","level":3,"next":[403,404],"specs":{"shield":{"capacity":[125,175],"reload":[2,4]},"generator":{"capacity":[75,125],"reload":[20,35]},"ship":{"mass":90,"speed":[100,120],"rotation":[50,70],"acceleration":[100,130]}}}],
-  [301,{"name":"Pulse-Fighter","level":3,"specs":{"shield":{"capacity":[150,200],"reload":[3,5]},"generator":{"capacity":[60,90],"reload":[20,30]},"ship":{"mass":120,"speed":[105,120],"rotation":[60,80],"acceleration":[80,100]}}}],
-  [303,{"name":"Shadow X-1","level":3,"specs":{"shield":{"capacity":[90,130],"reload":[3,6]},"generator":{"capacity":[50,80],"reload":[12,16]},"ship":{"mass":70,"speed":[120,155],"rotation":[35,60],"acceleration":[130,150]}}}],
-  [304,{"name":"Y-Defender","level":3,"specs":{"shield":{"capacity":[175,225],"reload":[4,6]},"generator":{"capacity":[50,80],"reload":[18,25]},"ship":{"mass":200,"speed":[80,100],"rotation":[40,60],"acceleration":[70,80]}}}],
-  [401,{"name":"Vanguard","level":4,"specs":{"shield":{"capacity":[140,190],"reload":[3,4]},"generator":{"capacity":[80,140],"reload":[25,35]},"ship":{"mass":200,"speed":[75,90],"rotation":[90,120],"acceleration":[60,80]}}}],
-  [403,{"name":"X-Warrior","level":4,"specs":{"shield":{"capacity":[150,200],"reload":[3,5]},"generator":{"capacity":[90,150],"reload":[35,55]},"ship":{"mass":250,"speed":[75,100],"rotation":[50,90],"acceleration":[90,110]}}}],
-  [402,{"name":"Mercury","level":4,"specs":{"shield":{"capacity":[150,200],"reload":[3,5]},"generator":{"capacity":[100,150],"reload":[30,50]},"ship":{"mass":200,"speed":[85,105],"rotation":[60,90],"acceleration":[60,80]}}}],
-  [404,{"name":"Side-Interceptor","level":4,"specs":{"shield":{"capacity":[175,225],"reload":[3,6]},"generator":{"capacity":[100,150],"reload":[30,40]},"ship":{"mass":120,"speed":[80,110],"rotation":[50,100],"acceleration":[110,140]}}}],
-  [405,{"name":"Pioneer","level":4,"specs":{"shield":{"capacity":[175,230],"reload":[4,7]},"generator":{"capacity":[50,100],"reload":[25,30]},"ship":{"mass":250,"speed":[90,120],"rotation":[40,80],"acceleration":[50,100]}}}],
-  [406,{"name":"Crusader","level":4,"specs":{"shield":{"capacity":[250,300],"reload":[5,7]},"generator":{"capacity":[50,90],"reload":[20,35]},"ship":{"mass":250,"speed":[75,100],"rotation":[40,70],"acceleration":[80,100]}}}],
-  [501,{"name":"U-Sniper","level":5,"specs":{"shield":{"capacity":[200,300],"reload":[4,6]},"generator":{"capacity":[80,160],"reload":[40,60]},"ship":{"mass":200,"speed":[70,90],"rotation":[50,70],"acceleration":[60,110]}}}],
-  [503,{"name":"T-Warrior","level":5,"specs":{"shield":{"capacity":[225,325],"reload":[4,7]},"generator":{"capacity":[80,140],"reload":[35,50]},"ship":{"mass":250,"speed":[80,90],"rotation":[50,80],"acceleration":[90,120]}}}],
-  [504,{"name":"Aetos","level":5,"specs":{"shield":{"capacity":[200,300],"reload":[5,7]},"generator":{"capacity":[80,140],"reload":[35,45]},"ship":{"mass":175,"speed":[90,100],"rotation":[70,90],"acceleration":[110,130]}}}],
-  [505,{"name":"Shadow X-2","level":5,"specs":{"shield":{"capacity":[150,220],"reload":[5,7]},"generator":{"capacity":[80,145],"reload":[19,29]},"ship":{"mass":125,"speed":[110,140],"rotation":[35,48],"acceleration":[140,160]}}}],
-  [502,{"name":"FuryStar","level":5,"specs":{"shield":{"capacity":[200,275],"reload":[6,7]},"generator":{"capacity":[100,150],"reload":[30,40]},"ship":{"mass":200,"speed":[70,100],"rotation":[120,180],"acceleration":[150,180]}}}],
-  [506,{"name":"Howler","level":5,"specs":{"shield":{"capacity":[275,340],"reload":[5,7]},"generator":{"capacity":[80,110],"reload":[35,50]},"ship":{"mass":225,"speed":[85,98],"rotation":[70,95],"acceleration":[90,120]}}}],
-  [507,{"name":"Bat-Defender","level":5,"specs":{"shield":{"capacity":[300,400],"reload":[7,10]},"generator":{"capacity":[70,100],"reload":[25,35]},"ship":{"mass":350,"speed":[70,90],"rotation":[40,70],"acceleration":[90,100]}}}],
-  [601,{"name":"Advanced-Fighter","level":6,"specs":{"shield":{"capacity":[200,350],"reload":[4,6]},"generator":{"capacity":[120,200],"reload":[50,60]},"ship":{"mass":400,"speed":[70,80],"rotation":[30,50],"acceleration":[70,100]}}}],
-  [602,{"name":"Scorpion","level":6,"specs":{"shield":{"capacity":[225,400],"reload":[5,7]},"generator":{"capacity":[80,175],"reload":[38,50]},"ship":{"mass":450,"speed":[75,90],"rotation":[50,70],"acceleration":[80,100]}}}],
-  [603,{"name":"Marauder","level":6,"specs":{"shield":{"capacity":[210,350],"reload":[8,11]},"generator":{"capacity":[85,160],"reload":[25,40]},"ship":{"mass":250,"speed":[70,110],"rotation":[60,80],"acceleration":[80,120]}}}],
-  [604,{"name":"Condor","level":6,"specs":{"shield":{"capacity":[225,400],"reload":[7,10]},"generator":{"capacity":[70,130],"reload":[30,48]},"ship":{"mass":200,"speed":[75,105],"rotation":[50,70],"acceleration":[80,120]}}}],
-  [605,{"name":"A-Speedster","level":6,"specs":{"shield":{"capacity":[200,300],"reload":[6,8]},"generator":{"capacity":[80,140],"reload":[30,45]},"ship":{"mass":175,"speed":[90,115],"rotation":[60,80],"acceleration":[90,140]}}}],
-  [606,{"name":"Rock-Tower","level":6,"specs":{"shield":{"capacity":[300,500],"reload":[8,11]},"generator":{"capacity":[75,115],"reload":[35,45]},"ship":{"mass":450,"speed":[75,90],"rotation":[50,70],"acceleration":[80,90]}}}],
-  [607,{"name":"Barracuda","level":6,"specs":{"shield":{"capacity":[300,400],"reload":[8,12]},"generator":{"capacity":[100,150],"reload":[8,14]},"ship":{"mass":675,"speed":[70,90],"rotation":[30,45],"acceleration":[130,150],"dash":{"rate":2,"burst_speed":[160,200],"speed":[120,150],"acceleration":[70,70],"initial_energy":[50,75],"energy":[20,30]}}}}],
-  [608,{"name":"O-Defender","level":6,"specs":{"shield":{"capacity":[400,550],"reload":[10,13]},"generator":{"capacity":[70,100],"reload":[25,40]},"ship":{"mass":500,"speed":[70,80],"rotation":[30,40],"acceleration":[60,80]}}}],
-  [701,{"name":"Odyssey","level":7,"specs":{"shield":{"capacity":[750,750],"reload":[15,15]},"generator":{"capacity":[330,330],"reload":[150,150]},"ship":{"mass":700,"speed":[45,45],"rotation":[20,20],"acceleration":[150,150]}}}],
-  [702,{"name":"Shadow X-3","level":7,"specs":{"shield":{"capacity":[400,400],"reload":[10,10]},"generator":{"capacity":[250,250],"reload":[45,45]},"ship":{"mass":350,"speed":[140,140],"rotation":[35,35],"acceleration":[35,35]}}}],
-  [703,{"name":"Bastion","level":7,"specs":{"shield":{"capacity":[400,400],"reload":[20,20]},"generator":{"capacity":[500,500],"reload":[100,100]},"ship":{"mass":350,"speed":[80,80],"rotation":[15,15],"acceleration":[125,125]}}}],
-  [704,{"name":"Aries","level":7,"specs":{"shield":{"capacity":[800,800],"reload":[17,17]},"generator":{"capacity":[350,350],"reload":[175,175]},"ship":{"mass":800,"speed":[40,40],"rotation":[20,20],"acceleration":[150,150]}}}]
-]);
-
-if (Array.isArray((this.options||{}).ships))
-  for (let ship of this.options.ships)
-  {
-    try{
-      let prs= JSON.parse(ship);
-      game.custom_paths.set(prs.typespec.code,{
-        level: Math.round(prs.level),
-        next: prs.custom_next,
-        name: prs.name,
-        specs: prs.specs
-      });
-    }
-    catch(e){}
-  }
-levelTick = function (game)
-{
-  for (let ship of game.ships)
-  {
-    if (Array.isArray((game.custom_paths.get(ship.type)||{}).next))
-    {
-      if (ship.crystals >= 20*(Math.round(ship.type/100)**2))
-      {
-        ship.can_upgrade = false;
-        if (!ship.need_upgrade)
-        {
-          ship.show = true;
-          ship.request_page = 0;
-          showUI(ship);
-          ship.timeout_hide = setTimeout(function(){
-            hideUI(ship);
-            ship.show = false;
-            ship.timeout_hide = 0;
-          },10000);
-          ship.need_upgrade = true;
-        }
-      }
-      else
-      {
-        ship.need_upgrade = false;
-        if (!ship.can_upgrade)
-        {
-          clearComponentTimeout(ship,"hide");
-          hideUI(ship,true);
-          ship.can_upgrade = true;
-        }
-      }
-    }
-  }
+this.tick = function (game) {
+  // do mod stuff here ; see documentation
 }
-levelEvent = function(event, game) {
-  let ship=event.ship;
-  switch (event.name)
-  {
-    case "ui_component_clicked":
-      let component = event.id
-      switch (component)
+
+/* Copy the rest of the code and paste it at the end of your code */
+;(function(){
+  var shipTree = new Map(((this.options||{}).reset_tree)?[]:[
+    [101,{"name":"Fly","level":1,"specs":{"shield":{"capacity":[75,100],"reload":[2,3]},"generator":{"capacity":[40,60],"reload":[10,15]},"ship":{"mass":60,"speed":[125,145],"rotation":[110,130],"acceleration":[100,120]}}}],
+    [201,{"name":"Delta-Fighter","level":2,"specs":{"shield":{"capacity":[100,150],"reload":[3,4]},"generator":{"capacity":[50,80],"reload":[15,25]},"ship":{"mass":80,"speed":[110,135],"rotation":[80,100],"acceleration":[110,120]}}}],
+    [202,{"name":"Trident","level":2,"specs":{"shield":{"capacity":[125,175],"reload":[3,5]},"generator":{"capacity":[50,80],"reload":[15,20]},"ship":{"mass":100,"speed":[110,135],"rotation":[70,85],"acceleration":[90,110]}}}],
+    [302,{"name":"Side-Fighter","level":3,"next":[403,404],"specs":{"shield":{"capacity":[125,175],"reload":[2,4]},"generator":{"capacity":[75,125],"reload":[20,35]},"ship":{"mass":90,"speed":[100,120],"rotation":[50,70],"acceleration":[100,130]}}}],
+    [301,{"name":"Pulse-Fighter","level":3,"specs":{"shield":{"capacity":[150,200],"reload":[3,5]},"generator":{"capacity":[60,90],"reload":[20,30]},"ship":{"mass":120,"speed":[105,120],"rotation":[60,80],"acceleration":[80,100]}}}],
+    [303,{"name":"Shadow X-1","level":3,"specs":{"shield":{"capacity":[90,130],"reload":[3,6]},"generator":{"capacity":[50,80],"reload":[12,16]},"ship":{"mass":70,"speed":[120,155],"rotation":[35,60],"acceleration":[130,150]}}}],
+    [304,{"name":"Y-Defender","level":3,"specs":{"shield":{"capacity":[175,225],"reload":[4,6]},"generator":{"capacity":[50,80],"reload":[18,25]},"ship":{"mass":200,"speed":[80,100],"rotation":[40,60],"acceleration":[70,80]}}}],
+    [401,{"name":"Vanguard","level":4,"specs":{"shield":{"capacity":[140,190],"reload":[3,4]},"generator":{"capacity":[80,140],"reload":[25,35]},"ship":{"mass":200,"speed":[75,90],"rotation":[90,120],"acceleration":[60,80]}}}],
+    [403,{"name":"X-Warrior","level":4,"specs":{"shield":{"capacity":[150,200],"reload":[3,5]},"generator":{"capacity":[90,150],"reload":[35,55]},"ship":{"mass":250,"speed":[75,100],"rotation":[50,90],"acceleration":[90,110]}}}],
+    [402,{"name":"Mercury","level":4,"specs":{"shield":{"capacity":[150,200],"reload":[3,5]},"generator":{"capacity":[100,150],"reload":[30,50]},"ship":{"mass":200,"speed":[85,105],"rotation":[60,90],"acceleration":[60,80]}}}],
+    [404,{"name":"Side-Interceptor","level":4,"specs":{"shield":{"capacity":[175,225],"reload":[3,6]},"generator":{"capacity":[100,150],"reload":[30,40]},"ship":{"mass":120,"speed":[80,110],"rotation":[50,100],"acceleration":[110,140]}}}],
+    [405,{"name":"Pioneer","level":4,"specs":{"shield":{"capacity":[175,230],"reload":[4,7]},"generator":{"capacity":[50,100],"reload":[25,30]},"ship":{"mass":250,"speed":[90,120],"rotation":[40,80],"acceleration":[50,100]}}}],
+    [406,{"name":"Crusader","level":4,"specs":{"shield":{"capacity":[250,300],"reload":[5,7]},"generator":{"capacity":[50,90],"reload":[20,35]},"ship":{"mass":250,"speed":[75,100],"rotation":[40,70],"acceleration":[80,100]}}}],
+    [501,{"name":"U-Sniper","level":5,"specs":{"shield":{"capacity":[200,300],"reload":[4,6]},"generator":{"capacity":[80,160],"reload":[40,60]},"ship":{"mass":200,"speed":[70,90],"rotation":[50,70],"acceleration":[60,110]}}}],
+    [503,{"name":"T-Warrior","level":5,"specs":{"shield":{"capacity":[225,325],"reload":[4,7]},"generator":{"capacity":[80,140],"reload":[35,50]},"ship":{"mass":250,"speed":[80,90],"rotation":[50,80],"acceleration":[90,120]}}}],
+    [504,{"name":"Aetos","level":5,"specs":{"shield":{"capacity":[200,300],"reload":[5,7]},"generator":{"capacity":[80,140],"reload":[35,45]},"ship":{"mass":175,"speed":[90,100],"rotation":[70,90],"acceleration":[110,130]}}}],
+    [505,{"name":"Shadow X-2","level":5,"specs":{"shield":{"capacity":[150,220],"reload":[5,7]},"generator":{"capacity":[80,145],"reload":[19,29]},"ship":{"mass":125,"speed":[110,140],"rotation":[35,48],"acceleration":[140,160]}}}],
+    [502,{"name":"FuryStar","level":5,"specs":{"shield":{"capacity":[200,275],"reload":[6,7]},"generator":{"capacity":[100,150],"reload":[30,40]},"ship":{"mass":200,"speed":[70,100],"rotation":[120,180],"acceleration":[150,180]}}}],
+    [506,{"name":"Howler","level":5,"specs":{"shield":{"capacity":[275,340],"reload":[5,7]},"generator":{"capacity":[80,110],"reload":[35,50]},"ship":{"mass":225,"speed":[85,98],"rotation":[70,95],"acceleration":[90,120]}}}],
+    [507,{"name":"Bat-Defender","level":5,"specs":{"shield":{"capacity":[300,400],"reload":[7,10]},"generator":{"capacity":[70,100],"reload":[25,35]},"ship":{"mass":350,"speed":[70,90],"rotation":[40,70],"acceleration":[90,100]}}}],
+    [601,{"name":"Advanced-Fighter","level":6,"specs":{"shield":{"capacity":[200,350],"reload":[4,6]},"generator":{"capacity":[120,200],"reload":[50,60]},"ship":{"mass":400,"speed":[70,80],"rotation":[30,50],"acceleration":[70,100]}}}],
+    [602,{"name":"Scorpion","level":6,"specs":{"shield":{"capacity":[225,400],"reload":[5,7]},"generator":{"capacity":[80,175],"reload":[38,50]},"ship":{"mass":450,"speed":[75,90],"rotation":[50,70],"acceleration":[80,100]}}}],
+    [603,{"name":"Marauder","level":6,"specs":{"shield":{"capacity":[210,350],"reload":[8,11]},"generator":{"capacity":[85,160],"reload":[25,40]},"ship":{"mass":250,"speed":[70,110],"rotation":[60,80],"acceleration":[80,120]}}}],
+    [604,{"name":"Condor","level":6,"specs":{"shield":{"capacity":[225,400],"reload":[7,10]},"generator":{"capacity":[70,130],"reload":[30,48]},"ship":{"mass":200,"speed":[75,105],"rotation":[50,70],"acceleration":[80,120]}}}],
+    [605,{"name":"A-Speedster","level":6,"specs":{"shield":{"capacity":[200,300],"reload":[6,8]},"generator":{"capacity":[80,140],"reload":[30,45]},"ship":{"mass":175,"speed":[90,115],"rotation":[60,80],"acceleration":[90,140]}}}],
+    [606,{"name":"Rock-Tower","level":6,"specs":{"shield":{"capacity":[300,500],"reload":[8,11]},"generator":{"capacity":[75,115],"reload":[35,45]},"ship":{"mass":450,"speed":[75,90],"rotation":[50,70],"acceleration":[80,90]}}}],
+    [607,{"name":"Barracuda","level":6,"specs":{"shield":{"capacity":[300,400],"reload":[8,12]},"generator":{"capacity":[100,150],"reload":[8,14]},"ship":{"mass":675,"speed":[70,90],"rotation":[30,45],"acceleration":[130,150],"dash":{"rate":2,"burst_speed":[160,200],"speed":[120,150],"acceleration":[70,70],"initial_energy":[50,75],"energy":[20,30]}}}}],
+    [608,{"name":"O-Defender","level":6,"specs":{"shield":{"capacity":[400,550],"reload":[10,13]},"generator":{"capacity":[70,100],"reload":[25,40]},"ship":{"mass":500,"speed":[70,80],"rotation":[30,40],"acceleration":[60,80]}}}],
+    [701,{"name":"Odyssey","level":7,"specs":{"shield":{"capacity":[750,750],"reload":[15,15]},"generator":{"capacity":[330,330],"reload":[150,150]},"ship":{"mass":700,"speed":[45,45],"rotation":[20,20],"acceleration":[150,150]}}}],
+    [702,{"name":"Shadow X-3","level":7,"specs":{"shield":{"capacity":[400,400],"reload":[12,12]},"generator":{"capacity":[225,225],"reload":[50,50]},"ship":{"mass":300,"speed":[130,130],"rotation":[35,35],"acceleration":[90,90]}}}],
+    [703,{"name":"Bastion","level":7,"specs":{"shield":{"capacity":[400,400],"reload":[20,20]},"generator":{"capacity":[500,500],"reload":[100,100]},"ship":{"mass":350,"speed":[80,80],"rotation":[15,15],"acceleration":[125,125]}}}],
+    [704,{"name":"Aries","level":7,"specs":{"shield":{"capacity":[800,800],"reload":[17,17]},"generator":{"capacity":[350,350],"reload":[175,175]},"ship":{"mass":800,"speed":[40,40],"rotation":[20,20],"acceleration":[150,150]}}}]
+  ]);
+
+  if (!(game.custom.shipTree instanceof Map)) {
+    game.custom.shipTree = shipTree;
+    if (Array.isArray((this.options||{}).ships))
+      for (let ship of this.options.ships)
       {
-        case "upgrades":
-          ship.show = !ship.show;
-          clearComponentTimeout(ship,"hide");
-          if (ship.show) showUI(ship);
-          else hideUI(ship);
-          break;
-        default:
-          if (component.startsWith("next-opt"))
+        try{
+          let prs= JSON.parse(ship);
+          game.custom.shipTree.set(prs.typespec.code,{
+            level: prs.level,
+            next: prs.custom_next,
+            name: prs.name,
+            specs: prs.specs
+          });
+        }
+        catch(e){
+          game.custom.shipTree = shipTree;
+          break
+        }
+      }
+  }
+
+  var getSpec = function(ship) {
+    return ship.custom.shipTree;
+  }
+  var levelTick = function (game)
+  {
+    for (let ship of game.ships)
+    {
+      if (ship != null)
+      {
+        if (Array.isArray((game.custom.shipTree.get(ship.type)||{}).next)) {
+          if (typeof ship.custom.shipTree != "object") ship.custom.shipTree = {}
+          if (ship.crystals >= 20*((game.custom.shipTree.get(ship.type).level)**2))
           {
-            let index = component.replace("next-opt",""),con = index.length == 1;
-            index = index.charCodeAt(0)-48;
-            if ((index >= 0 || index < 4) && con)
+            if (getSpec(ship).uType == null || ship.type != getSpec(ship).uType)
             {
-              let type = game.custom_paths.get(ship.type).next[ship.request_page*4+index],
-              nxt_ship = game.custom_paths.get(type) || broken_ships(type);
-              ship.set({type:type,shield:nxt_ship.specs.shield.capacity[0]||999,generator:nxt_ship.specs.generator.capacity[0]||999,crystals:0});
+              getSpec(ship).uType = ship.type;
+              getSpec(ship).show = true;
+              getSpec(ship).request_page = 0;
+              showUI(ship);
+              getSpec(ship).timeout_hide = setTimeout(function(){
+                hideUI(ship);
+                getSpec(ship).show = false;
+                getSpec(ship).timeout_hide = 0;
+              },10000);
+            }
+          }
+          else
+          {
+            if (getSpec(ship).uType != null)
+            {
+              getSpec(ship).uType = null;
               clearComponentTimeout(ship,"hide");
               hideUI(ship,true);
             }
           }
-          if (component.startsWith("page"))
-          {
-            let ind = component.replace("page",""),r = Number(ind)||0;
-            if (Math.abs(r) == 1)
-            {
-              clearComponentTimeout(ship,"hide");
-              showUI(ship,r);
-            }
-          }
-      }
-      break;
-  }
-}
-var clearComponentTimeout = function(ship,id)
-{
-  if (ship["timeout_"+id])
-  {
-    clearTimeout(ship["timeout_"+id]);
-    ship["timeout_"+id] = 0;
-  }
-}
-var broken_ships = function(code)
-{
-  return {
-    name: "Unknown ship",
-    level: Math.round(code/100),
-    specs: {
-      shield: {
-        capacity: [],
-        reload: []
-      },
-      generator: {
-        capacity: [],
-        reload: []
-      },
-      ship: {
-        speed: [],
-        acceleration: [],
-        rotation: []
+        }
+        else getSpec(ship).uType = null;
       }
     }
   }
-}
-var hideUI = function(ship, isNot)
-{
-  for (let i=0;i<4;i++) ship.setUIComponent({id:"next-opt"+i,visible:false});
-  if (isNot) ship.setUIComponent({id:"upgrades",visible:false});
-  else ship.setUIComponent({
-    id: "upgrades",
-    position: [36,4,28,4],
-    clickable: true,
-    shortcut: "K",
-    visible: true,
-    components: [
-      { type: "box",position:[0,0,100,100],stroke:"#CDE",width:1},
-      { type: "text",position:[0,10,100,80],value:"Upgrades    ",color:"#CDE"},
-      { type: "box",position:[63,15,6,70],stroke:"#CDE",width:1},
-      { type: "text",position:[64,10,4,80],value:"K",color:"#CDE"}
-    ]
-  });
-  ship.setUIComponent({id:"page-1",visible:false});
-  ship.setUIComponent({id:"page1",visible:false});
-}
-var showUI = function(ship, pgIndex)
-{
-  let keys = ["A","B","D","E"],nxt = game.custom_paths.get(ship.type).next;
-  ship.request_page += pgIndex || 0;
-  let page = ship.request_page, pgI = nxt.slice(page*4,(page+1)*4), gNP = nxt.length > 4,
-  u = [{c:Math.ceil(nxt.length/4)-1 > page && gNP,inc:1,s:"N",text:"Next"},{c:page > 0 && gNP,inc:-1,s:"P",text:"Previous"}];
-  for (let i=0;i<4;i++)
-    if (pgI[i])
+  var levelEvent = function(event, game) {
+    let ship=event.ship;
+    switch (event.name)
     {
-      let next_ship = game.custom_paths.get(pgI[i])||broken_ships(pgI[i]),
-      name = next_ship.name;
-      def = "DEF MK "+Math.round((next_ship.specs.shield.capacity[0]+next_ship.specs.shield.reload[0]*10)/20),
-      atk = "ATK MK "+Math.round((next_ship.specs.generator.capacity[0]+next_ship.specs.generator.reload[0]*10)/20),
-      agl = "AGL MK "+Math.round((next_ship.specs.ship.speed[0]+next_ship.specs.ship.acceleration[0]+next_ship.specs.ship.rotation[0])/30);
-      ship.setUIComponent({
-        id: "next-opt"+i,
-        position: [25+(i%2)*20,~~(i/2)*10,20,10],
-        clickable: true,
-        shortcut: keys[i],
-        visible: true,
-        components: [
-          { type: "box",position:[0,0,100,100],stroke:"#CDE",width:2},
-          { type: "text",position:[5,0,name.length*3.75,50],value:name,color:"#CDE"},
-          { type: "text",position:[5,65,12,20],value:"Lv"+next_ship.level,color:"#CDE"},
-          { type: "box",position:[21,62,8.5,26],stroke:"#CDE",width:1},
-          { type: "text",position:[23,65,5,20],value:keys[i],color:"#CDE"},
-          { type: "text",position:[68,15,def.length*3,20],value:def,color:"#CDE"},
-          { type: "text",position:[68,40,atk.length*3,20],value:atk,color:"#CDE"},
-          { type: "text",position:[68,65,agl.length*3,20],value:agl,color:"#CDE"},
-          { type: "text",position:[42,0,20,100],value:"?",color:"#CDE"}
-        ]
-      });
+      case "ui_component_clicked":
+        let component = event.id
+        switch (component)
+        {
+          case "upgrades":
+            getSpec(ship).show = !getSpec(ship).show;
+            clearComponentTimeout(ship,"hide");
+            if (getSpec(ship).show) showUI(ship);
+            else hideUI(ship);
+            break;
+          default:
+            if (component.startsWith("next-opt"))
+            {
+              let index = component.replace("next-opt",""),con = index.length == 1;
+              index = index.charCodeAt(0)-48;
+              if ((index >= 0 || index < 4) && con)
+              {
+                let type = game.custom.shipTree.get(ship.type).next[getSpec(ship).request_page*4+index],
+                nxt_ship = game.custom.shipTree.get(type) || broken_ships(type);
+                ship.set({type:type,shield:nxt_ship.specs.shield.capacity[0]||999,generator:nxt_ship.specs.generator.capacity[0]||999,crystals:0});
+                clearComponentTimeout(ship,"hide");
+                hideUI(ship,true);
+              }
+            }
+            if (component.startsWith("page"))
+            {
+              let ind = component.replace("page",""),r = Number(ind)||0;
+              if (Math.abs(r) == 1)
+              {
+                clearComponentTimeout(ship,"hide");
+                showUI(ship,r);
+              }
+            }
+        }
+        break;
     }
-    else ship.setUIComponent({id:"next-opt"+i,visible:false});
-  ship.setUIComponent({
-    id:"upgrades",
-    position:[65,10,10,10],
-    visible:true,
-    clickable:true,
-    shortcut:"K",
-    components: [
-      { type: "box",position:[0,0,100,100],stroke:"#CDE",width:2},
-      { type: "text",position:[0,20,100,30],value:"Close",color:"#CDE"},
-      { type: "box",position:[42,62,17,26],stroke:"#CDE",width:1},
-      { type: "text",position:[46,65,10,20],value:"K",color:"#CDE"}
-    ]
-  });
-  for (let i=0;i<u.length;i++)
-    if (u[i].c) ship.setUIComponent({
-      id:"page"+u[i].inc,
-      position: [65+Number((i)?u[i-1].c:i)*10,0,10,10],
-      visible: true,
+  }
+  var clearComponentTimeout = function(ship,id)
+  {
+    if (getSpec(ship)["timeout_"+id])
+    {
+      clearTimeout(getSpec(ship)["timeout_"+id]);
+      getSpec(ship)["timeout_"+id] = 0;
+    }
+  }
+  var broken_ships = function(code)
+  {
+    return {
+      name: "Unknown ship",
+      level: Math.round(code/100),
+      specs: {
+        shield: {
+          capacity: [],
+          reload: []
+        },
+        generator: {
+          capacity: [],
+          reload: []
+        },
+        ship: {
+          speed: [],
+          acceleration: [],
+          rotation: []
+        }
+      }
+    }
+  }
+  var hideUI = function(ship, isNot)
+  {
+    for (let i=0;i<4;i++) ship.setUIComponent({id:"next-opt"+i,visible:false,position:[0,0,0,0]});
+    if (isNot) ship.setUIComponent({id:"upgrades",visible:false,position:[0,0,0,0]});
+    else ship.setUIComponent({
+      id: "upgrades",
+      position: [36,4,28,4],
       clickable: true,
-      shortcut: u[i].s,
+      shortcut: "K",
+      visible: true,
       components: [
-        { type: "box",position:[0,0,100,100],stroke:"#CDE",width:2},
-        { type: "text",position:[5,20,90,30],value:u[i].text+" Page",color:"#CDE"},
-        { type: "box",position:[42,62,17,26],stroke:"#CDE",width:1},
-        { type: "text",position:[46,65,10,20],value:u[i].s,color:"#CDE"}
+        { type: "box",position:[0,0,100,100],stroke:"#CDE",width:1},
+        { type: "text",position:[0,10,100,80],value:"Upgrades    ",color:"#CDE"},
+        { type: "box",position:[63,15,6,70],stroke:"#CDE",width:1},
+        { type: "text",position:[64,10,4,80],value:"K",color:"#CDE"}
       ]
     });
-    else ship.setUIComponent({id:"page"+u[i].inc,visible:false});
-}
-
-/* End of the danger zone */
-
-/* Do your mod functions below and don't remove any, just add*/
-
-/* RESTRICTIONS - Do not use the
-values/variables/components listing below in their particular contexts:
-
-Global Scope Variables:
-  showUI
-  hideUI
-  clearComponentTimeout
-  broken_ships
-  levelEvent
-  levelTick
-  
-Ships' properties:
-  ship.can_upgrade
-  ship.need_upgrade
-  ship.request_page
-  ship.show
-  ship.timeout_hide
-  
-Game properties:
-  game.custom_paths
-  
-Components with ids:
-  "next-opt0" to "next-opt3"
-  "upgrades"
-  "page-1" and "page1"
-  
-Components' shortcuts:
-  A B D E (Ship options 0 -> 3)
-  K (Close upgrade panel)
-  N (Next Page)
-  P (Previous Page)
- 
-*/
-
-this.tick = function (game) {
-  levelTick(game);
-  // do mod stuff here ; see documentation
-}
-
-this.event = function(event, game) {
-  levelEvent(event,game);
-  // do events handler here
-}
+    ship.setUIComponent({id:"page-1",visible:false,position:[0,0,0,0]});
+    ship.setUIComponent({id:"page1",visible:false,position:[0,0,0,0]});
+  }
+  var showUI = function(ship, pgIndex)
+  {
+    let keys = ["A","B","D","E"],nxt = game.custom.shipTree.get(ship.type).next;
+    getSpec(ship).request_page += pgIndex || 0;
+    let page = getSpec(ship).request_page, pgI = nxt.slice(page*4,(page+1)*4), gNP = nxt.length > 4,
+    u = [{c:Math.ceil(nxt.length/4)-1 > page && gNP,inc:1,s:"N",text:"Next"},{c:page > 0 && gNP,inc:-1,s:"P",text:"Previous"}];
+    for (let i=0;i<4;i++)
+      if (pgI[i])
+      {
+        let next_ship = game.custom.shipTree.get(pgI[i])||broken_ships(pgI[i]),
+        name = next_ship.name;
+        def = "DEF MK "+Math.round((next_ship.specs.shield.capacity[0]+next_ship.specs.shield.reload[0]*10)/20),
+        atk = "ATK MK "+Math.round((next_ship.specs.generator.capacity[0]+next_ship.specs.generator.reload[0]*10)/20),
+        agl = "AGL MK "+Math.round((next_ship.specs.ship.speed[0]+next_ship.specs.ship.acceleration[0]+next_ship.specs.ship.rotation[0])/30);
+        ship.setUIComponent({
+          id: "next-opt"+i,
+          position: [25+(i%2)*20,~~(i/2)*10,20,10],
+          clickable: true,
+          shortcut: keys[i],
+          visible: true,
+          components: [
+            { type: "box",position:[0,0,100,100],stroke:"#CDE",width:2},
+            { type: "text",position:[5,0,name.length*3.75,50],value:name,color:"#CDE"},
+            { type: "text",position:[5,65,12,20],value:"Lv"+Math.round(next_ship.level),color:"#CDE"},
+            { type: "box",position:[21,62,8.5,26],stroke:"#CDE",width:1},
+            { type: "text",position:[23,65,5,20],value:keys[i],color:"#CDE"},
+            { type: "text",position:[68,15,def.length*3,20],value:def,color:"#CDE"},
+            { type: "text",position:[68,40,atk.length*3,20],value:atk,color:"#CDE"},
+            { type: "text",position:[68,65,agl.length*3,20],value:agl,color:"#CDE"},
+            { type: "text",position:[42,0,20,100],value:"?",color:"#CDE"}
+          ]
+        });
+      }
+      else ship.setUIComponent({id:"next-opt"+i,visible:false,position:[0,0,0,0]});
+    ship.setUIComponent({
+      id:"upgrades",
+      position:[65,10,10,10],
+      visible:true,
+      clickable:true,
+      shortcut:"K",
+      components: [
+        { type: "box",position:[0,0,100,100],stroke:"#CDE",width:2},
+        { type: "text",position:[0,20,100,30],value:"Close",color:"#CDE"},
+        { type: "box",position:[42,62,17,26],stroke:"#CDE",width:1},
+        { type: "text",position:[46,65,10,20],value:"K",color:"#CDE"}
+      ]
+    });
+    for (let i=0;i<u.length;i++)
+      if (u[i].c) ship.setUIComponent({
+        id:"page"+u[i].inc,
+        position: [65+Number((i)?u[i-1].c:i)*10,0,10,10],
+        visible: true,
+        clickable: true,
+        shortcut: u[i].s,
+        components: [
+          { type: "box",position:[0,0,100,100],stroke:"#CDE",width:2},
+          { type: "text",position:[5,20,90,30],value:u[i].text+" Page",color:"#CDE"},
+          { type: "box",position:[42,62,17,26],stroke:"#CDE",width:1},
+          { type: "text",position:[46,65,10,20],value:u[i].s,color:"#CDE"}
+        ]
+      });
+      else ship.setUIComponent({id:"page"+u[i].inc,visible:false,position:[0,0,0,0]});
+  }
+  var tick = this.tick, event = this.event;
+  this.tick = function () {
+    try { levelTick.apply(this, arguments) } catch(e){}
+    tick.apply(this, arguments)
+  }
+  this.event = function () {
+    try { levelEvent.apply(this, arguments) } catch(e){}
+    event.apply(this, arguments)
+  }
+}).call(this);
