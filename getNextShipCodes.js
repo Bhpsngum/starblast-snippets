@@ -39,6 +39,7 @@ Enjoy! :)
 
   let __init__ = function(game) {
     let default_ships = (game.options.reset_tree)?[]:[
+      ,
       [101],
       [201, 202],
       [301, 302, 303, 304],
