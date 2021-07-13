@@ -104,7 +104,7 @@ Enjoy! :)
           let model = code - level * 100 - 1;
           let alpha = Math.max(0, Math.round(model / Math.max(current_ships.length - 1, 1) * (next_ships.length - 2)));
           return next_ships.slice(alpha, alpha + 2)
-          }
+        }
       }
     }
     return []
