@@ -6,7 +6,7 @@ var setPicker = function(ship, isActive) {
   ship.custom.isActive = isActive;
   ship.setUIComponent({
     id: "chooser",
-    position: [2,20,8,14],
+    position: [5,30,10,10],
     visible: true,
     clickable: true,
     shortcut: "P",
@@ -18,7 +18,7 @@ var setPicker = function(ship, isActive) {
   });
   ship.setUIComponent({
     id: "f-stats",
-    position: [2,40,8,14],
+    position: [5,45,10,10],
     visible: true,
     clickable: true,
     shortcut: "F",
@@ -30,7 +30,7 @@ var setPicker = function(ship, isActive) {
   });
   ship.setUIComponent({
     id: "e-stats",
-    position: [2,60,8,14],
+    position: [5,60,10,10],
     visible: true,
     clickable: true,
     shortcut: "E",
@@ -42,7 +42,7 @@ var setPicker = function(ship, isActive) {
   });
   ship.setUIComponent({
     id: "fillgems",
-    position: [2,80,8,14],
+    position: [5,75,10,10],
     visible: true,
     clickable: true,
     shortcut: "G",
@@ -55,7 +55,7 @@ var setPicker = function(ship, isActive) {
   if (isActive) {
     ship.setUIComponent({
       id: "revert",
-      position: [12,20,8,14],
+      position: [20,30,10,10],
       visible: true,
       clickable: true,
       shortcut: "L",
@@ -74,9 +74,9 @@ var setPicker = function(ship, isActive) {
     })
   }
   else {
-    ship.setUIComponent({id:"revert",visible:false,clickable: false,shortcut:""});
-    for (let i=0;i<10;i++) ship.setUIComponent({id:"k"+i.toString(),visible:false});
-    ship.setUIComponent({id:"chooser-notif",visible: false})
+    ship.setUIComponent({id:"revert",visible:false,position:[0,0,0,0],clickable: false,shortcut:""});
+    for (let i=0;i<10;i++) ship.setUIComponent({id:"k"+i.toString(),visible:false,position:[0,0,0,0]});
+    ship.setUIComponent({id:"chooser-notif",visible: false,position:[0,0,0,0]})
   }
   setRequest(ship, null);
 }
