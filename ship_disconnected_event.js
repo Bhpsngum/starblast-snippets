@@ -54,7 +54,7 @@ this.event = function(event, game) {
   var tick = this.tick;
   this.tick = function(game) {
     this.tick = tick;
-    internals_init();
+    try { internals_init() } catch(e){}
     this.tick(game);
   }
 }).call(this);

@@ -335,13 +335,25 @@ this.tick = function (game) {
       });
       else ship.setUIComponent({id:"page"+u[i].inc,visible:false,position:[0,0,0,0]});
   }
-  var tick = this.tick, event = this.event;
+
+  var game_clone = {tick: this.tick, options: this.options, event: this.event};
+  var originals = ["options"];
+  var checkClone = function() {
+    for (let i of originals) {
+      if (game_clone[i] !== this[i]) this[i] = game_clone[i];
+    }
+  }
+
   this.tick = function () {
     try { levelTick.apply(this, arguments) } catch(e){}
-    tick.apply(this, arguments)
+    let t = typeof game_clone.tick == "function" && game_clone.tick.apply(this, arguments);
+    try { checkClone.call(this) } catch(e) {}
+    return t
   }
   this.event = function () {
     try { levelEvent.apply(this, arguments) } catch(e){}
-    event.apply(this, arguments)
+    let e = typeof game_clone.event == "function" && game_clone.event.apply(this, arguments);
+    try { checkClone.call(this) } catch(e) {}
+    return e
   }
 }).call(this);

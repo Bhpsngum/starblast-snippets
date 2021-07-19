@@ -110,11 +110,18 @@ Enjoy! :)
     return []
   }
 
-  var tick = this.tick;
+  var game_clone = {tick: this.tick, options: this.options, event: this.event};
+  var originals = ["event", "options"];
+  var checkClone = function() {
+    for (let i of originals) {
+      if (game_clone[i] !== this[i]) this[i] = game_clone[i];
+    }
+  }
 
   this.tick = function() {
     try { !internals && __init__.apply(this, arguments) } catch(e){}
-    this.tick = tick;
-    return typeof tick == "function" && tick.apply(this, arguments)
+    let u = typeof game_clone.tick == "function" && game_clone.tick.apply(game_clone, arguments);
+    try { checkClone.call(this) } catch(e) {}
+    return u
   }
 }).call(this);

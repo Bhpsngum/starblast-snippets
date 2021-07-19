@@ -85,9 +85,9 @@ this.tick = function(game)
       game.modding.terminal.error(new Error("Failed to initialize 'game.addCrystal': Modding instances not found"))
     }
   }, tick = this.tick;
-  this.tick = function (game) {
+  this.tick = function () {
     this.tick = tick;
-    manageAliens(game);
-    this.tick(game);
+    try { manageAliens.apply(this, arguments) } catch (e) {}
+    return typeof this.tick == "function" && this.tick.apply(this, arguments)
   }
 }).call(this);
