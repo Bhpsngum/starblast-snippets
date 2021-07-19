@@ -10,7 +10,13 @@ game.addOrbitingAsteroid({
   size: 50, // asteroid size, minimum 1, default 30
   velocity: 1, // velocity of the asteroid (following the xAxis vector), use negative numbers for the opposite direction, minimum 1, default 1
   interval: 15, // an integer representing interval between each check (in ticks), minimum 1
+  asteroid: game.asteroids[0], // an asteroid to be controlled in this orbit, creates a new asteroid if omitted or input is not an asteroid object
 })
+
+Note: if the `asteroid` value is appropiate, any omitted value in those properties will be changed to the following value:
+* `starting_x`: asteroid.x
+* `size`: asteroid.size
+
 
 2. Custom Orbiter function
 
@@ -43,7 +49,8 @@ OrbitingAsteroid.set({
   graph: function (x) {return x},
   orbiter: null,
   interval: 30,
-  velocity: 2
+  velocity: 2,
+  asteroid: game.asteroids[1]
 });
 
 `OrbitingAsteroid` can be `game.orbitingAsteroids[index]`, etc.
@@ -54,6 +61,7 @@ OrbitingAsteroid.set({
      var h = 0.001;
      return function(x) { return (f(x + h) - f(x - h)) / (2 * h) }
   }
+  var placeholder = new Asteroid(game);
   var OrbitingAsteroid  = class {
     constructor (game, options) {
       this.set = function (options) {
@@ -61,15 +69,18 @@ OrbitingAsteroid.set({
         if (options.interval != null) this.interval = Math.trunc(Math.max(1, options.interval)) || 1;
         if (options.velocity != null) this.velocity = Number(options.velocity) || 1;
         if (options.orbiter != null) this.orbiter = options.orbiter;
+        if (options.asteroid instanceof Asteroid) this.asteroid = options.asteroid;
       }
       this.set({
         velocity: options.velocity || 0,
         graph: options.graph || 0,
         interval: options.interval || 0,
         orbiter: options.orbiter,
+        asteroid: options.asteroid || placeholder
       });
-      this.x = Number(options.starting_x) || 0;
-      this.size = Math.max(1, options.size) || 30;
+      let u = this.asteroid == placeholder || !(this.asteroid instanceof Asteroid);
+      this.x = isNaN(options.starting_x)?(u?0:this.asteroid.x):Number(this.starting_x);
+      this.size = isNaN(options.size)?(u?30:this.asteroid.size):Math.max(options.size, 1);
       this.custom = {};
       this.orbit = function () {
         let x;
@@ -91,11 +102,12 @@ OrbitingAsteroid.set({
           this.asteroid.set(this.orbit())
         }
       }
-      this.asteroid = new Asteroid(game, {x: this.x, size: this.size});
+      this.asteroid = u?new Asteroid(game, {x: this.x, size: this.size}):this.asteroid;
       let opts = this.orbit();
       opts.size = this.size;
       opts.x = this.x;
-      this.asteroid = game.addAsteroid(opts)
+      if (u) this.asteroid = game.addAsteroid(opts);
+      else this.asteroid.set(opts)
     }
   }
   if (!Array.isArray(game.orbitingAsteroids)) game.orbitingAsteroids = [];
