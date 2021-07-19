@@ -81,7 +81,7 @@ OrbitingAsteroid.set({
         asteroid: options.asteroid || placeholder
       });
       let u = this.asteroid == placeholder || !(this.asteroid instanceof Asteroid);
-      this.x = isNaN(options.starting_x)?(u?0:this.asteroid.x):Number(this.starting_x);
+      this.x = isNaN(options.starting_x)?(u?0:this.asteroid.x):Number(options.starting_x);
       this.size = isNaN(options.size)?(u?30:this.asteroid.size):Math.max(options.size, 1);
       this.custom = {};
       this.orbit = function () {
