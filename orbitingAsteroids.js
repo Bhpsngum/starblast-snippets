@@ -56,6 +56,8 @@ OrbitingAsteroid.set({
 `OrbitingAsteroid` can be `game.orbitingAsteroids[index]`, etc.
 
 */
+
+/* Encapsuled part - paste the rest of this code to the end of your mod code */
 ;(function(){
   var d = function (f) {
      var h = 0.001;
