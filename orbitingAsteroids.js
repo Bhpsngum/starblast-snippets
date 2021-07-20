@@ -18,6 +18,7 @@ Note: if the `asteroid` value is appropiate, any omitted value in those properti
 * `starting_x`: asteroid.x
 * `size`: asteroid.size
 
+Returns: The OrbitingAsteroid Object
 
 2. Custom Orbiter function
 
@@ -67,6 +68,7 @@ OrbitingAsteroid.set({
   var placeholder = new Asteroid(game);
   var OrbitingAsteroid  = class {
     constructor (game, options) {
+      options = options || {}
       this.set = function (options) {
         if (options.graph != null) this.graph = (typeof options.graph == "function")?options.graph:(function(x){return 0});
         if (options.interval != null) this.interval = Math.trunc(Math.max(1, options.interval)) || 1;
@@ -120,7 +122,8 @@ OrbitingAsteroid.set({
   }
   if (!Array.isArray(game.orbitingAsteroids)) game.orbitingAsteroids = [];
   game.addOrbitingAsteroid = function (options) {
-    return game.orbitingAsteroids.push(new OrbitingAsteroid(this, options))
+    let result = new OrbitingAsteroid(this, options);
+    return game.orbitingAsteroids.push(result), result
   }
   var tickOrbitingAsteroids = function (game) {
     game.orbitingAsteroids = game.orbitingAsteroids.filter(orbitingAsteroid => (orbitingAsteroid.tick(game), orbitingAsteroid.persistent || !orbitingAsteroid.asteroid.killed))
