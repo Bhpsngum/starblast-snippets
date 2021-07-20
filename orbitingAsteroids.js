@@ -18,7 +18,6 @@ Note: if the `asteroid` value is appropiate, any omitted value in those properti
 * `starting_x`: asteroid.x
 * `size`: asteroid.size
 
-Returns: The OrbitingAsteroid Object
 
 2. Custom Orbiter function
 
@@ -89,6 +88,7 @@ OrbitingAsteroid.set({
       this.x = isNaN(options.starting_x)?(u?0:this.asteroid.x):Number(options.starting_x);
       this.size = isNaN(options.size)?(u?30:this.asteroid.size):Math.max(options.size, 1);
       this.custom = {};
+      this.last_updated = game.step;
       this.orbit = function () {
         let x;
         if (typeof this.orbiter == "function") {
