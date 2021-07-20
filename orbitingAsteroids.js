@@ -11,6 +11,7 @@ game.addOrbitingAsteroid({
   velocity: 1, // velocity of the asteroid (following the xAxis vector), use negative numbers for the opposite direction, minimum 1, default 1
   interval: 15, // an integer representing interval between each check (in ticks), minimum 1
   asteroid: game.asteroids[0], // an asteroid to be controlled in this orbit, creates a new asteroid if omitted or input is not an asteroid object
+  persistent: false // the OribitingAsteroid object will be removed from the active array when the asteroid is destroyed or not
 })
 
 Note: if the `asteroid` value is appropiate, any omitted value in those properties will be changed to the following value:
@@ -72,13 +73,15 @@ OrbitingAsteroid.set({
         if (options.velocity != null) this.velocity = Number(options.velocity) || 1;
         if (options.orbiter != null) this.orbiter = options.orbiter;
         if (options.asteroid instanceof Asteroid) this.asteroid = options.asteroid;
+        if (options.persistent != null) this.persistent = !!options.persistent;
       }
       this.set({
         velocity: options.velocity || 0,
         graph: options.graph || 0,
         interval: options.interval || 0,
         orbiter: options.orbiter,
-        asteroid: options.asteroid || placeholder
+        asteroid: options.asteroid || placeholder,
+        persistent: options.persistent || false
       });
       let u = this.asteroid == placeholder || !(this.asteroid instanceof Asteroid);
       this.x = isNaN(options.starting_x)?(u?0:this.asteroid.x):Number(options.starting_x);
@@ -96,11 +99,14 @@ OrbitingAsteroid.set({
         let angle = Math.atan(d(this.graph)(x)) || 0;
         return {y: this.graph(x) || this.asteroid.y || 0, vx: r * Math.cos(angle), vy: r * Math.sin(angle)}
       }
+      this.isActive = function(game) {
+        return this.asteroid.id != -1 && !this.asteroid.killed
+      }
       this.tick = function(game) {
-        if (this.asteroid.id != -1 && !this.asteroid.killed && game.step % this.interval === 0) {
+        if (this.isActive() && game.step % this.interval === 0) {
           this.size = this.asteroid.size;
           this.x = this.asteroid.x;
-          this.last_updated = this.asteroid.last_updated;
+          this.last_updated = game.step;
           this.asteroid.set(this.orbit())
         }
       }
@@ -109,7 +115,7 @@ OrbitingAsteroid.set({
       opts.size = this.size;
       opts.x = this.x;
       if (u) this.asteroid = game.addAsteroid(opts);
-      else this.asteroid.set(opts)
+      else this.isActive() && this.asteroid.set(opts)
     }
   }
   if (!Array.isArray(game.orbitingAsteroids)) game.orbitingAsteroids = [];
@@ -117,20 +123,28 @@ OrbitingAsteroid.set({
     return game.orbitingAsteroids.push(new OrbitingAsteroid(this, options))
   }
   var tickOrbitingAsteroids = function (game) {
-    game.orbitingAsteroids = game.orbitingAsteroids.filter(orbitingAsteroid => (orbitingAsteroid.tick(game), !orbitingAsteroid.asteroid.killed))
+    game.orbitingAsteroids = game.orbitingAsteroids.filter(orbitingAsteroid => (orbitingAsteroid.tick(game), orbitingAsteroid.persistent || !orbitingAsteroid.asteroid.killed))
   }
-  var game_clone = {tick: this.tick, options: this.options, event: this.event};
-  var originals = ["event", "options"];
+  var game_clone = Object.assign({}, this);
   var checkClone = function() {
-    for (let i of originals) {
-      if (game_clone[i] !== this[i]) this[i] = game_clone[i];
+    let t = Object.keys(this);
+    let c = Object.keys(game_clone);
+    for (let key of c) {
+      let tp = t.indexOf(key);
+      if (tp != -1) {
+        if (this[key] !== game_clone[key]) this[key] = game_clone[key];
+        t.splice(tp, 1);
+      }
+      else this[key] = game_clone[key]
+    }
+    for (let key of t) delete this[key];
+
+    this.tick = function () {
+      try { tickOrbitingAsteroids.apply(this, arguments) } catch(e){}
+      let u = typeof game_clone.tick == "function" && game_clone.tick.apply(game_clone, arguments);
+      try { checkClone.call(this) } catch(e){}
+      return u
     }
   }
-
-  this.tick = function () {
-    try { tickOrbitingAsteroids.apply(this, arguments) } catch(e){}
-    let u = typeof game_clone.tick == "function" && game_clone.tick.apply(game_clone, arguments);
-    try { checkClone.call(this) } catch(e){}
-    return u
-  }
+  checkClone.call(this)
 }).call(this);

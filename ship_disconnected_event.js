@@ -52,9 +52,9 @@ this.event = function(event, game) {
     game.custom.shipDisconnected_init = true;
   }
   var tick = this.tick;
-  this.tick = function(game) {
+  this.tick = function() {
     this.tick = tick;
     try { internals_init() } catch(e){}
-    this.tick(game);
+    return typeof this.tick == "function" && this.tick.apply(this, arguments);
   }
 }).call(this);

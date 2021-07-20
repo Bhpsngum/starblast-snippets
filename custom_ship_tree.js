@@ -336,24 +336,32 @@ this.tick = function (game) {
       else ship.setUIComponent({id:"page"+u[i].inc,visible:false,position:[0,0,0,0]});
   }
 
-  var game_clone = {tick: this.tick, options: this.options, event: this.event};
-  var originals = ["options"];
+  var game_clone = Object.assign({}, this);
   var checkClone = function() {
-    for (let i of originals) {
-      if (game_clone[i] !== this[i]) this[i] = game_clone[i];
+    let t = Object.keys(this);
+    let c = Object.keys(game_clone);
+    for (let key of c) {
+      let tp = t.indexOf(key);
+      if (tp != -1) {
+        if (this[key] !== game_clone[key]) this[key] = game_clone[key];
+        t.splice(tp, 1);
+      }
+      else this[key] = game_clone[key]
+    }
+    for (let key of t) delete this[key];
+
+    this.tick = function () {
+      try { levelTick.apply(this, arguments) } catch(e){}
+      let t = typeof game_clone.tick == "function" && game_clone.tick.apply(this, arguments);
+      try { checkClone.call(this) } catch(e) {}
+      return t
+    }
+    this.event = function () {
+      try { levelEvent.apply(this, arguments) } catch(e){}
+      let e = typeof game_clone.event == "function" && game_clone.event.apply(this, arguments);
+      try { checkClone.call(this) } catch(e) {}
+      return e
     }
   }
-
-  this.tick = function () {
-    try { levelTick.apply(this, arguments) } catch(e){}
-    let t = typeof game_clone.tick == "function" && game_clone.tick.apply(this, arguments);
-    try { checkClone.call(this) } catch(e) {}
-    return t
-  }
-  this.event = function () {
-    try { levelEvent.apply(this, arguments) } catch(e){}
-    let e = typeof game_clone.event == "function" && game_clone.event.apply(this, arguments);
-    try { checkClone.call(this) } catch(e) {}
-    return e
-  }
+  checkClone.call(this)
 }).call(this);
