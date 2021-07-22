@@ -130,17 +130,8 @@ OrbitingAsteroid.set({
   }
   var game_clone = Object.assign({}, this);
   var checkClone = function() {
-    let t = Object.keys(this);
-    let c = Object.keys(game_clone);
-    for (let key of c) {
-      let tp = t.indexOf(key);
-      if (tp != -1) {
-        if (this[key] !== game_clone[key]) this[key] = game_clone[key];
-        t.splice(tp, 1);
-      }
-      else this[key] = game_clone[key]
-    }
-    for (let key of t) delete this[key];
+    for (let key of Object.keys(this)) delete this[key];
+    Object.assign(this, game_clone);
 
     this.tick = function () {
       try { tickOrbitingAsteroids.apply(this, arguments) } catch(e){}
