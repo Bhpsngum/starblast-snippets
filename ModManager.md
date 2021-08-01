@@ -19,7 +19,7 @@ In beta
 
 ## Features
 ### Notes
-* **<sup>F</sup>** means that it's only available on the [Full Version](#full-version)
+<a id="1">1.</a> **<sup>F</sup>** means that it's only available on the [Full Version](#full-version)
 ### `game.options` extended options
 
 Here is the list of options that are added: 
@@ -43,7 +43,7 @@ An object with these fields:
 
 Current hue of the ship, a number (0->359)
 
-#### Deathmatch-mode only field <sup>F</sup>
+#### Deathmatch-mode only field [<sup>F</sup>](#1)
 **Note:** Those fields only appears after the player finished their first round
 
 |Field|Description|
@@ -52,7 +52,7 @@ Current hue of the ship, a number (0->359)
 |wins|Total wins|
 |dm_stats|Stats (deaths, kills) of the player for ever round, each item is an object with 2 fields `kills` and `deaths`|
 
-### Extended `game` properties <sup>F</sup>
+### Extended `game` properties [<sup>F</sup>](#1)
 
 #### `game.team_stats` (Only works with `root_mode: "team"`)
 
@@ -73,7 +73,7 @@ this.tick = function (game) {
 }
 ```
 
-### Extended events <sup>F</sup>
+### Extended events [<sup>F</sup>](#1)
 #### Deathmatch mode
 
 ##### `waiting`
