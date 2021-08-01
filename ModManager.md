@@ -49,9 +49,8 @@ Current hue of the ship, a number (0->359)
 |Field|Description|
 |-|-|
 |rounds|Rounds played|
-|kills|Total kills|
-|deaths|Total deaths|
 |wins|Total wins|
+|dm_stats|Stats (deaths, kills) of the player for ever round, each item is an object with 2 fields `kills` and `deaths`|
 
 ### Extended `game` properties <sup>F</sup>
 
@@ -106,3 +105,10 @@ this.tick = function (game) {
 |Field|Description|
 |-|-|
 |results|Result of the round, an array of ships|
+
+#### Battle Royale
+
+|Event Name|Description|Additional fields|
+|-|-|-|
+|game_starting|The game is about to start (Repulsive fields started activating)|None|
+|game_started|The game has started|None|
