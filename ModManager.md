@@ -52,15 +52,21 @@ Current hue of the ship, a number (0->359)
 |wins|Total wins|
 |dm_stats|Stats (deaths, kills) of the player for ever round, each item is an object with 2 fields `kills` and `deaths`|
 
-### Extended `game` properties [**<sup>F</sup>**](#1)
+### Extended `game` properties
 
 #### `game.team_stats` (Only works with `root_mode: "team"`)
 
-Same as `game.options.teams` (an array), but each item contains more properties:
+Same as `game.options.teams` (an array), but each item contains more fields:
 
-* `best_killer`
-* `best_healer`
-* `best_contributor`
+|Field|Description|
+|-|-|
+|level|Team base's level|
+|crystals|Current team base's crystals|
+|max_crystals|Maximum crystals of team's base in the current level|
+|open|If the team is available for joining or locked|
+|best_killer [**<sup>F</sup>**](#1)|Team's best killer|
+|best_healer [**<sup>F</sup>**](#1)|Team's best healer|
+|best_contributor [**<sup>F</sup>**](#1)|Team's best contributor|
 
 Example:
 ```js
