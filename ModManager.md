@@ -71,7 +71,7 @@ Same as `game.options.teams` (an array), but each item contains more fields:
 Example:
 ```js
 this.tick = function (game) {
-  if (game.step % 30 === 0) { // make sure that this is done only once per second
+  if (game.step % 60 === 0) { // make sure that this is done only once per second
     for (let team of game.team_stats) {
       if (team.best_killer != null) team.best_killer.instructorSays("Congratulations! You are the best killer on your team!")
     }
