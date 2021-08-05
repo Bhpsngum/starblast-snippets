@@ -29,7 +29,7 @@ game.getShapeFromURL('https://raw.githubusercontent.com/Bhpsngum/img-src/master/
 
 // Or you can use await
 try {
-  var shape = game.getShapeFromURL('https://raw.githubusercontent.com/Bhpsngum/img-src/master/Aries.obj').then(console.log).catch(console.log)
+  var shape = await game.getShapeFromURL('https://raw.githubusercontent.com/Bhpsngum/img-src/master/Aries.obj')
 }
 catch (e) {console.log("Action failed")}
 
