@@ -25,7 +25,7 @@
 // Usage
 // Also CORS could be the problem if users attempts to load anything out of GitHub and Starblast sites
 
-game.getShapeFromURL('https://raw.githubusercontent.com/Bhpsngum/img-src/master/Aries.obj').then(console.log).catch(console.log); 
+game.getShapeFromURL('https://raw.githubusercontent.com/Bhpsngum/img-src/master/Aries.obj').then(console.log).catch(console.error); 
 
 // Or you can use await
 try {
