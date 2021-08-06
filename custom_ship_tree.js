@@ -83,7 +83,7 @@ this.tick = function (game) {
   // do mod stuff here ; see documentation
 }
 
-/* Copy the rest of the code and paste it at the end of your code */
+/* Encapsuled part -  Copy the rest of the code and paste it at the end of your code */
 ;(function(){
   var shipTree = new Map(((this.options||{}).reset_tree)?[]:[
     [101,{"name":"Fly","level":1,"specs":{"shield":{"capacity":[75,100],"reload":[2,3]},"generator":{"capacity":[40,60],"reload":[10,15]},"ship":{"mass":60,"speed":[125,145],"rotation":[110,130],"acceleration":[100,120]}}}],
