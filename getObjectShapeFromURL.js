@@ -87,8 +87,9 @@ this.options = {
   game.getObjectShapeFromURL = function(url) {
     return new Promise(function (resolve, reject) {
       try {new THREE.OBJLoader().load(url, function (object) {
-        if (((object||{}).children||[]).length < 1) return reject(new Error("No 3D Object found"));
-        resolve(getShape(object.children[0]))
+        let result, st;
+        try { result = getShape(object.children[0]) } catch(e) { reject(new Error("Invalid 3D Object")); st = 1 }
+        if (!st) resolve(result)
         },function(){},reject)
       }
       catch (e) {reject(e)}
