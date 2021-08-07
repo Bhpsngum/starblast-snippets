@@ -67,7 +67,9 @@ this.options = {
       let st, r;
       try { r = l.parse(t) } catch (er) { s(new Error("Failed to convert file content to 3D Object")); st = 1 }
       if (!st) e(r)
-    }, i, s)
+    }, i, function(er) {
+      s(new Error("The URL is invalid or blocked by CORS policy"))
+    })
   }
 
   var shapePoint = function(e, t, i) {
