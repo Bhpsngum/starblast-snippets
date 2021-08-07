@@ -96,13 +96,15 @@ this.options = {
     })
   }
 
-  var setObj = game.setObject;
-
-  var setObject = function (obj) {
-    return game.setObject.old.call(game, obj)
-  }
 
   if (!game.custom.setObj_init) {
+    
+    var setObj = game.setObject;
+
+    var setObject = function (obj) {
+      return game.setObject.old.call(game, obj)
+    }
+
     game.setObject = function (obj) {
       let synced = 0;
       if (obj) {
