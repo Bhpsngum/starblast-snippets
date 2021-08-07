@@ -6,7 +6,8 @@ this.tick = function (game) {
     game.modding.terminal.echo(`Object shape: [${shape.toString()}]`)
   }).catch(game.modding.terminal.error);
 
-  // You can also use `autoShape: true` in `obj.type.physics`
+  // You can also omit `shape` in `obj.type.physics` as it's default modding behaviour
+  // see modding docs for more info about that
 
   var assignation = {
     id: "Aries",
@@ -18,9 +19,7 @@ this.tick = function (game) {
     diffuseColor:0xFF8080,
     transparent: false,
     physics: {
-      mass: 300,
-      fixed: true,
-      autoShape: true
+      mass: 300 // high mass so that ships won't go through the 3D Object
     }
   };
   game.setObject({
@@ -102,38 +101,5 @@ this.options = {
       }
       catch (e) {reject(e)}
     })
-  }
-
-
-  if (!game.custom.setObj_init) {
-
-    var setObj = game.setObject;
-
-    var setObject = function (obj) {
-      return game.setObject.old.call(game, obj)
-    }
-
-    game.setObject = function (obj) {
-      let synced = 0;
-      if (obj) {
-        let type = obj.type || {}, physics = type.physics || {}
-        if (physics.autoShape === true && !physics.shape) {
-          synced = 1;
-          game.getObjectShapeFromURL(type.obj).then(function(data){
-            if (Array.isArray(data)) {
-              obj = JSON.parse(JSON.stringify(obj));
-              obj.type.physics.shape = data;
-              delete obj.type.physics.autoShape;
-            }
-            setObject(obj)
-          }).catch(function(e){setObject(obj)})
-        }
-      }
-      if (!synced) setObject(obj)
-    }
-
-    game.setObject.old = setObj;
-
-    game.custom.setObj_init = true;
   }
 })();
