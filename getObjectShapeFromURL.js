@@ -60,9 +60,14 @@ this.options = {
  */
 ;(function(){
 
+  var gF = function(f) {
+    return typeof f == "function"?f:function(){}
+  }
+
   THREE.OBJLoader.prototype.load = function(t, e, i, s) {
     var l = this,
     n = new THREE.FileLoader(l.manager);
+    e = gF(e); i = gF(i); s = gF(s);
     n.setPath(this.path), n.load(t, function(t) {
       let st, r;
       try { r = l.parse(t) } catch (er) { s(new Error("Failed to convert file content to 3D Object")); st = 1 }
@@ -88,11 +93,12 @@ this.options = {
 
   game.getObjectShapeFromURL = function(url) {
     return new Promise(function (resolve, reject) {
-      try {new THREE.OBJLoader().load(url, function (object) {
-        let result, st;
-        try { result = getShape(object.children[0]) } catch(e) { reject(new Error("Invalid 3D Object")); st = 1 }
-        if (!st) resolve(result)
-        },function(){},reject)
+      try {
+        new THREE.OBJLoader().load(url, function (object) {
+          let result, st;
+          try { result = getShape(object.children[0]) } catch(e) { reject(new Error("Invalid 3D Object")); st = 1 }
+          if (!st) resolve(result)
+        },null,reject)
       }
       catch (e) {reject(e)}
     })
