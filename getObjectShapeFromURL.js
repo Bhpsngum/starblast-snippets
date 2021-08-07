@@ -3,7 +3,7 @@ this.tick = function (game) {
   // Note that CORS issue could happen if users attempts to load anything out of GitHub and Starblast sites
 
   game.getObjectShapeFromURL('https://raw.githubusercontent.com/Bhpsngum/img-src/master/Aries.obj').then(function(shape){
-    game.modding.terminal.echo(shape.toString())
+    game.modding.terminal.echo(`Object shape: [${shape.toString()}]`)
   }).catch(game.modding.terminal.error);
 
   // You can also use `autoShape: true` in `obj.type.physics`
