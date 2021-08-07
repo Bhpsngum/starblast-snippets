@@ -65,7 +65,7 @@ this.options = {
     n = new THREE.FileLoader(l.manager);
     n.setPath(this.path), n.load(t, function(t) {
       let st, r;
-      try { r = l.parse(t) } catch (er) { s(er); st = 1 }
+      try { r = l.parse(t) } catch (er) { s(new Error("Failed to convert file content to 3D Object")); st = 1 }
       if (!st) e(r)
     }, i, s)
   }
@@ -98,7 +98,7 @@ this.options = {
 
 
   if (!game.custom.setObj_init) {
-    
+
     var setObj = game.setObject;
 
     var setObject = function (obj) {
