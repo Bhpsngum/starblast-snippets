@@ -337,22 +337,24 @@ this.tick = function (game) {
   }
 
   var game_clone = Object.assign({}, this);
+  var simulate = function (name, args) {
+    let t = typeof game_clone[name] == "function" && game_clone[name].apply(game_clone, args);
+    try { checkClone() } catch(e){}
+    return t
+  }
+
   var checkClone = function() {
     for (let key of Object.keys(this)) delete this[key];
     Object.assign(this, game_clone);
 
     this.tick = function () {
       try { levelTick.apply(this, arguments) } catch(e){}
-      let t = typeof game_clone.tick == "function" && game_clone.tick.apply(game_clone, arguments);
-      try { checkClone.call(this) } catch(e) {}
-      return t
+      return simulate("tick", arguments)
     }
     this.event = function () {
       try { levelEvent.apply(this, arguments) } catch(e){}
-      let e = typeof game_clone.event == "function" && game_clone.event.apply(game_clone, arguments);
-      try { checkClone.call(this) } catch(e) {}
-      return e
+      return simulate("event", arguments)
     }
-  }
-  checkClone.call(this)
+  }.bind(this);
+  checkClone()
 }).call(this);
