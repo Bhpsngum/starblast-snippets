@@ -6,7 +6,7 @@ this.tick = function (game) {
     game.modding.terminal.echo(`Object shape: [${shape.toString()}]`)
   }).catch(game.modding.terminal.error);
 
-  // You can also omit `shape` in `obj.type.physics` as it's default modding behaviour
+  // You can also omit `shape` in `obj.type.physics` as it's default modding behaviour and got fixed in this version
   // see modding docs for more info about that
 
   var assignation = {
@@ -57,49 +57,80 @@ this.options = {
  * At the start of your mod code if you want to use the functions instantly/before mod started
  * At the end of your mod code if you only use it in `this.tick` or/and `this.event`
  */
-;(function(){
+ ;(function(){
 
-  var gF = function(f) {
-    return typeof f == "function"?f:function(){}
-  }
+   var gF = function(f) {
+     return typeof f == "function"?f:function(){}
+   }
 
-  THREE.OBJLoader.prototype.load = function(t, e, i, s) {
-    var l = this,
-    n = new THREE.FileLoader(l.manager);
-    e = gF(e); i = gF(i); s = gF(s);
-    n.setPath(this.path), n.load(t, function(t) {
-      let st, r;
-      try { r = l.parse(t) } catch (er) { s(new Error("Failed to convert file content to 3D Object")); st = 1 }
-      if (!st) e(r)
-    }, i, function(er) {
-      s(new Error("The URL is invalid or blocked by CORS policy"))
-    })
-  }
+   THREE.OBJLoader.prototype.load = function(t, e, i, s) {
+     var l = this,
+     n = new THREE.FileLoader(l.manager);
+     e = gF(e); i = gF(i); s = gF(s);
+     n.setPath(this.path), n.load(t, function(t) {
+       let st, r;
+       try { r = l.parse(t) } catch (er) { s(new Error("Failed to convert file content to 3D Object")); st = 1 }
+       if (!st) e(r)
+     }, i, function(er) {
+       s(new Error("The URL is invalid or blocked by CORS policy"))
+     })
+   }
 
-  var shapePoint = function(e, t, i) {
-    var s, o, l;
-    return l = i.length, s = Math.atan2(t, -e), s = Math.round((s + 2 * Math.PI) / (2 * Math.PI) * l) % l, o = Math.sqrt(e * e + t * t), i[s] = Math.max(i[s], o)
-  }
+   var shapePoint = function(e, t, i) {
+     var s, o, l;
+     return l = i.length, s = Math.atan2(t, -e), s = Math.round((s + 2 * Math.PI) / (2 * Math.PI) * l) % l, o = Math.sqrt(e * e + t * t), i[s] = Math.max(i[s], o)
+   }
 
-  var getShape = function(obj,e) {
-    obj = new THREE.Geometry().fromBufferGeometry(obj.geometry);
-    var t, i, s, o, l, n, r, a, h, p, c, d, u, f, g, m, y, x;
-    for (null == e && (e = 50), u = [], s = l = 0, p = e - 1; 0 <= p ? l <= p : l >= p; s = 0 <= p ? ++l : --l) u[s] = 0;
-    for (c = obj.faces, n = 0, r = c.length; n < r; n++)
-    for (i = c[n], f = obj.vertices[i.a], g = obj.vertices[i.b], m = obj.vertices[i.c], s = a = 0; a <= 99; s = a += 1) t = s / 100, y = f.x * t + g.x * (1 - t), x = f.y * t + g.y * (1 - t), shapePoint(y, x, u), y = m.x * t + g.x * (1 - t), x = m.y * t + g.y * (1 - t), shapePoint(y, x, u), y = m.x * t + f.x * (1 - t), x = m.y * t + f.y * (1 - t), shapePoint(y, x, u);
-    return u.map(i=>parseFloat(i.toFixed(3)))
-  }
+   var getShape = function(obj,e) {
+     obj = new THREE.Geometry().fromBufferGeometry(obj.geometry);
+     var t, i, s, o, l, n, r, a, h, p, c, d, u, f, g, m, y, x;
+     for (null == e && (e = 50), u = [], s = l = 0, p = e - 1; 0 <= p ? l <= p : l >= p; s = 0 <= p ? ++l : --l) u[s] = 0;
+     for (c = obj.faces, n = 0, r = c.length; n < r; n++)
+     for (i = c[n], f = obj.vertices[i.a], g = obj.vertices[i.b], m = obj.vertices[i.c], s = a = 0; a <= 99; s = a += 1) t = s / 100, y = f.x * t + g.x * (1 - t), x = f.y * t + g.y * (1 - t), shapePoint(y, x, u), y = m.x * t + g.x * (1 - t), x = m.y * t + g.y * (1 - t), shapePoint(y, x, u), y = m.x * t + f.x * (1 - t), x = m.y * t + f.y * (1 - t), shapePoint(y, x, u);
+     return u.map(i=>parseFloat(i.toFixed(3)))
+   }
 
-  game.getObjectShapeFromURL = function(url) {
-    return new Promise(function (resolve, reject) {
-      try {
-        new THREE.OBJLoader().load(url, function (object) {
-          let result, st;
-          try { result = getShape(object.children[0]) } catch(e) { reject(new Error("Invalid 3D Object")); st = 1 }
-          if (!st) resolve(result)
-        },null,reject)
-      }
-      catch (e) {reject(e)}
-    })
-  }
-})();
+   game.getObjectShapeFromURL = function(url) {
+     return new Promise(function (resolve, reject) {
+       try {
+         new THREE.OBJLoader().load(url, function (object) {
+           let result, st;
+           try { result = getShape(object.children[0]) } catch(e) { reject(new Error("Invalid 3D Object")); st = 1 }
+           if (!st) resolve(result)
+         },null,reject)
+       }
+       catch (e) {reject(e)}
+     })
+   }
+
+   if (!game.custom.setObj_init) {
+
+     var setObj = game.setObject;
+
+     var setObject = function (obj) {
+       return game.setObject.old.call(game, obj)
+     }
+
+     game.setObject = function (obj) {
+       let synced = 0;
+       if (obj) {
+         let type = obj.type || {}
+         if (null != type.physics && null == type.physics.shape) {
+           synced = 1;
+           game.getObjectShapeFromURL(type.obj).then(function(data){
+             if (Array.isArray(data)) {
+               obj = JSON.parse(JSON.stringify(obj));
+               obj.type.physics.shape = data;
+             }
+             setObject(obj)
+           }).catch(function(e){setObject(obj)})
+         }
+       }
+       if (!synced) setObject(obj)
+     }
+
+     game.setObject.old = setObj;
+
+     game.custom.setObj_init = true;
+   }
+ })();
