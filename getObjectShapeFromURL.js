@@ -56,7 +56,7 @@ this.options = {
 
 /* Encapsuled part, Copy the rest of the code and paste it:
  * At the start of your mod code if you want to use the functions instantly/before mod started
- * At the end of your mod code if you only used in `this.tick` or/and `this.event`
+ * At the end of your mod code if you only use it in `this.tick` or/and `this.event`
  */
 ;(function(){
 
