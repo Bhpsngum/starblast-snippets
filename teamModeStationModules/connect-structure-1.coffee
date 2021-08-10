@@ -10,12 +10,12 @@ return model =
       y: 0
       z: 0
     position:
-      x: Array(21).fill(0)
-      y: Array(21).fill(0)
-      z: Array(21).fill(0)
-    width: Array(21).fill(20)
-    height: Array(21).fill(10)
-    texture: Array(21).fill(0).map(x = (d, e) => [1, 10][Number((e - 2) % 5 == 0)])
+      x: [0]
+      y: [0]
+      z: [0]
+    width: [20]
+    height: [10]
+    texture: [if (e - 2) % 5 == 0 then 10 else 1] for e in [0..20]
   bodies:
     bumpers:
       section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320]

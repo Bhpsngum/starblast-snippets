@@ -1,15 +1,17 @@
 description = 'Modify this string to regenerate the model'
 size = 1 << 30
-seed = Math.random()*size
+seed = Math.random() * size
 a = 13791
 b = 12345
-lOO0O = size - 1
-lOIll = 1 / size
-next = () =>
-  seed = (seed * a + b) & lOO0O
-  return seed * lOIll
-llOl0 = (l101O) =>
-  return Math.floor(next() * l101O)
+len = size - 1
+inversedLen = 1 / size
+next = () ->
+  seed = (seed * a + b) & len
+  return seed * inversedLen
+floor = (x) ->
+  return Math.floor(next() * x)
+floor(4)
+
 model =
   name: 'deposit-2'
   size: 0.5
@@ -71,7 +73,7 @@ model =
       texture: [4, 4, 10, 4, 63, 4]
 for i in [0..40] by 20
   for s in [-40..40] by 20
-    model.bodies["body" + i + s] =
+    model.bodies['body' + i + s] =
       section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320]
       offset:
           x: 1.2 * i
@@ -83,5 +85,6 @@ for i in [0..40] by 20
           z: [0, 0, 0, 0]
       width: [0, 8, 8, 0]
       height: [0, 8, 8, 0]
-      texture: [12, [1, 63][Number(next() < .3)] + llOl0(4), 12]
-return model;
+      texture: [12, if next() < 0.3 then 63 else 1 + floor(4), 12]
+
+return model

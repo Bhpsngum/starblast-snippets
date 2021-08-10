@@ -1,11 +1,19 @@
 description = 'Modify this string to regenerate the model'
 size = 1 << 30
-seed = Math.random()*size
+seed = Math.random() * size
 a = 13791
 b = 12345
 lOO0O = size - 1
 lOIll = 1 / size
-e = 1 + Math.floor(((seed * a + b) & lOO0O) * lOIll * 4)
+len = size - 1
+inversedLen = 1 / size
+next = () ->
+  seed = (seed * a + b) & len
+  return seed * inversedLen
+floor = (x) ->
+  return Math.floor(next() * x)
+e = 1 + floor(4)
+
 return model =
   name: 'end-structure-1'
   size: 0.5
@@ -18,12 +26,12 @@ return model =
       y: 0
       z: 0
     position:
-      x: Array(21).fill(0)
-      y: Array(21).fill(0)
-      z: Array(21).fill(0)
-    width: Array(21).fill(20)
-    height: Array(21).fill(10)
-    texture: Array(43).fill(0).map(x = (j, i) => [e, 10][Number((i - 2) % 5 == 0)])
+      x: [0]
+      y: [0]
+      z: [0]
+    width: [20]
+    height: [10]
+    texture: [if (i - 2) % 5 == 0 then 10 else e] for i in [0..42]
   bodies: main:
     angle: [0]
     section_segments: 12

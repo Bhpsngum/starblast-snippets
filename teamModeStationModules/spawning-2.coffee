@@ -3,9 +3,15 @@ size = 1 << 30
 seed = Math.random()*size
 a = 13791
 b = 12345
-lOO0O = size - 1
-lOIll = 1 / size
-e = 1 + Math.floor(((seed * a + b) & lOO0O) * lOIll * 3)
+len = size - 1
+inversedLen = 1 / size
+next = () ->
+  seed = (seed * a + b) & len
+  return seed * inversedLen
+floor = (x) ->
+  return Math.floor(next() * x)
+e = 1 + floor(3)
+
 return model =
   name: 'spawning-2'
   size: 0.5
@@ -18,12 +24,12 @@ return model =
       y: 0
       z: 0
     position:
-      x: Array(43).fill(0)
-      y: Array(43).fill(0)
-      z: Array(43).fill(0)
-    width: Array(43).fill(30)
-    height: Array(43).fill(15)
-    texture: Array(43).fill(0).map(x = (j, i) => [1, 10][Number(i%7 == 0)])
+      x: [0]
+      y: [0]
+      z: [0]
+    width: [30]
+    height: [15]
+    texture: [if i % 7 == 0 then 10 else 1] for i in [0..42]
   bodies: sphere:
     section_segments: 8
     offset:
@@ -31,12 +37,12 @@ return model =
       y: 0
       z: 0
     position:
-      x: Array(12).fill(0)
+      x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       y: [-160, -150, -100, -85, -70, -50, -20, 20, 50, 70, -50, -50]
       z: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     width: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0]
     height: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0]
-    texture: [6, 1, Array(6).fill(e), 1, 11, 12].flat()
+    texture: [6, 1, e, e, e, e, e, e, 1, 11, 12]
   wings:
     topjoin:
       offset:

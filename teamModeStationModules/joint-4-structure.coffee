@@ -3,16 +3,17 @@ size = 1 << 30
 seed = Math.random()*size
 a = 13791
 b = 12345
-lOO0O = size - 1
-lOIll = 1 / size
-next = () =>
-  seed = (seed * a + b) & lOO0O
-  return seed * lOIll
-llOl0 = (l101O) =>
-  return Math.floor(next() * l101O)
-i = 1 + llOl0(4)
+len = size - 1
+inversedLen = 1 / size
+next = () ->
+  seed = (seed * a + b) & len
+  return seed * inversedLen
+floor = (x) ->
+  return Math.floor(next() * x)
+i = 1 + floor(4)
+
 model =
-  name: "joint-4-structure",
+  name: 'joint-4-structure',
   size: 0.5,
   tori:
     main:
@@ -24,16 +25,16 @@ model =
         y: 0
         z: 0
       position:
-          x: Array(21).fill(0)
-          y: Array(21).fill(0)
-          z: Array(21).fill(0)
-      width: Array(21).fill(20)
-      height: Array(21).fill(10)
-      texture: Array(21).fill(0).map(x = (t, s) => [i, 10][Number((s - 2) % 5 == 0)])
+          x: [0]
+          y: [0]
+          z: [0]
+      width: [20]
+      height: [10]
+      texture: [if (s - 2) % 5 == 0 then 10 else i] for s in [0..20]
   bodies: {}
 for s in [0, 90]
-  a = llOl0(40)
-  model.bodies["body" + s] =
+  a = floor(40)
+  model.bodies['body' + s] =
     angle: [s],
     section_segments: 12
     offset:
@@ -46,4 +47,5 @@ for s in [0, 90]
     width: [0, 15, 16, 40 + i, 40 + i, 12, 10, 0]
     height: [0, 15, 16, 40 + i, 40 + i, 12, 10, 0]
     texture: [6, 12, 10, i, 10, 4, 6]
+
 return model

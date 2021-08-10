@@ -3,9 +3,15 @@ size = 1 << 30
 seed = Math.random()*size
 a = 13791
 b = 12345
-lOO0O = size - 1
-lOIll = 1 / size
-e = 1 + Math.floor(((seed * a + b) & lOO0O) * lOIll * 4)
+len = size - 1
+inversedLen = 1 / size
+next = () ->
+  seed = (seed * a + b) & len
+  return seed * inversedLen
+floor = (x) ->
+  return Math.floor(next() * x)
+e = 1 + floor(4)
+
 return model =
   name: 'joint-3-structure'
   size: 0.5

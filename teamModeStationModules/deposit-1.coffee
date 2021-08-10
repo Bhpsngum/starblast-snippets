@@ -11,11 +11,11 @@ return model =
         y: -40
         z: 0
       position:
-        x: Array(17).fill(0)
-        y: Array(17).fill(0)
-        z: Array(17).fill(0)
-      width: Array(17).fill(10)
-      height: Array(17).fill(10)
+        x: [0]
+        y: [0]
+        z: [0]
+      width: [10]
+      height: [10]
       texture: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 63, 63, 2]
     main2:
       radius: 60
@@ -26,11 +26,11 @@ return model =
         y: -70
         z: 0
       position:
-        x: Array(17).fill(0)
-        y: Array(17).fill(0)
-        z: Array(17).fill(0)
-      width: Array(17).fill(10)
-      height: Array(17).fill(10)
+        x: [0]
+        y: [0]
+        z: [0]
+      width: [10]
+      height: [10]
       texture: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 63, 2, 2, 63, 2]
   bodies:
     hook:
