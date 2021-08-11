@@ -36,7 +36,7 @@ this.tick = function(game)
   var manageAliens = function (game) {
     while (true) {
       let alien;
-      let alienRID = game.custom.execAliens.find(rID => (alien = game.aliens.find(a => a.id != -1 && a.request_id == rID.id, alien)));
+      let alienRID = game.custom.execAliens.find(rID => (alien = game.aliens.find(a => a.id != -1 && a.request_id == rID.id)));
       if (alienRID == null || alienRID.setKilled) return;
       alien.set({kill: true});
       alienRID.setKilled = true
