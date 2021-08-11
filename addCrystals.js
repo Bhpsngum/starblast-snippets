@@ -73,7 +73,7 @@ this.tick = function(game)
     }
 
     this.event = function (event, game) {
-      if (event.name != "alien_destroyed" || !game.custom.execAliens.find(e => e.id == (event.alien||{}).request_id)) return simulate("event", arguments)
+      if (event.name != "alien_destroyed" || !game.custom.execAliens.find(e => e.id === (event.alien||{}).request_id)) return simulate("event", arguments)
     }
   }.bind(this);
   checkClone()
