@@ -1,13 +1,10 @@
 /* Add a crystal drop field to the game - Encapsuled version
-
 To create a crystal drop, use game.addCrystal({ options })
 option         value
   x          X Coordinate
   y          Y Coordinate
 value        Crystal value
-
 RESTRICTIONS - Do not use the values/variables/components listing below in their particular contexts:
-
 Game properties:
   game.custom.addCrystal_init
   game.custom.execAliens
@@ -22,72 +19,61 @@ this.options = {
 
 this.tick = function(game)
 {
-  // do mod stuff here, see documentation
+  a = 1;
+  this.tick = null;
 }
 
 /* Encapsuled part - Don't modify anything! This MUST BE appended at the end of your mod code! */
 ;(function() {
-  var manageAliens = function (game) {
-    try {
-      if (game.custom.addCrystal_init) return;
-      var modding = game.modding, internal_key = Object.keys(modding).find(key => {
-        try {
-          return typeof modding[key].alienCreated == "function" && key != "game"
-        }
-        catch(e) {
-          return false
-        }
-      }), internals = modding[internal_key];
-      if (!internals.alienCreated.old) {
-        let alienCreated =  function () {
-          let args = arguments, tx = alienCreated.old.apply(this, args), t = args[0].request_id, alien = this.modding.game.findAlien(args[0].id);
-          if (this.modding.game.aliens.find(alien => alien.request_id === t) && alien) {
-            let tid = this.modding.game.custom.execAliens.indexOf(t);
-            if (tid != -1) alien.set({kill: true});
-          }
-          return tx;
-        }
-        alienCreated.old = internals.alienCreated;
-        internals.alienCreated = alienCreated;
-      }
-      if (!internals.eventReceived.old) {
-        let eventReceived =  function () {
-          let args = arguments, skipped;
-          try {
-            if (args[0].data.name == "alien_destroyed") skipped = this.modding.game.custom.execAliens.indexOf(this.modding.game.findAlien(args[0].data.alien).request_id) != -1
-          }
-          catch (e) {
-            skipped = false
-          }
-          let context = this.modding.context, event = context.event;
-          if (skipped) context.event = null;
-          let x =  eventReceived.old.apply(this, args);
-          context.event = event;
-          return x
-        }
-        eventReceived.old = internals.eventReceived;
-        internals.eventReceived = eventReceived;
-      }
-      game.custom.execAliens = [];
-      game.addCrystal = function(data)
-      {
-        data = data || {};
-        let crystal = {x:data.x||0, y:data.y||0, value: data.value||0,
-          toString: function(){return "Crystal:"+JSON.stringify(this)}
-        };
-        this.custom.execAliens.push(this.addAlien({code:13,x:crystal.x,y:crystal.y,crystal_drop:crystal.value}).request_id);
-        return crystal;
-      }
-      game.custom.addCrystal_init = true;
-    }
-    catch (e) {
-      console.error(e);
-      game.modding.terminal.error(new Error("Failed to initialize 'game.addCrystal': Modding instances not found"))
-    }
-  }, tick = this.tick;
-  this.tick = function () {
-    this.tick = tick;
-    try { manageAliens.apply(this, arguments) } catch (e) {}
-    return typeof this.tick == "function" && this.tick.apply(this, arguments)
+  if (game.custom.addCrystal_init) return;
+  var Crystal = function (data) {
+    data = Object.assign({}, data);
+    this.x = data.x;
+    this.y = data.y;
+    this.value = data.value;
   }
+  Crystal.prototype.toString = function(){return "Crystal:" + JSON.stringify(this)}
+  var manageAliens = function (game) {
+    while (true) {
+      let alienRID = game.custom.execAliens.find(rID => game.aliens.find(alien => alien.id != -1 && alien.request_id == rID.id));
+      if (alienRID == null || alienRID.setKilled) return;
+      game.findAlien(alienRID.id).set({kill: true});
+      alienRID.setKilled = true
+    }
+  }
+  game.custom.execAliens = [];
+  game.addCrystal = function(data)
+  {
+    data = Object.assign({}, data);
+    let alien = this.addAlien({code:13,x:data.x,y:data.y,crystal_drop:data.value});
+    this.custom.execAliens.push({id: alien.request_id});
+    return new Crystal({
+      x: alien.x,
+      y: alien.y,
+      value: alien.crystal_drop
+    })
+  }
+  game.custom.addCrystal_init = true;
+
+  var game_clone = Object.assign({}, this);
+  var simulate = function (name, args) {
+    let t = typeof game_clone[name] == "function" && game_clone[name].apply(game_clone, args);
+    try { checkClone() } catch(e){}
+    return t
+  }
+
+  var checkClone = function() {
+    for (let key of Object.keys(this)) delete this[key];
+    Object.assign(this, game_clone);
+
+    this.tick = function () {
+      try { manageAliens.apply(this, arguments) } catch(e){}
+      return simulate("tick", arguments)
+    }
+
+    this.event = function (event, game) {
+      if (event.name != "alien_destroyed" || !game.custom.execAliens.find(e => e.id == (event.alien||{}).request_id)) return simulate("event", arguments)
+    }
+  }.bind(this);
+  checkClone()
 }).call(this);
