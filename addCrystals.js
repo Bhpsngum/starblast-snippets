@@ -35,9 +35,10 @@ this.tick = function(game)
   Crystal.prototype.toString = function(){return "Crystal:" + JSON.stringify(this)}
   var manageAliens = function (game) {
     while (true) {
-      let alienRID = game.custom.execAliens.find(rID => game.aliens.find(alien => alien.id != -1 && alien.request_id == rID.id));
+      let alien;
+      let alienRID = game.custom.execAliens.find(rID => (alien = game.aliens.find(a => a.id != -1 && a.request_id == rID.id, alien)));
       if (alienRID == null || alienRID.setKilled) return;
-      game.findAlien(alienRID.id).set({kill: true});
+      alien.set({kill: true});
       alienRID.setKilled = true
     }
   }
