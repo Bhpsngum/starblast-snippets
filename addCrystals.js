@@ -19,7 +19,7 @@ this.options = {
 
 this.tick = function(game)
 {
-  game.step % 60 === 0 && game.addCrystal({amount:1})
+  // do mod stuff here, see documentation
 }
 
 /* Encapsuled part - Don't modify anything! This MUST BE appended at the end of your mod code! */
