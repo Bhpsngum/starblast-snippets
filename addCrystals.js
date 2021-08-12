@@ -3,7 +3,7 @@ To create a crystal drop, use game.addCrystal({ options })
 option         value
   x          X Coordinate
   y          Y Coordinate
-value        Crystal value
+amount      Crystal amount
 RESTRICTIONS - Do not use the values/variables/components listing below in their particular contexts:
 Game properties:
   game.custom.addCrystal_init
@@ -19,42 +19,50 @@ this.options = {
 
 this.tick = function(game)
 {
-  a = 1;
-  this.tick = null;
+  game.step % 60 === 0 && game.addCrystal({amount:1})
 }
 
 /* Encapsuled part - Don't modify anything! This MUST BE appended at the end of your mod code! */
 ;(function() {
-  if (game.custom.addCrystal_init) return;
+  if (!game.custom.addCrystal_init) {
+    game.custom.execAliens = [];
+    game.custom.addCrystal_init = true
+  }
+
   var Crystal = function (data) {
     data = Object.assign({}, data);
     this.x = data.x;
     this.y = data.y;
-    this.value = data.value;
+    this.amount = data.amount;
   }
   Crystal.prototype.toString = function(){return "Crystal:" + JSON.stringify(this)}
   var manageAliens = function (game) {
     while (true) {
       let alien;
-      let alienRID = game.custom.execAliens.find(rID => (alien = game.aliens.find(a => a.id != -1 && a.request_id == rID.id)));
-      if (alienRID == null || alienRID.setKilled) return;
+      let alienRID = game.custom.execAliens.find(rID => !rID.setKilled && (alien = game.aliens.find(a => a.id != -1 && a.request_id == rID.id)));
+      if (alienRID == null) return;
       alien.set({kill: true});
       alienRID.setKilled = true
     }
   }
-  game.custom.execAliens = [];
+
   game.addCrystal = function(data)
   {
     data = Object.assign({}, data);
-    let alien = this.addAlien({code:13,x:data.x,y:data.y,crystal_drop:data.value});
+    let alien = this.addAlien({
+      code: 13,
+      x: data.x,
+      y: data.y,
+      crystal_drop: data.amount,
+      points: 0
+    });
     this.custom.execAliens.push({id: alien.request_id});
     return new Crystal({
       x: alien.x,
       y: alien.y,
-      value: alien.crystal_drop
+      amount: alien.crystal_drop
     })
   }
-  game.custom.addCrystal_init = true;
 
   var game_clone = Object.assign({}, this);
   var simulate = function (name, args) {
