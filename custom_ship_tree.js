@@ -127,7 +127,7 @@ this.tick = function (game) {
       {
         try{
           let prs= JSON.parse(ship);
-          game.custom.shipTree.set(prs.typespec.code,{
+          game.custom.shipTree.set(prs.level * 100 + prs.model, {
             level: prs.level,
             next: prs.custom_next,
             name: prs.name,
@@ -177,7 +177,11 @@ this.tick = function (game) {
             }
           }
         }
-        else getSpec(ship).uType = null;
+        else {
+          getSpec(ship).uType = null;
+          clearComponentTimeout(ship,"hide");
+          hideUI(ship,true)
+        }
       }
     }
   }
