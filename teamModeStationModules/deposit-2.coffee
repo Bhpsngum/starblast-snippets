@@ -85,6 +85,6 @@ for i in [0..40] by 20
           z: [0, 0, 0, 0]
       width: [0, 8, 8, 0]
       height: [0, 8, 8, 0]
-      texture: [12, if next() < 0.3 then 63 else 1 + floor(4), 12]
+      texture: [12, (if next() < 0.3 then 63 else 1 + floor(4)), 12]
 
 return model
