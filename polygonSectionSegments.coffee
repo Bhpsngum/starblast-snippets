@@ -1,10 +1,10 @@
 # To someone who wants to build polygons with section segments, here it is:
 
 polygonSectionSegments = (sides, alpha) ->
-  alpha = alpha %% 360 or 0
   sides = Math.trunc(Math.max(sides, 1)) or 1
   angle = 360 / sides
-  return ((alpha + angle * i) %% 360 for i in [0...sides])
+  alpha = (alpha %% 360 or 0) % angle
+  return (alpha + angle * i for i in [0...sides])
 
 # Where:
 # `sides`: the number of sides in the polygon
