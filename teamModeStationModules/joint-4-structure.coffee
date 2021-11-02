@@ -1,6 +1,6 @@
 description = 'Modify this string to regenerate the model'
 size = 1 << 30
-seed = Math.random()*size
+seed = Math.random() * size
 a = 13791
 b = 12345
 len = size - 1
