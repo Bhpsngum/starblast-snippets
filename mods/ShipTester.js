@@ -235,21 +235,45 @@ this.event = function(event, game) {
   }
 
   let __init__ = function(game) {
-    let default_ships = (game.options.reset_tree)?[]:[
-      ,
-      [101],
-      [201, 202],
-      [301, 302, 303, 304],
-      [401, 402, 403, 404, 405, 406],
-      [501, 502, 503, 504, 505, 506, 507],
-      [601, 602, 603, 604, 605, 606, 607, 608],
-      [701, 702, 703, 704]
-    ]
-    let default_nexts = new Map(game.options.reset_tree?[]:[[302, [403, 404]]]);
+    let default_specs = [
+      [101, "Fly"],
+      [201, "Delta-Fighter"],
+      [202, "Trident"],
+      [301, "Pulse-Fighter"],
+      [302, "Side-Fighter", [403, 404]],
+      [303, "Shadow X-1"],
+      [304, "Y-Defender"],
+      [401, "Vanguard"],
+      [402, "Mercury"],
+      [403, "X-Warrior"],
+      [404, "Side-Interceptor"],
+      [405, "Pioneer"],
+      [406, "Crusader"],
+      [501, "U-Sniper"],
+      [502, "FuryStar"],
+      [503, "T-Warrior"],
+      [504, "Aetos"],
+      [505, "Shadow X-2"],
+      [506, "Howler"],
+      [507, "Bat-Defender"],
+      [601, "Advanced-Fighter"],
+      [602, "Scorpion"],
+      [603, "Marauder"],
+      [604, "Condor"],
+      [605, "A-Speedster"],
+      [606, "Rock-Tower"],
+      [607, "Barracuda"],
+      [608, "O-Defender"],
+      [701, "Odyssey"],
+      [702, "Shadow X-3"],
+      [703, "Bastion"],
+      [704, "Aries"]
+    ];
 
     let default_options = {
-      ships: default_ships,
-      nexts: default_nexts,
+      ships: game.options.reset_tree?[]:Array(8).fill(0).map((i,j) => default_specs.filter(s => Math.trunc(s[0] / 100) === j).map(i => i[0])),
+      nexts: new Map(game.options.reset_tree?[]:default_specs.filter(s => s[2]).map(i => [i[0], i[2]])),
+      names: new Map(game.options.reset_tree?[]:default_specs.map(i => [i[0], i[1]])),
       models: new Map()
     }
     game.custom.ships = default_options;
