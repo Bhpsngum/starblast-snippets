@@ -31,15 +31,37 @@ const Utils = {
 }
 
 const TrainingCoreModules = {
+  devices: ["PC/Tablet", "Gamepad", "Touch"],
+  box_ui: { type: "box", position:[0,0,100,100], stroke: "#FFF", width: 1 },
   toTick: function (sec) {
     return sec * 60
+  },
+  init: function (ship) {
+    ship.custom.stage = -1;
+    this.startNewStage(ship, game);
+    ship.setUIComponent({
+      id: "chooseDeviceText",
+      position: [3,30,15,5],
+      components: [
+        this.box_ui,
+        { type: "text", position: [15,0,70,100], color: "#FFF", value: "Change device:" }
+      ]
+    });
+    this.devices.forEach((ui, i) => ship.setUIComponent({
+      id: ui,
+      clickable: true,
+      position: [3 + i * 5, 35, 5, 5],
+      components: [
+        this.box_ui,
+        { type: "text", position: [15,0,70,100], color: "#FFF", value: ui }
+      ]
+    }))
   },
   tick: function (ship, game) {
     if (ship.custom.training_completed) return;
     if (!ship.custom.joined) {
       ship.custom.joined = true;
-      ship.custom.stage = -1;
-      this.startNewStage(ship, game)
+      this.init(ship)
     }
     let stage = this.stages[ship.custom.stage];
     if (stage == null) return;
@@ -57,7 +79,7 @@ const TrainingCoreModules = {
       stage.tick?.(ship, game);
       if (game.step - ship.custom.afk_time > this.toTick(this.messages.afk.interval)) {
         this.messages.sayRandom(ship, "afk");
-        this.messages.sayText(ship, stage.instructor_message);
+        this.messages.sayStageText(ship, stage);
         ship.custom.afk_time = game.step
       }
     }
@@ -83,7 +105,7 @@ const TrainingCoreModules = {
       ship.custom.stage_passed = false;
       ship.custom.passed_say_once = false;
       nextStage.init?.(ship, game);
-      this.messages.sayText(ship, nextStage.instructor_message);
+      this.messages.sayStageText(ship, nextStage);
     }
     else if (!ship.custom.passed_say_once) {
       this.messages.sayRandom(ship, "passed");
@@ -117,6 +139,12 @@ const TrainingCoreModules = {
       let messages = this[name]?.list;
       return messages?.[Utils.randomInt(messages.length)] || ""
     },
+    sayStageText: function (ship, stage) {
+      if (!ship.custom.stage_passed) {
+        let int = stage?.instructor_message;
+        this.sayText(ship, int?.[ship.custom.device] || int?.["default"])
+      }
+    },
     sayText: function (ship, message) {
       if (message) ship.instructorSays(message + "\n")
     },
@@ -128,7 +156,9 @@ const TrainingCoreModules = {
     {
       name: "Joined",
       show_name: false,
-      instructor_message: "",
+      instructor_message: {
+        default: ""
+      },
       introducing_duration: 2,
       passed_message: false,
       passed: function () {
@@ -141,7 +171,9 @@ const TrainingCoreModules = {
     {
       name: "Welcome",
       show_name: false,
-      instructor_message: "Welcome to your new unit, Commander. Here is your briefing.",
+      instructor_message: {
+        default: "Welcome to your new unit, Commander. Here is your briefing."
+      },
       introducing_duration: 5,
       passed_message: false,
       passed: function () {
@@ -157,8 +189,13 @@ const TrainingCoreModules = {
     {
       name: "Basic Controls",
       show_name: false,
-      instructor_message: "Press ←, ↓, → on your keyboard, move the mouse cursor, joystick on your touch screen or Left Stick on your Gamepad to steer the ship and aim.",
-      introducing_duration: 5,
+      instructor_message: {
+        default: "Move the mouse cursor to steer the ship and aim.",
+        "PC/Tablet": "Press ←, ↓, → on your keyboard or move the mouse cursor to steer the ship and aim.",
+        "Touch": "Move the joystick to steer the ship and aim.",
+        "Gamepad": "Move the Left Stick to steer the ship and aim."
+      },
+      introducing_duration: 2,
       passed_message: true,
       passed: function (ship) {
         return ship.custom.lastR != ship.r
@@ -173,8 +210,13 @@ const TrainingCoreModules = {
     {
       name: "Basic Controls",
       show_name: false,
-      instructor_message: "Guess what, this spaceship can shoot lasers. Click left mouse button, press SPACEBAR on your keyboard, Ⓐ on your gamepad or touch the button on the bottom right of your touch screen device to fire.",
-      introducing_duration: 5,
+      instructor_message: {
+        default: "Guess what, this spaceship can shoot lasers. Click left mouse button to fire.",
+        "PC/Tablet": "Guess what, this spaceship can shoot lasers. Click left mouse button or press SPACEBAR on your keyboard to fire",
+        "Gamepad": "Guess what, this spaceship can shoot lasers. Press Ⓐ on your gamepad to fire.",
+        "Touch": "Guess what, this spaceship can shoot lasers. Touch the button on the bottom right to fire."
+      },
+      introducing_duration: 2,
       passed_message: true,
       passed: function (ship) {
         return ship.custom.lastGenerator != ship.generator
@@ -189,8 +231,13 @@ const TrainingCoreModules = {
     {
       name: "Basic Controls",
       show_name: false,
-      instructor_message: "OK let’s move this wreck now. Click right mouse button, press ↑ on your keyboard, Right Trigger on your gamepad or touch and drag the joystick on your touch screen to accelerate.",
-      introducing_duration: 5,
+      instructor_message: {
+        default: "OK let’s move this wreck now. Click right mouse button to accelerate.",
+        "PC/Tablet": "OK let’s move this wreck now. Click right mouse button, press ↑ on your keyboard to accelerate.",
+        "Gamepad": "OK let’s move this wreck now. Press Right Trigger to accelerate.",
+        "Touch": "OK let’s move this wreck now. Touch and drag the joystick to accelerate. You can also touch the central button to both fire and accelerate."
+      },
+      introducing_duration: 2,
       passed_message: true,
       passed: function (ship) {
         return ship.custom.lastVx != ship.vx || ship.custom.lastVy != ship.vy
@@ -204,24 +251,13 @@ const TrainingCoreModules = {
       }
     },
     {
-      name: "Basic Controls",
+      name: "Upgrades",
       show_name: false,
-      instructor_message: "On touch devices, you can also touch the central button to both fire and accelerate.",
-      introducing_duration: 5,
-      passed_message: false,
-      passed: function () {
-        return true
+      instructor_message: {
+        default: "There's an asteroid somewhere in this map. Find and destroy it."
       },
-      needs_refill: function () {
-        return false
-      }
-    },
-    {
-      name: "Basic Controls",
-      show_name: false,
-      instructor_message: "There's an asteroid somewhere in this map. Find and destroy it.",
       introducing_duration: 0,
-      passed_message: true,
+      passed_message: false,
       asteroid_size: 40,
       passed: function (ship) {
         return !!ship.custom.stage_asteroid_destroyed
@@ -237,10 +273,72 @@ const TrainingCoreModules = {
         switch (event.name) {
           case "asteroid_destroyed": {
             let ship = event.killer;
-            if (ship != null) ship.custom.stage_asteroid_destroyed = true;
+            if (ship != null) {
+              let {x, y} = event.asteroid;
+              ship.custom.stage_asteroid_destroyed = true;
+              game.addAlien({code: 13, x, y, crystal_drop: 19})
+            }
             break;
           }
         }
+      }
+    },
+    {
+      name: "Upgrades",
+      show_name: false,
+      instructor_message: {
+        default: "Oh oh! gems. Collect them all!"
+      },
+      introducing_duration: 3,
+      passed_message: true,
+      init: function (ship) {
+        ship.set({stats: 11111111})
+      },
+      passed: function (ship) {
+        return ship.crystals > 5
+      },
+      needs_refill: function () {
+        return false
+      },
+      tick: function (ship, game) {
+        for (let alien of game.aliens) alien.set({kill: true})
+      }
+    },
+    {
+      name: "Upgrades",
+      show_name: false,
+      instructor_message: {
+        default: "This ship could really be improved, you know. You can use your gems for that."
+      },
+      introducing_duration: 3,
+      passed_message: false,
+      passed: function (ship) {
+        return true
+      },
+      needs_refill: function () {
+        return false
+      }
+    },
+    {
+      name: "Upgrades",
+      show_name: false,
+      instructor_message: {
+        default: "Upgrade any of your shield, firepower, damage or ship speed and agility...",
+        "Gamepad": "Upgrade any of your shield, firepower, damage or ship speed and agility... Use the D-Pad."
+      },
+      introducing_duration: 2,
+      passed_message: true,
+      init: function (ship) {
+        ship.set({stats: 0})
+      },
+      passed: function (ship) {
+        return ship.stats != 0
+      },
+      needs_refill: function (ship) {
+        return ship.crystals == 0
+      },
+      refill: function (ship) {
+        ship.set({crystals: 5})
       }
     }
   ]
@@ -255,6 +353,16 @@ this.event = function (event, game) {
       case "ship_destroyed": {
         let ship = event.ship;
         if (ship != null) TrainingCoreModules.messages.sayText(ship, "Come on! Losing your ship isn't a big deal, you will be able to respawn and continue playing.");
+        break;
+      }
+      case "ui_component_clicked": {
+        let ship = event.ship;
+        if (ship != null) {
+          if (TrainingCoreModules.devices.indexOf(event.id) != -1) {
+            ship.custom.device = event.id;
+            TrainingCoreModules.messages.sayStageText(ship, TrainingCoreModules.stages[ship.custom.stage])
+          }
+        }
         break;
       }
       default:
