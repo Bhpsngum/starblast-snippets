@@ -276,7 +276,7 @@ const TrainingCoreModules = {
             if (ship != null) {
               let {x, y} = event.asteroid;
               ship.custom.stage_asteroid_destroyed = true;
-              game.addAlien({code: 13, x, y, crystal_drop: 19})
+              game.addAlien({code: 13, x, y, crystal_drop: 20, points: 0})
             }
             break;
           }
@@ -291,17 +291,28 @@ const TrainingCoreModules = {
       },
       introducing_duration: 3,
       passed_message: true,
+      asteroid_size: 40,
       init: function (ship) {
         ship.set({stats: 11111111})
       },
       passed: function (ship) {
-        return ship.crystals > 5
+        return ship.crystals > 0
       },
-      needs_refill: function () {
-        return false
+      needs_refill: function (ship, game) {
+        return game.asteroids.length == 0
+      },
+      refill: function (ship, game) {
+        let size = game.options.map_size * 5;
+        game.addAsteroid({size: this.asteroid_size, x: Utils.randomInt(size) - size, y: Utils.randomInt(size) - size})
       },
       tick: function (ship, game) {
-        for (let alien of game.aliens) alien.set({kill: true})
+        for (let alien of game.aliens) alien.set({kill: true});
+        if (ship.type != ship.custom.lastType && ship.type != 101) ship.set({
+          type: 101,
+          crystals: ship.custom.lastCrystals
+        })
+        ship.custom.lastCrystals = ship.crystals;
+        ship.custom.lastType = ship.type
       }
     },
     {
@@ -317,6 +328,9 @@ const TrainingCoreModules = {
       },
       needs_refill: function () {
         return false
+      },
+      tick: function (ship, game) {
+        for (let alien of game.aliens) alien.set({kill: true});
       }
     },
     {
@@ -329,7 +343,8 @@ const TrainingCoreModules = {
       introducing_duration: 2,
       passed_message: true,
       init: function (ship) {
-        ship.set({stats: 0})
+        ship.set({stats: 0});
+        if (ship.crystals < 5) ship.set({crystals: 5})
       },
       passed: function (ship) {
         return ship.stats != 0
@@ -339,6 +354,9 @@ const TrainingCoreModules = {
       },
       refill: function (ship) {
         ship.set({crystals: 5})
+      },
+      tick: function (ship, game) {
+        for (let alien of game.aliens) alien.set({kill: true});
       }
     }
   ]
