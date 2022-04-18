@@ -18,7 +18,7 @@ COMMENTS:
 
 Alternatively, you can either use `ship.set({team: []})` or `ship.set({team: ""})` to assign them to ghost team as well.
 But since their type is different from team id, which is a number, they might be changes that fixes it in the future first and they won't work anymore.
-Anyway, use them at your risk if you still want to do so :D
+Anyway, use them at your own risk if you still want to do so :D
 */
 
 /* Copy the code from the line to the rest and then append it to your code */
