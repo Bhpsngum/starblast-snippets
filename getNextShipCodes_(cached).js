@@ -122,6 +122,6 @@ Enjoy! :)
   this.tick = function() {
     try { !internals && __init__.apply(this, arguments) } catch(e){}
     this.tick = tick;
-    return typeof tick == "function" && tick.apply(game_clone, arguments)
+    return typeof tick == "function" && tick.apply(this, arguments)
   }
 }).call(this);
