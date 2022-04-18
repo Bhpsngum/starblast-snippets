@@ -66,7 +66,7 @@ Anyway, use them at your risk if you still want to do so :D
   let tick = this.tick;
 
   this.tick = function() {
-    try { game.options.friendly_colors > 0 && __init__.apply(this, arguments) } catch(e){}
+    try { game.options.root_mode != "team" && game.options.friendly_colors > 0 && __init__.apply(this, arguments) } catch(e){}
     this.tick = tick;
     return typeof tick == "function" && tick.apply(this, arguments)
   }
