@@ -6,8 +6,8 @@ option         value
 amount      Crystal amount
 RESTRICTIONS - Do not use the values/variables/components listing below in their particular contexts:
 Game properties:
-  game.custom.addCrystal_init
-  game.custom.execAliens
+  game.custom.__addCrystal_init__
+  game.custom.__execAliens__
 */
 
 /* Usual Modding code */
@@ -22,11 +22,13 @@ this.tick = function(game)
   // do mod stuff here, see documentation
 }
 
+this.event = e => echo(e.name)
+
 /* Encapsuled part - Don't modify anything! This MUST BE appended at the end of your mod code! */
 ;(function() {
-  if (!game.custom.addCrystal_init) {
-    game.custom.execAliens = [];
-    game.custom.addCrystal_init = true
+  if (!game.custom.__addCrystal_init__) {
+    game.custom.__execAliens__ = [];
+    game.custom.__addCrystal_init__ = true
   }
 
   var Crystal = function (data) {
@@ -39,7 +41,7 @@ this.tick = function(game)
   var manageAliens = function (game) {
     while (true) {
       let alien;
-      let alienRID = game.custom.execAliens.find(rID => !rID.setKilled && (alien = game.aliens.find(a => a.id != -1 && a.request_id == rID.id)));
+      let alienRID = game.custom.__execAliens__.find(rID => !rID.setKilled && (alien = game.aliens.find(a => a.id != -1 && a.request_id == rID.id)));
       if (alienRID == null) return;
       alien.set({kill: true});
       alienRID.setKilled = true
@@ -56,7 +58,7 @@ this.tick = function(game)
       crystal_drop: data.amount,
       points: 0
     });
-    this.custom.execAliens.push({id: alien.request_id});
+    this.custom.__execAliens__.push({id: alien.request_id});
     return new Crystal({
       x: alien.x,
       y: alien.y,
@@ -81,7 +83,7 @@ this.tick = function(game)
     }
 
     this.event = function (event, game) {
-      if (event.name != "alien_destroyed" || !game.custom.execAliens.find(e => e.id === (event.alien||{}).request_id)) return simulate("event", arguments)
+      if (event.name != "alien_destroyed" || !game.custom.__execAliens__.find(e => e.id === (event.alien||{}).request_id)) return simulate("event", arguments)
     }
   }.bind(this);
   checkClone()
