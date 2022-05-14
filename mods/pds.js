@@ -1428,6 +1428,7 @@ const adminFuncs = {
 }
 this.event = function (event, game) {
   const { ship, name, id } = event;
+  if (ship == null) return;
   const { ships, step, aliens, asteroids } = game;
   let { layout, warpIndex, admin, options, isTimeout, page, shiptree: _shiptree, shiptree_pos } = ship.custom;
   switch (name) {
