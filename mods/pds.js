@@ -7,25 +7,21 @@
     }
     gameCommands.admin = function (command) {
       const ship = findShip(command); if (!ship) return;
-      ship.custom.weapons = ship.custom.admin = !ship.custom.admin;
+      ship.custom.admin = !ship.custom.admin;
       if (ship.custom.options && ship.custom.page !== 'info') mainPages.getUI(ship.custom.layout, 'admin').display(ship);
-      echo(`${ship.name}(${ship.id}) have been ${ship.custom.admin ? 'promoted' : 'demoted'} to Admin.`)
+      echo(`${ship.name}(${ship.id}) was ${ship.custom.admin ? 'promoted to' : 'demoted from'} Admin.`)
     }
     gameCommands.player_list = function () {
       echo("\nList of players(ids) and their data:");
       if (game.ships.length >= 1) for (let ship of game.ships) echo(`${ship.id}: ${ship.name}`);
     }
-    gameCommands.weapons = function (command) {
-      const ship = findShip(command); if (ship) weapons(ship); else return;
-      echo(`${ship.name}(${ship.id}) have been ${ship.custom.weapons ? 'given permission' : 'remove permission'} to use weapons.`)
-    }
     gameCommands.timeout = function (command) {
       const ship = findShip(command); if (ship) timeout(ship); else return;
-      echo(`${ship.name}(${ship.id}) have been timeouted.`);
+      echo(`${ship.name}(${ship.id}) was timed out.`);
     }
     gameCommands.kick = function (command) {
       const ship = findShip(command); if (ship) kick(ship); else return;
-      echo(`${ship.name}(${ship.id}) have been kick.`);
+      echo(`${ship.name}(${ship.id}) was kicked.`);
     };
     gameCommands.announce = command => game.ships.forEach(ship => announcement(ship, command.split(' ').slice(1).join(' ')))
     gameCommands.entities_clear = () => entities_clear(game);
@@ -947,7 +943,7 @@ this.options = {
   starting_ship_maxed: true,
   asteroids_strength: 10,
   crystal_value: 0,
-  weapons_store: true,
+  weapons_store: false,
   map_name: "Dueling",
   max_level: 8,
   soundtrack: "argon.mp3",
@@ -965,7 +961,6 @@ const spectatorType = SHIP.init.spectate[0].typespec.code, btn_cooldown = 20, ma
 const kick = ship => ship.gameover({ "": "" });
 const players_clear = ships => ships.forEach(ship => !ship.custom.admin && ship.set({ kill: true }));
 const entities_clear = (aliens, asteroids) => [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true }));
-const weapons = ship => announcement(ship, `You was ${(ship.custom.weapons = !ship.custom.weapons) ? 'given permission' : 'taken permission'} to use weapons in the mod.`)
 const isCooldown = (ship, step) => step <= ship.custom.clicked || !(ship.custom.clicked = step + btn_cooldown);
 function timeout(ship) {
   ship.custom.isTimeout = !ship.custom.isTimeout;
@@ -975,12 +970,12 @@ function timeout(ship) {
     if (ship.custom.options) displayOptionScreen(ship, ship.custom.layout);
     if (ship.custom.page === 'shiptree') pages.shiptree.hide(ship, ship.custom.layout);
     [hideScreen, defaultScreen].forEach(_ => _.hideAll(ship, ship.custom.layout));
-    return announcement(ship, 'You was putted in timeout.');
+    return announcement(ship, 'You were put in timeout.');
   }
   ship.set({ idle: false, collider: true, ...SHIP.getEvent('reset', ship.custom.shiptree) })
   ship.setUIComponent({ id: 'timeout_ui', position: [0, 0, 0, 0], clickable: false })
   defaultScreen.displayAll(ship, ship.custom.layout);
-  announcement(ship, 'Your timeout have been removed.');
+  announcement(ship, 'Your timeout has been removed.');
 }
 class GRIDS {
   constructor([x = 0, y = 0, width = 100, height = 100], prefix = 'x') {
@@ -1077,16 +1072,14 @@ const adminDesigns = {
       { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(0,0,0,0.8)', stroke: 'rgb(255,255,255)', width: 2 },
       { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
       { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' },
-      { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-      { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+      { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
     ]
   }, active(ship, fontSize = 60) {
     return [
       { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(0,0,0,0.8)', stroke: 'rgb(255,255,255)', width: 2 },
       { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
       { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(100,100,100)' },
-      { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-      { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+      { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
     ]
   }
 }
@@ -1190,7 +1183,7 @@ const { globalAdminFuncs, playerFuncs, playerList } = function () {
   playerList.addMargin('full', 2, 12);
 
   const playerFuncs = new LIST_UI(layout.mergeCell([5, 1], [4, 0, 1, 1]))
-  playerFuncs.addUI('full', [1, 10], ...['kick', 'timeout', 'teleport', 'weapons', 'deselect'].map(id => ({ id, clickable, components: simpleDesign(id) })))
+  playerFuncs.addUI('full', [1, 10], ...['kick', 'timeout', 'teleport', 'deselect'].map(id => ({ id, clickable, components: simpleDesign(id) })))
   playerFuncs.addMargin('full', 3, 20);
 
   const globalAdminFuncs = new LIST_UI(grids.mergeCell([1, 3], [0, 2, 1, 1]));
@@ -1250,7 +1243,7 @@ const modInfo = function () { }();
 
 function init(ship) {
   if (ship.custom.init) return;
-  ship.custom = { init: true, options: false, weapons: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla', shiptree_pos: {} }
+  ship.custom = { init: true, options: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla', shiptree_pos: {} }
   Object.keys(SHIP.init).forEach(i => ship.custom.shiptree_pos[i] = 0);
   // map_position, page, type, selectedShip, x, y, warpIndex, dataType
   defaultScreen.displayAll(ship, ship.custom.layout);
@@ -1269,8 +1262,7 @@ this.tick = function (game) {
   if (game.step % 30 === 0) {
     game.ships.forEach((ship, _, ships) => {
       init(ship);
-      const { admin, layout, page, weapons, options } = ship.custom;
-      !weapons && ship.emptyWeapons()
+      const { admin, layout, page, options } = ship.custom;
       if (options) switch (page) {
         case 'map':
           radar.setDesign('default', ship_radar(ship, ships, 1.5));
@@ -1421,7 +1413,6 @@ function changeShiptree(ship, shiptree) {
 }
 const adminFuncs = {
   kick: ship => kick(ship.custom.selectedShip),
-  weapons: ship => weapons(ship.custom.selectedShip),
   teleport: ship => ship.custom.selectedShip.set({ x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy }),
   deselect: ship => delete ship.custom.selectedShip,
   timeout: ship => timeout(ship.custom.selectedShip)
@@ -1434,7 +1425,7 @@ this.event = function (event, game) {
   switch (name) {
     case 'ui_component_clicked':
       if ((id.includes(adminPrefix) || playerFuncs.getLayout(layout).concat(globalAdminFuncs.getLayout(layout)).some(ui => ui.id === id)) && !admin) return;
-      if (!isTimeout && !admin && !['move_right', 'move_left'].includes(id) && isCooldown(ship, step)) return announcement(ship, 'Click slow down!');
+      if (!isTimeout && !admin && !['move_right', 'move_left'].includes(id) && isCooldown(ship, step)) return announcement(ship, 'Hold up, click slowly!');
       if (ship.type === spectatorType) {
         if (['stats', 'restore'].includes(id)) return;
         if (['reset', 'next', 'previous'].includes(id)) ship.set({ vx: 0, vy: 0 });
@@ -1525,7 +1516,6 @@ this.event = function (event, game) {
           break;
         case 'timeout':
         case 'kick':
-        case 'weapons':
         case 'teleport':
         case 'deselect':
           adminFuncs[id](ship);
