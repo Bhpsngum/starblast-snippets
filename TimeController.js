@@ -1,4 +1,4 @@
-/* TIME CONTROLLER - using setInterval and setTimeout in sync with game */
+/* TIME CONTROLLER - using Intervals and Timeouts in sync with game */
 
 /* Copy paste part - Copy this part below and paste to THE START of your code */
 class TimeController {
@@ -8,8 +8,8 @@ class TimeController {
       this.#game = game;
       let tick = game.tick;
       let _this = this, sampleFunction = function (...args) {
-        _this.#runJobs();
         try { tick?.call(this, ...args) } catch (e) { console.error(e) }
+        _this.#runJobs()
       }
       Object.defineProperty(game, '_timeControllerUnitInstance', {value: this});
       Object.defineProperty(game, 'tick', {
@@ -50,7 +50,7 @@ class TimeController {
         let job = this.#jobs[i];
         if (job.finish <= this.#game.step) {
           try {
-            job.f(...job.args);
+            "string" == typeof job.f ? eval(job.f) : job.f(...job.args);
             this.#removeJob(i);
           }
           catch (e) {
