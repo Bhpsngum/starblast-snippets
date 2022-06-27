@@ -1531,7 +1531,6 @@ this.event = function (event, game) {
             if (_ = game.findShip(playerList.getUI(layout, id).custom.id)) ship.custom.selectedShip = _;
             return displayPlayerList(ship, ships);
           }
-          console.log(id);
       }
       break;
     case 'ship_destroyed':
