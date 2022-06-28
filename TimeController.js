@@ -1,7 +1,7 @@
 /* TIME CONTROLLER - using Intervals and Timeouts in sync with game */
 
 /* Copy paste part - Copy this part below and paste to THE START of your code */
-class TimeController {
+/* TimeController = */ class TimeController {
   #unit = class TimeControllerUnit {
     constructor (game) {
       if (game?.tick == null) throw new Error("Could not initialize TimeControl on 'game': No tick function found");
@@ -11,7 +11,7 @@ class TimeController {
         try { tick?.call(this, ...args) } catch (e) { console.error(e) }
         _this.#runJobs()
       }
-      Object.defineProperty(game, '_timeControllerUnitInstance', {value: this});
+      Object.defineProperty(game, '_timeControllerUnitInstance', { value: this });
       Object.defineProperty(game, 'tick', {
         set (value) { },
         get () { return sampleFunction }
@@ -21,18 +21,18 @@ class TimeController {
     #game;
     #jobs = [];
     #id_pool = 0;
-    #beforeTick = true;
 
     #addJob (f, time, repeat, args) {
       time = Math.round(Math.max(0, time)) || 0;
-      this.#jobs.push({f, time, finish: game.step + time, repeat, args, id: ++this.#id_pool});
+      this.#jobs.push({ f, time, finish: Math.max(game.step, 0) + time, repeat, args, id: ++this.#id_pool });
       return this.#id_pool
     }
 
     #removeJob (i) {
       let job = this.#jobs[i];
-      if (job.repeat) job.finish += job.time;
-      else this.#jobs.splice(i, 1)
+      if (!job.repeat) return this.#jobs.splice(i, 1), --i;
+      job.finish += job.time;
+      return i
     }
 
     #clearJob (id) {
@@ -50,23 +50,27 @@ class TimeController {
         let job = this.#jobs[i];
         if (job.finish <= this.#game.step) {
           try {
-            "string" == typeof job.f ? eval(job.f) : job.f(...job.args);
-            this.#removeJob(i);
+            "string" == typeof job.f ? eval(job.f) : job.f?.(...job.args)
           }
           catch (e) {
-            this.#removeJob(i);
+            i = this.#removeJob(i);
             console.error(e)
           }
+          i = this.#removeJob(i)
         }
       }
     }
 
     setTimeout (f, time, ...args) {
-      return this.#addJob(f, time, false, args, null)
+      return this.#addJob(f, time, false, args)
     }
 
     setInterval (f, time, ...args) {
-      return this.#addJob(f, time, true, args, null)
+      return this.#addJob(f, time, true, args)
+    }
+
+    setImmediate (f, ...args) {
+      return this.#addJob(f, 0, false, args)
     }
 
     clearTimeout (id) {
@@ -74,6 +78,10 @@ class TimeController {
     }
 
     clearInterval (id) {
+      this.#clearJob(id)
+    }
+
+    clearImmediate (id) {
       this.#clearJob(id)
     }
   }
@@ -91,7 +99,7 @@ time_control = new TimeController(): create a new TimeController instance, which
 
 time_control.get(game): returns a special TimeControllerUnit object that's made unique for the specified `game` object
 
-within that object, you can use its method `setTimeout`, `setInterval`, `clearTimeout`, `clearInterval` like usual,
+within that object, you can use its method `setTimeout`, `setInterval`, `setImmediate`, `clearTimeout`, `clearInterval`, `clearImmediate` like usual,
 with an exception that time unit will be `game tick` (1 second = 60 game ticks) instead of `ms`
 
 */
