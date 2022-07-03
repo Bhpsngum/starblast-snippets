@@ -19,44 +19,35 @@
     }
 
     #game;
-    #jobs = [];
+    #jobs = new Map();
     #id_pool = 0;
 
     #addJob (f, time, repeat, args) {
       time = Math.round(Math.max(0, time)) || 0;
-      this.#jobs.push({ f, time, finish: Math.max(game.step, 0) + time, repeat, args, id: ++this.#id_pool });
-      return this.#id_pool
+      let id = ++this.#id_pool;
+      this.#jobs.set(id, { f, time, finish: Math.max(game.step, 0) + time, repeat, args, id });
+      return id
     }
 
-    #removeJob (i) {
-      let job = this.#jobs[i];
-      if (!job.repeat) return this.#jobs.splice(i, 1), --i;
-      job.finish += job.time;
-      return i
-    }
-
-    #clearJob (id) {
-      for (let i = 0; i < this.#jobs.length; ++i) {
-        let job = this.#jobs[i];
-        if (job.id === id) {
-          this.#jobs.splice(i, 1);
-          return
-        }
-      }
+    #clearJob (id, forceRemove) {
+      let job = this.#jobs.get(id);
+      if (!job) return;
+      if (job.repeat && !forceRemove) return job.finish += job.time;
+      return this.#jobs.delete(id);
     }
 
     #runJobs () {
-      for (let i = 0; i < this.#jobs.length; ++i) {
-        let job = this.#jobs[i];
+      for (let entries of this.#jobs) {
+        let job = entries[1];
         if (job.finish <= this.#game.step) {
           try {
-            "string" == typeof job.f ? eval(job.f) : job.f?.(...job.args)
+            ("string" == typeof job.f ? new Function(job.f) : job.f)?.call?.(this.#game, ...job.args)
           }
           catch (e) {
-            i = this.#removeJob(i);
+            this.#clearJob(job.id, false);
             console.error(e)
           }
-          i = this.#removeJob(i)
+          this.#clearJob(job.id, false)
         }
       }
     }
@@ -74,15 +65,15 @@
     }
 
     clearTimeout (id) {
-      this.#clearJob(id)
+      this.#clearJob(id, true)
     }
 
     clearInterval (id) {
-      this.#clearJob(id)
+      this.#clearJob(id, true)
     }
 
     clearImmediate (id) {
-      this.#clearJob(id)
+      this.#clearJob(id, true)
     }
   }
 
@@ -98,6 +89,7 @@
 time_control = new TimeController(): create a new TimeController instance, which has methods described below
 
 time_control.get(game): returns a special TimeControllerUnit object that's made unique for the specified `game` object
+Please note that all functions running in that timer will be bound to the assigned game object by default.
 
 within that object, you can use its method `setTimeout`, `setInterval`, `setImmediate`, `clearTimeout`, `clearInterval`, `clearImmediate` like usual,
 with an exception that time unit will be `game tick` (1 second = 60 game ticks) instead of `ms`
