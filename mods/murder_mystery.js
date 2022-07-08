@@ -1,10 +1,10 @@
 /* Editable fields */
-var energy_delay = 1; // Delay between each item spawns (in seconds)
+var energy_delay = 0.5; // Delay between each item spawns (in seconds)
 var items_required = 3; // Item needs to be collected to earn one shot
 var detective_reload_time = 10; // Delay between each detective's shots
 var player_laser_speed = 300; // Speed of each player's shots (execpt murderers)
 var murderer_reload_time = 5; // Delay between each murderer's shots
-var waiting_time = 10; //waiting time when server get enough players (in seconds)
+var waiting_time = 30; //waiting time when server get enough players (in seconds)
 var game_duration = 20; // duration of the game (in minutes)
 var regen_factor = false; // regen factor of the players (inlcuding murderers)
 /* End of editable fields */
@@ -62,16 +62,19 @@ var Ghost_104 = '{"name":"Ghost","level":1,"model":4,"size":0.025,"zoom":0.075,"
 var roles = [
   {
     name: "Murderer",
+    isMurderer: true,
     description: "Kill all detectives and innocents to win the game!",
     percentage: 20
   },
   {
     name: "Detective",
+    isMurderer: false,
     description: "Find and kill all the murderers!",
     percentage: 20
   },
   {
     name: "Innocent",
+    isMurderer: false,
     description: "Collect "+items_required+" energy refills to have a chance to kill the murderers!",
     percentage: 40
   }
@@ -463,7 +466,10 @@ this.event = function(event, game) {
     case "ship_destroyed":
       let kil = event.killer,killer = kil?(kil.name||"Unknown"):"", message = "You've "+(killer?"been killed by":"killed yourself"), sc = {};
       sc[message] = killer;
-      if (kil && roles[((kil||{}).custom||{}).role]) kil.custom.frags[kil.custom.role]++;
+      if (kil && roles[((kil||{}).custom||{}).role]) {
+        if (!roles[kil.custom.role].isMurderer) kil.set({kill: true});
+        else kil.custom.frags[kil.custom.role]++
+      }
       ship.custom.role = null;
       ship.set({type: 104, collider: false});
       ship.custom.pstats = sc;
