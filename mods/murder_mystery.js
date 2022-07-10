@@ -43,7 +43,7 @@ var specs = JSON.stringify({
 }, laser = JSON.stringify({
   damage: [capacity,capacity],
   speed: [player_laser_speed, player_laser_speed],
-  rate: 1,
+  rate: 0.5,
   type: 2,
   recoil: 0,
   number: 1,
@@ -64,58 +64,69 @@ var roles = [
     name: "Murderer",
     isMurderer: true,
     description: "Kill all detectives and innocents to win the game!",
-    percentage: 20
+    percentage: 20,
+    modifier: function (ship) {
+      let t = capacity/murderer_reload_time, g = capacity+100;
+      ship.specs.generator = {
+        capacity: [g,g],
+        reload: [t,t]
+      }
+    },
+    lasers: function (ship) {
+      Object.assign(ship.specs.ship,dash);
+      let h = new Array(2).fill(Number.MIN_VALUE);
+      ship.bodies.body.laser.speed = h;
+      ship.typespec.lasers[0].speed = h
+    }
   },
   {
     name: "Detective",
     isMurderer: false,
     description: "Find and kill all the murderers!",
-    percentage: 20
+    percentage: 20,
+    modifier: function (ship) {
+      let t = capacity/detective_reload_time;
+      ship.specs.generator.reload = [t,t];
+    }
   },
   {
     name: "Innocent",
     isMurderer: false,
     description: "Collect "+items_required+" energy refills to have a chance to kill the murderers!",
-    percentage: 40
+    percentage: 40,
+    modifier: function (ship) {
+      ship.specs.generator = {
+        reload: new Array(2).fill(Number.MIN_VALUE),
+        capacity: new Array(2).fill(Number.MAX_VALUE)
+      }
+    }
   }
 ]
 var getRole = function(id) {
   return (roles[id]||{}).name||"Ghost";
 }
+let start = 0;
 var ships = Array(roles.length).fill(0).map((v,i) => {
   let pship = JSON.parse(Template);
   mod(pship, function(ship){
     ship.name = getRole(i);
     ship.level = 1;
-    ship.model = i+1;
+    ship.model = ++start;
     Object.assign(ship,JSON.parse(specs));
   });
   pship.typespec.code = pship.level * 100 + pship.model;
   pship.bodies.body.laser = JSON.parse(laser);
   Object.assign(pship.typespec.lasers[0], JSON.parse(laser));
+  let shipRole = roles[(pship.model - 1) % 3] || {};
+  mod(pship, function (ship) {
+    let resolver = shipRole.modifier;
+    if ("function" == typeof resolver) resolver(ship)
+  });
+
+  let laserChange = shipRole.lasers;
+  if ("function" == typeof laserChange) laserChange(pship);
   return pship
 });
-
-mod(ships[2], function(ship){
-  ship.specs.generator.reload = [1e-30,1e-30]
-});
-
-mod(ships[1], function(ship){
-  let t = capacity/detective_reload_time;
-  ship.specs.generator.reload = [t,t];
-});
-
-mod(ships[0], function(ship){
-  let t = capacity/murderer_reload_time, g = capacity+100;
-  ship.specs.generator = {
-    capacity: [g,g],
-    reload: [t,t]
-  }
-  Object.assign(ship.specs.ship,dash);
-});
-let h = [1e-30, 1e-30];
-ships[0].bodies.body.laser.speed = h;
-ships[0].typespec.lasers[0].speed = h;
 
 ships = ships.map(ship=>JSON.stringify(ship));
 ships.push(Ghost_104);
@@ -331,7 +342,7 @@ this.options = {
   map_size: 200,
   asteroids_strength: 1e6,
   crystal_value: 0,
-  radar_zoom: 200*2,
+  radar_zoom: 0.99,
   auto_refill: true,
   shield_regen_factor: regen_factor===false?shield/20:regen_factor,
   lives: 0,
@@ -372,8 +383,9 @@ var setStats = function(ship) {
     visible: true,
     components: [
       "Role: "+getRole(ship.custom.role),
-      "Time left: "+FormatTime(game_time)
-    ].flat().map((j,i) => ({type: "text",position:[0,33*i,80,33],value:j,color:dfl_tcl}))
+      "Time left: "+FormatTime(game_time),
+      ship.custom.role == 2 ? `Chances: ${Math.trunc(ship.generator / capacity)}` : ""
+    ].flat().map((j,i) => ({type: "text",position:[0,25*i,80,25],value:j,color:dfl_tcl}))
   });
 }
 var game_players = Array(roles.length).fill(0), game_time;
@@ -468,7 +480,7 @@ this.event = function(event, game) {
       sc[message] = killer;
       if (kil && roles[((kil||{}).custom||{}).role]) {
         if (!roles[kil.custom.role].isMurderer) kil.set({kill: true});
-        else kil.custom.frags[kil.custom.role]++
+        kil.custom.frags[ship.custom.role]++
       }
       ship.custom.role = null;
       ship.set({type: 104, collider: false});
