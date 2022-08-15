@@ -13,7 +13,11 @@
   /* WARNING
   This is NOT a snippet script designed for Modding, therefore it won't work in Modding, you can skip this script and go exploring others :)
 
+  Shortcut:
+  * Ctrl + Shift + M (all OS) to open import prompt
+
   Required:
+  * ES6 or higher
   * Support fetch() function
   */
 
@@ -142,15 +146,17 @@
         let data = JSON.parse(await (await window.fetch(URL)).text());
         for (let i of data.data) this.set(i.generate,i.type, i.id, true);
         this.update();
-        console.log("Imported modules from preset '" + (data.name || "Unknown") + "' by " + (data.author || "Anonymous") + ".")
+        console.log("[CustomStationModulesLoader] Imported modules from preset '" + (data.name || "Unknown") + "' by " + (data.author || "Anonymous") + ".");
+        return true
       }
       catch (e) {
-        console.error("Failed to import the module. Caught error:", e);
-        this.reset()
+        console.error("[CustomStationModulesLoader] Failed to import the module. Caught error:", e);
+        this.reset();
+        return false
       }
     },
-    reset: function () {
-      this.import("https://raw.githubusercontent.com/Bhpsngum/starblast-snippets/master/CustomStationModuleModels/Neuronality_DefaultModules/manifest.json")
+    reset: async function () {
+      return await this.import("https://raw.githubusercontent.com/Bhpsngum/starblast-snippets/master/CustomStationModuleModels/Neuronality_DefaultModules/manifest.json")
     },
     set: function (coffeescript, type, ID, ignoreUpdate) {
       let model = {
@@ -190,5 +196,16 @@
     try { CoffeeScript } catch (e) { return }
     clearInterval(wait);
     CustomStationModules.reset();
+    window.addEventListener('keydown', function (e) {
+      if (e.ctrlKey && e.shiftKey) switch (e.keyCode) {
+        case 77: /* M */ {
+          let res = prompt("Paste manifest file (JSON) here to import (leave blank to reset):");
+          if (res != null) (res == '' ? CustomStationModules.reset() : CustomStationModules.import(res)).then(success => {
+            alert(success ? "Modules successfully loaded." : "Failed to import modules. Check DevTools console for more details.")
+          })
+          break
+        }
+      }
+    });
   }, 500);
 }).call(window);
