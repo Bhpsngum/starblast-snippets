@@ -199,7 +199,7 @@
     window.addEventListener('keydown', function (e) {
       if (e.ctrlKey && e.shiftKey) switch (e.keyCode) {
         case 77: /* M */ {
-          let res = prompt("Paste manifest file (JSON) here to import (leave blank to reset):");
+          let res = prompt("Paste manifest file (JSON format) URL here to import (leave blank to reset):");
           if (res != null) (res == '' ? CustomStationModules.reset() : CustomStationModules.import(res)).then(success => {
             alert(success ? "Modules successfully loaded." : "Failed to import modules. Check DevTools console for more details.")
           })
