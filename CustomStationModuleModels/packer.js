@@ -48,4 +48,4 @@ const exportData = async function (name, author, path) {
     fs.writeFile(path + "manifest.json", JSON.stringify(data, null, '\t'));
 }
 
-exportData("Robonuko_RTXModules", "Robounko", "Robonuko_RTXModules");
+exportData("RTX Modules", "Robounko", "Robonuko_RTXModules");

@@ -1,3 +1,7 @@
+s = new SeedRandomizer(seed)
+
+e = 1 + s.nextInt(4)
+
 return model =
   name: 'end-structure-1'
   size: 0.5
