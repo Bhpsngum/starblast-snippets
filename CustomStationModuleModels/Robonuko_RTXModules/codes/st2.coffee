@@ -1,3 +1,9 @@
+n = new SeedRandomizer(t)
+
+a = n.O01I1(20)
+i = 1 + n.O01I1(4)
+o = n.O01I1(20)
+
 model =
   name: 'connect-structure-4'
   size: 0.5
