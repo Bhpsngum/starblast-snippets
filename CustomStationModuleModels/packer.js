@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
 
-const exportData = async function (name, author, path) {
+const exportData = async function (name = "", author = "", path = "./") {
 
     const data = {
         name,
@@ -48,4 +48,4 @@ const exportData = async function (name, author, path) {
     fs.writeFile(path + "manifest.json", JSON.stringify(data, null, '\t'));
 }
 
-exportData("RTX Modules", "Robounko", "Robonuko_RTXModules");
+exportData(...process.argv.slice(2));
