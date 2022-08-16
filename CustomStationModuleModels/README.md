@@ -43,3 +43,6 @@ Where `path` is the relative path of where you are executing the command or perm
 There are also some variables that have been added in Ship Editor too (although they're not in there, you need to add them manually by yourself):
 * **`seed`:** a unique seed for each game, 0 <= seed < 1360
 * **`(new) SeedRandomizer(seed, hash)`**: a seed-based randomizer function. For more stuff please read here: https://github.com/pmgl/microstudio/blob/master/static/js/languages/microscript/random.js and https://github.com/pmgl/microstudio/blob/master/static/js/languages/microscript/random.coffee (nerd level required)
+
+## Contributing
+Feel free to create PR, or contact me through Discord Bhpsngum#2623
