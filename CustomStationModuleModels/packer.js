@@ -45,7 +45,8 @@ const exportData = async function (name = "", author = "", path = "./") {
     }
     catch (e) {}
 
-    fs.writeFile(path + "manifest.json", JSON.stringify(data, null, '\t'));
+    await fs.writeFile(path + "manifest.json", JSON.stringify(data, null, '\t'));
+    console.log("Packed successfully!");
 }
 
 exportData(...process.argv.slice(2));
