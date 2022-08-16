@@ -33,7 +33,7 @@ You must look at existing examples (the folder `codes` under those subfolders in
 4. Open Terminal/Command Prompt/Shell and run this command
 
 ```bash
-node packer.js '<Name>' '<Author>' '<path>'
+node path/to/packer.js '<Name>' '<Author>' '<path>'
 ```
 Where `path` is the relative path of where you are executing the command or permanent path to the folder `folderName` above
 
