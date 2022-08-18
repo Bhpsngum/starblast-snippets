@@ -1,20 +1,6 @@
 model =
   name: 'Heavy Mine'
-  level: 1
-  model: 1
   size: 1.05
-  specs:
-    shield:
-      capacity: [100, 100]
-      reload: [1e-30, 1e-30] # no shield regen
-    generator: # no generator
-      capacity: [1e-30, 1e-30]
-      reload: [1e-30, 1e-30]
-    ship:
-      mass: 200
-      speed: [1e-30, 1e-30] # no speed
-      rotation: [150, 150]
-      acceleration: [1e30, 1e30] # initial maximum speed
   bodies: main:
     section_segments: 8
     offset:

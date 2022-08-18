@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Custom Station Modules
+// @name         Custom Station Module Models
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  Use custom station modules client-side
@@ -22,9 +22,12 @@
   */
 
 
-  let coffee = document.createElement("script");
-  coffee.src = "https://cdn.jsdelivr.net/gh/jashkenas/coffeescript@master/lib/coffeescript-browser-compiler-legacy/coffeescript.js";
-  document.head.appendChild(coffee);
+  if (document.querySelector("script#coffeescript") == null) {
+    let coffee = document.createElement("script");
+    coffee.id = "coffeescript";
+    coffee.src = "https://cdn.jsdelivr.net/gh/jashkenas/coffeescript@master/lib/coffeescript-browser-compiler-legacy/coffeescript.js";
+    document.head.appendChild(coffee)
+  }
   this.SeedRandomizer = (function() {
     function SeedRandomizer(_seed, hash) {
       this._seed = _seed != null ? _seed : Math.random();
@@ -138,7 +141,7 @@
     let val = stmodel[i];
     if ("function" == typeof val && (val = val.toString()).includes(".generate(")) stmodel[i] = Function(stmodel.name, "return " + val.replace(/\.generate\(([^\)]+?)\)/, ".generate($1, SeedRandomizer)"))(stmodel)
   }
-  this.CustomStationModules = {
+  this.CustomStationModuleModels = {
     list: STATION_MODULES,
     import: async function (URL) {
       console.log("Importing...");
@@ -146,17 +149,17 @@
         let data = JSON.parse(await (await window.fetch(URL)).text());
         for (let i of data.data) this.set(i.generate,i.type, i.id, true);
         this.update();
-        console.log("[CustomStationModulesLoader] Imported modules from preset '" + (data.name || "Unknown") + "' by " + (data.author || "Anonymous") + ".");
+        console.log("[CustomStationModuleModelsLoader] Imported module models from preset '" + (data.name || "Unknown") + "' by " + (data.author || "Anonymous") + ".");
         return true
       }
       catch (e) {
-        console.error("[CustomStationModulesLoader] Failed to import the module. Caught error:", e);
+        console.error("[CustomStationModuleModelsLoader] Failed to import the module models. Caught error:", e);
         this.reset();
         return false
       }
     },
     reset: async function () {
-      return await this.import("https://raw.githubusercontent.com/Bhpsngum/starblast-snippets/master/CustomStationModuleModels/Neuronality_DefaultModules/manifest.json")
+      return await this.import("https://raw.githubusercontent.com/Bhpsngum/starblast-snippets/master/CustomStationModuleModels/Neuronality_Default/manifest.json")
     },
     set: function (coffeescript, type, ID, ignoreUpdate) {
       let model = {
@@ -195,13 +198,13 @@
   let wait = setInterval(function () {
     try { CoffeeScript } catch (e) { return }
     clearInterval(wait);
-    CustomStationModules.reset();
+    CustomStationModuleModels.reset();
     window.addEventListener('keydown', function (e) {
       if (e.ctrlKey && e.shiftKey) switch (e.keyCode) {
         case 77: /* M */ {
-          let res = prompt("Paste manifest file (JSON format) URL here to import (leave blank to reset):");
-          if (res != null) (res == '' ? CustomStationModules.reset() : CustomStationModules.import(res)).then(success => {
-            alert(success ? "Modules successfully loaded." : "Failed to import modules. Check DevTools console for more details.")
+          let res = prompt("Paste manifest file (JSON format) URL here to import station module models (leave blank to reset):");
+          if (res != null) (res == '' ? CustomStationModuleModels.reset() : CustomStationModuleModels.import(res)).then(success => {
+            alert(success ? "Modules successfully loaded." : "Failed to import station module models. Check DevTools console for more details.")
           })
           break
         }
