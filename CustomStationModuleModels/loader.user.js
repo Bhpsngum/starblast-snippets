@@ -204,7 +204,7 @@
         case 77: /* M */ {
           let res = prompt("Paste manifest file (JSON format) URL here to import station module models (leave blank to reset):");
           if (res != null) (res == '' ? CustomStationModuleModels.reset() : CustomStationModuleModels.import(res)).then(success => {
-            alert(success ? "Modules successfully loaded." : "Failed to import station module models. Check DevTools console for more details.")
+            alert(success ? "Station module models successfully loaded." : "Failed to import station module models. Check DevTools console for more details.")
           })
           break
         }

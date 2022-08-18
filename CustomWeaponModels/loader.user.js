@@ -102,7 +102,7 @@
         case 80: /* P */ {
           let res = prompt("Paste manifest file (JSON format) URL here to import weapon models (leave blank to reset):");
           if (res != null) (res == '' ? CustomWeaponModels.reset() : CustomWeaponModels.import(res)).then(success => {
-            alert(success ? "Modules successfully loaded." : "Failed to import weapon models. Check DevTools console for more details.")
+            alert(success ? "Weapon models successfully loaded." : "Failed to import weapon models. Check DevTools console for more details.")
           })
           break
         }
