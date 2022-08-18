@@ -28,7 +28,7 @@ You must look at existing examples (the folder `codes` under those subfolders in
   |-- codes
         |--- All your .coffee files go here
 ```
-3. Download the `packer.js` file (also in that link)
+3. Download the `packer.js` file (also in this folder)
 
 4. Open Terminal/Command Prompt/Shell and run this command
 
