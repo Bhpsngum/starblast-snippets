@@ -192,7 +192,7 @@
         team.station_model = new StationModel(team.station_desc, team);
         add.addStation(team.station_model);
       }
-      this.StationModuleModel.images_buffer = [];
+      window.StationModuleModel.images_buffer = [];
     }
   }
   let wait = setInterval(function () {
