@@ -86,11 +86,11 @@
       this.list.icons_buffer = [];
       let main = searchProp(window.module.exports.settings, (v, k) => v.mode).value;
       let collectibles = searchProp(main, (v, k) => v.collectibles != null).value.collectibles;
-      // collectibles.collectibles.forEach(function (v) {
-      //   let props = a.map(i => v[i]);
-      //   collectibles.remove(v);
-      //   collectibles.add.apply(this, props);
-      // });
+      collectibles.collectibles.forEach(function (v) {
+        let props = a.map(i => v[i]);
+        collectibles.remove(v);
+        collectibles.add.apply(collectibles, props);
+      });
     }
   }
   let wait = setInterval(function () {
