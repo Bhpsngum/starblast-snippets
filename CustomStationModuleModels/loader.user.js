@@ -172,7 +172,7 @@
       if (!ignoreUpdate) this.update()
     },
     update: function () {
-      let data = Object.values(this.module.exports.settings).find(v => v && v.mode), mode = data.mode;
+      let data = Object.values(window.module.exports.settings).find(v => v && v.mode), mode = data.mode;
       if (mode.id != 'team') return;
       let smodel = mode.teams[0].station_model, rev = Object.keys(smodel).find(k => smodel[k] && smodel[k].type == "Group"), add;
       for (let i in data) {
