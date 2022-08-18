@@ -27,6 +27,15 @@
     coffee.src = "https://cdn.jsdelivr.net/gh/jashkenas/coffeescript@master/lib/coffeescript-browser-compiler-legacy/coffeescript.js";
     document.head.appendChild(coffee)
   }
+  const searchProp = function (parent, conditional) {
+    for (let key in parent) try {
+      if (conditional(parent[key], key)) return {value: parent[key], key: key};
+    } catch (e) {}
+    return {value: null, key: null}
+  }
+  let a = [];
+  Collectible.toString().replace(/this\.(\w+)\s*\=\s*\w,/g, (v,e) => a.push(e));
+  a.shift();
   this.CustomWeaponModels = {
     list: WeaponModel,
     import: async function (URL) {
@@ -72,8 +81,16 @@
       //   team.station_model = new StationModel(team.station_desc, team);
       //   add.addStation(team.station_model);
       // }
+      window.Collectible.models = {};
       this.list.images_buffer = [];
       this.list.icons_buffer = [];
+      let main = searchProp(window.module.exports.settings, (v, k) => v.mode).value;
+      let collectibles = searchProp(main, (v, k) => v.collectibles != null).value.collectibles;
+      // collectibles.collectibles.forEach(function (v) {
+      //   let props = a.map(i => v[i]);
+      //   collectibles.remove(v);
+      //   collectibles.add.apply(this, props);
+      // });
     }
   }
   let wait = setInterval(function () {
