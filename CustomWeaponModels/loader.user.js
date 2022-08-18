@@ -30,7 +30,7 @@
   this.CustomWeaponModels = {
     list: WeaponModel,
     import: async function (URL) {
-      console.log("Importing...");
+      console.log("Importing weapon models...");
       try {
         let data = JSON.parse(await (await window.fetch(URL)).text());
         for (let i of data.data) this.set(i.data, i.type, true);
