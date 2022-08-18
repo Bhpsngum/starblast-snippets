@@ -193,7 +193,7 @@
         add.addStation(team.station_model);
       }
       this.StationModuleModel.images_buffer = [];
-    }.bind(this)
+    }
   }
   let wait = setInterval(function () {
     try { CoffeeScript } catch (e) { return }

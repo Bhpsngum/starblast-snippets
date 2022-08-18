@@ -74,7 +74,7 @@
       // }
       this.list.images_buffer = [];
       this.list.icons_buffer = [];
-    }.bind(this)
+    }
   }
   let wait = setInterval(function () {
     try { CoffeeScript } catch (e) { return }
