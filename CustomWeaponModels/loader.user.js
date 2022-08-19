@@ -66,12 +66,25 @@
       this.list.images_buffer = [];
       this.list.icons_buffer = [];
       let main = searchProp(window.module.exports.settings, (v, k) => v.mode).value;
-      let collectibles = searchProp(main, (v, k) => v.collectibles != null).value.collectibles;
+      let manager = searchProp(main, (v, k) => v.collectibles != null).value;
+      let collectibles = manager.collectibles;
       collectibles.collectibles.forEach(function (v) {
         let props = a.map(i => v[i]);
         collectibles.remove(v);
         collectibles.add.apply(collectibles, props);
       });
+      // reset projectiles
+      let proj = searchProp(manager, (v, k) => Array.isArray(v.projectiles)).value;
+      proj.projectiles.forEach(e => e.dispose());
+      proj.projectiles = [];
+      // reset pods
+      let pods = searchProp(manager, (v, k) => v.pods).value.pods;
+      pods.models = {};
+      let names = ["mining", "attack", "defence"];
+      for (let i = 0; i < names.length; ++i) {
+        let subpods = pods[names[i] + "_pods"];
+        while (subpods.length > 0) pods.remove(i, 0);
+      }
     }
   }
   let wait = setInterval(function () {
