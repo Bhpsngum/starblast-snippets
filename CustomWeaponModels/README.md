@@ -1,5 +1,5 @@
 # Custom Weapon Models Open Project
-Having custom waepon models in your game
+Having custom weapon models in your game
 
 ## Requirements
 * Support ES6 or higher

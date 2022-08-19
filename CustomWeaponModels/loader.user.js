@@ -44,7 +44,7 @@
         let data = JSON.parse(await (await window.fetch(URL)).text());
         for (let i of data.data) this.set(i.data, i.type, true);
         this.update();
-        console.log("[CustomWeaponModelsLoader] Imported weapon models from preset '" + (data.name || "Unknown") + "' by " + (data.author || "Anonymous") + ".");
+        console.log("[CustomWeaponModelsLoader] Imported weapon models from the pack '" + (data.name || "Unknown") + "' by " + (data.author || "Anonymous") + ".");
         return true
       }
       catch (e) {
@@ -61,26 +61,7 @@
       if (!ignoreUpdate) this.update()
     },
     update: function () {
-      // let data = Object.values(this.module.exports.settings).find(v => v && v.mode), mode = data.mode;
-      // if (mode.id != 'team') return;
-      // let smodel = mode.teams[0].station_model, rev = Object.keys(smodel).find(k => smodel[k] && smodel[k].type == "Group"), add;
-      // for (let i in data) {
-      //   if (data[i].seed) {
-      //     for (let j in data[i]) {
-      //       if (Array.isArray(data[i][j].stations)) {
-      //         add = data[i][j];
-      //         break;
-      //       }
-      //     }
-      //     break;
-      //   }
-      // }
-      // for (let team of mode.teams) team.station_model[rev].remove(...team.station_model.modules.map(i => i[rev]))
-      // add.stations = [];
-      // for (let team of mode.teams) {
-      //   team.station_model = new StationModel(team.station_desc, team);
-      //   add.addStation(team.station_model);
-      // }
+      // reset collectible shapes
       window.Collectible.models = {};
       this.list.images_buffer = [];
       this.list.icons_buffer = [];

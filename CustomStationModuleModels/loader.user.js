@@ -149,7 +149,7 @@
         let data = JSON.parse(await (await window.fetch(URL)).text());
         for (let i of data.data) this.set(i.generate,i.type, i.id, true);
         this.update();
-        console.log("[CustomStationModuleModelsLoader] Imported module models from preset '" + (data.name || "Unknown") + "' by " + (data.author || "Anonymous") + ".");
+        console.log("[CustomStationModuleModelsLoader] Imported module models from the pack '" + (data.name || "Unknown") + "' by " + (data.author || "Anonymous") + ".");
         return true
       }
       catch (e) {
