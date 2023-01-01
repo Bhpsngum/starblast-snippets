@@ -320,7 +320,8 @@ if (!Array.isArray(game.custom.kicked_ids)) game.custom.kicked_ids = [];
 this.tick = function (game) {
   if (game.step % 15 === 0) for (let ship of game.ships) {
     if (game.custom.kicked_ids.includes(ship.id) && ship.alive) {
-      ship.set({kill: true})
+      ship.set({kill: true});
+      continue;
     }
     updateShortcutPosition(ship);
   }

@@ -1546,9 +1546,13 @@ function displayPlayerList(ship, ships) {
   });
   displays.forEach(ui => ui.hide(ship));
 }
+
+if (!Array.isArray(game.custom.kicked_ids)) game.custom.kicked_ids = [];
+
 this.tick = function (game) {
   if (game.step % 30 === 0) {
     game.ships.forEach((ship, _, ships) => {
+      if (game.custom.kicked_ids.includes(ship.id) && ship.alive) return ship.set({kill: true});
       init(ship);
       const { admin, layout, page, options } = ship.custom;
       if (options) switch (page) {
