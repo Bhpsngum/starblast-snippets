@@ -1238,7 +1238,10 @@ function announcement(ship, text, timeout = 4000) {
   ship.setUIComponent({ id: 'announceText', position: [22, 10, 57, 5], components: [{ type: 'text', position: [0, 10, 100, 80], value: text, color: 'rgb(255,255,255)' }] })
 }
 const spectatorType = SHIP.init.Spectator[0].typespec.code, btn_cooldown = 20, mainPos = [5, 35, 30, 60], pagePos = [4, 29, 30, 5], dataJoin = ' / ';
-const kick = ship => ship.gameover({ "": "" });
+const kick = (ship, options = { "": "" })  => {
+  game.custom.kicked_ids.push(ship.id);
+  ship.gameover(options);
+}
 const players_clear = ships => ships.forEach(ship => !ship.custom.admin && ship.set({ kill: true }));
 const entities_clear = (aliens, asteroids) => [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true }));
 const isCooldown = (ship, step) => step <= ship.custom.clicked || !(ship.custom.clicked = step + btn_cooldown);
@@ -1793,6 +1796,12 @@ this.event = function (event, game) {
           const { x, y, vx, vy } = ships[ship.custom.warpIndex = warpIndex];
           ship.set({ x, y, vx, vy, ...SHIP.getEvent('spectate') })
           showShipIndex(ship, spectatorType);
+          break;
+        case 'using_subspace':
+          kick(ship, {
+            "You have been kicked!": " ",
+            "Yo, only noobs use hacks ya know?": "Chad plays without hacks"
+          });
           break;
         case 'admin_warp':
           ships.forEach(player => !player.custom.admin && player.set({ x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy, ...SHIP.getEvent('Spectator') }))

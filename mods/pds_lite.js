@@ -309,13 +309,33 @@ function shipInit(ship) {
   changeShip(ship, defaultShip, { stats: 88888888, crystals: 6 ** 2 * 20, shield: 1000 })
   announcement(ship, 'You can use shortcuts below. Clicking those text doesnt stop you from shotting anymore.', 15000)
 }
+
+let kickShip = function (ship, options) {
+  if (ship == null || "function" != typeof ship.gameover) return;
+  ship.gameover(options);
+  game.custom.kicked_ids.push(ship.id);
+}
+
+if (!Array.isArray(game.custom.kicked_ids)) game.custom.kicked_ids = [];
 this.tick = function (game) {
-  if (game.step % 15 === 0) game.ships.forEach(ship => updateShortcutPosition(ship));
+  if (game.step % 15 === 0) for (let ship of game.ships) {
+    if (game.custom.kicked_ids.includes(ship.id) && ship.alive) {
+      ship.set({kill: true})
+    }
+    updateShortcutPosition(ship);
+  }
 }
 this.event = function (event, game) {
   const { ship, name, id } = event
   switch (name) {
     case 'ui_component_clicked':
+      if (id == "using_subspace") {
+        kickShip(ship, {
+          "You have been kicked!": " ",
+          "Yo, only noobs use hacks ya know?": "Chad plays without hacks"
+        });
+        break;
+      }
       if (ship.custom.isTimeout || checkUITimeout(ship, game.step)) return;
       const button = uiFuncs[ship.custom.uis][ship.custom.slots[+id.split(`ck_`)[1]]]
       if (!button) return
