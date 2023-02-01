@@ -1531,6 +1531,12 @@ const modInfo = function () { }();
 
 function init(ship) {
   if (ship.custom.init) return;
+  ship.setUIComponent({
+    id: "radar_background",
+    components: [
+      {type: "box", position: [0,0,100,100], stroke: "#FFF", width: 1}
+    ]
+  })
   ship.custom = { init: true, options: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'Vanilla', shiptree_pos: {} }
   Object.keys(SHIP.init).forEach(i => ship.custom.shiptree_pos[i] = 0);
   // map_position, page, type, selectedShip, x, y, warpIndex, dataType

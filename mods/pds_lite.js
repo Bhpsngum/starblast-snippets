@@ -301,6 +301,12 @@ function updateShortcutPosition(ship) {
 }
 function shipInit(ship) {
   if (ship.custom.init) return
+  ship.setUIComponent({
+    id: "radar_background",
+    components: [
+      {type: "box", position: [0,0,100,100], stroke: "#FFF", width: 1}
+    ]
+  });
   uis.getList('ck').forEach(i => i.display(ship))
   ship.custom = {
     init: true, stats: ship.stats, crystals: ship.crystals, shiptree: defaultShip.shiptree,
