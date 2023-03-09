@@ -7,7 +7,11 @@ Having custom station modules' models in your game
 
 TL/DR; just use latest browser version
 ## How to use it
-Load the file `loader.user.js` to your UserScript Loader. The shortcut is `Ctrl + Shift + M` (all OS) to open URL import box
+Load the file `loader.user.js` to your UserScript Loader.
+
+## Shortcut (all OS):
+* Ctrl + Shift + M to open import prompt
+* Ctrl + Shift + Alt + M to toggle preload mode, which allows it to save the URL for preloading later
 
 ## What's the URL?
 It's an URL to the packed manifest file (in JSON format).
@@ -20,6 +24,7 @@ Welp, it needs a bit help of NodeJS
 2. Rename them to an id matching with the model name + `.coffee`
 
 For example: if the model's name is `deposit-1`, the file name for that must be `d1.coffee`
+
 You must look at existing examples (the folder `codes` under those subfolders in this project) to properly match the correct name with id
 
 3. Create a folder with this structure:

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Custom Station Module Models
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      1.0
 // @description  Use custom station modules client-side
 // @author       Bhpsngum
 // @include      /^https\:\/\/starblast\.io\/(app.html(\?.+)*)*$/
@@ -13,8 +13,9 @@
   /* WARNING
   This is NOT a snippet script designed for Modding, therefore it won't work in Modding, you can skip this script and go exploring others :)
 
-  Shortcut:
-  * Ctrl + Shift + M (all OS) to open import prompt
+  Shortcut (all OS):
+  * Ctrl + Shift + M to open import prompt
+  * Ctrl + Shift + Alt + M to toggle preload mode, which allows it to save the URL for preloading later
 
   Required:
   * ES6 or higher
@@ -142,20 +143,42 @@
     if ("function" == typeof val && (val = val.toString()).includes(".generate(")) stmodel[i] = Function(stmodel.name, "return " + val.replace(/\.generate\(([^\)]+?)\)/, ".generate($1, SeedRandomizer)"))(stmodel)
   }
   this.CustomStationModuleModels = {
+    console: {
+      color: "#FFFF00",
+      name: "CustomStationModuleModelsLoader",
+      handle: function (action, ...logs) { return console[action](`%c[${this.name}] ` + logs[0], `color: ${this.color}`, ...logs.slice(1))},
+      log: function (...logs) { return this.handle("log", ...logs) },
+      error: function (...logs) { return this.handle("error", ...logs) },
+      warn: function (...logs) { return this.handle("warn", ...logs) }
+    },
     list: STATION_MODULES,
     import: async function (URL) {
-      console.log("Importing station module models...");
+      if (URL == null) return this.reset();
+      this.console.log("Importing station module models...");
       try {
         let data = JSON.parse(await (await window.fetch(URL)).text());
         for (let i of data.data) this.set(i.generate,i.type, i.id, true);
         this.update();
-        console.log("[CustomStationModuleModelsLoader] Imported module models from the pack '" + (data.name || "Unknown") + "' by " + (data.author || "Anonymous") + ".");
+        this.console.log("Imported module models from the pack '" + (data.name || "Unknown") + "' by " + (data.author || "Anonymous") + ".");
         return true
       }
       catch (e) {
-        console.error("[CustomStationModuleModelsLoader] Failed to import the module models. Caught error:", e);
+        this.console.error(`Failed to import the module models (${URL}). Caught error:`, e);
         this.reset();
         return false
+      }
+    },
+    local: {
+      prefix: "CustomStationModuleModels_",
+      data: function (name, val) {
+        switch (arguments.length) {
+          case 0: return null;
+          case 1: return localStorage.getItem(this.prefix + name);
+          default: 
+            if (val == null) return localStorage.removeItem(this.prefix + name), null;
+            localStorage.setItem(this.prefix + name, val);
+            return this.data(name);
+        }
       }
     },
     reset: async function () {
@@ -193,22 +216,38 @@
         add.addStation(team.station_model);
       }
       window.StationModuleModel.images_buffer = [];
+    },
+    initialize: function () {
+      let wait = setInterval(function () {
+        try { CoffeeScript } catch (e) { return }
+        clearInterval(wait);
+        let loadURL = this.local.data("importURL");
+        if (this.local.data("keepURL") == '1' && loadURL != null) this.import(loadURL);
+        else this.reset();
+        window.addEventListener('keydown', function (e) {
+          if (e.ctrlKey && e.shiftKey) switch (e.keyCode) {
+            case 77: /* M */ {
+              if (e.altKey) {
+                let enableSave = !(this.local.data('keepURL') == '1'), status = enableSave ? "ENABLED": "DISABLED";
+                this.local.data('keepURL', +enableSave);
+                alert(`Preload mode for Custom Station Module Modles Loader is ${status}`);
+                this.console.log(`Preload mode is ${status}`);
+                break;
+              }
+              let res = prompt("Paste manifest file (JSON format) URL here to import station module models (leave blank to reset):");
+              if (res != null) {
+                res = res == '' ? null : res;
+                if (confirm("Do you want to save this URL for preloading later?")) this.local.data("importURL", res);
+                this.import(res).then(success => {
+                  alert(success ? "Station module models successfully loaded." : "Failed to import station module models. Check DevTools console for more details.")
+                });
+              }
+              break
+            }
+          }
+        }.bind(this));
+      }.bind(this), 500);
     }
   }
-  let wait = setInterval(function () {
-    try { CoffeeScript } catch (e) { return }
-    clearInterval(wait);
-    CustomStationModuleModels.reset();
-    window.addEventListener('keydown', function (e) {
-      if (e.ctrlKey && e.shiftKey) switch (e.keyCode) {
-        case 77: /* M */ {
-          let res = prompt("Paste manifest file (JSON format) URL here to import station module models (leave blank to reset):");
-          if (res != null) (res == '' ? CustomStationModuleModels.reset() : CustomStationModuleModels.import(res)).then(success => {
-            alert(success ? "Station module models successfully loaded." : "Failed to import station module models. Check DevTools console for more details.")
-          })
-          break
-        }
-      }
-    });
-  }, 500);
+  this.CustomStationModuleModels.initialize();
 }).call(window);

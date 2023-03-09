@@ -7,7 +7,11 @@ Having custom weapon models in your game
 
 TL/DR; just use latest browser version
 ## How to use it
-Load the file `loader.user.js` to your UserScript Loader. The shortcut is `Ctrl + Shift + P` (all OS) to open URL import box
+Load the file `loader.user.js` to your UserScript Loader.
+
+## Shortcut (all OS):
+* Ctrl + Shift + P to open import prompt
+* Ctrl + Shift + Alt + P to toggle preload mode, which allows it to save the URL for preloading later
 
 ## What's the URL?
 It's an URL to the packed manifest file (in JSON format).
