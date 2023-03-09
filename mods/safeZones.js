@@ -105,7 +105,7 @@ var checkSafe = function (ship, range) {
   return Math.sqrt((ship.x-range[0])**2 + (ship.y-range[1])**2) <= 10;
 }
 
-Spawn = {
+let Spawn = {
   names: ["None","Center","Random"],
   modes: [
     null,
