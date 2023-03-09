@@ -7,7 +7,7 @@ Having custom station modules' models in your game
 
 TL/DR; just use latest browser version
 ## How to use it
-Load the file `loader.user.js` to your UserScript Loader. Or if you are lazy, you can click [here](https://github.com/Bhpsngum/starblast-snippets/raw/master/CustomStationModuleModels/loader.user.js) to prompt the script to your Userscript Loader instead.
+Load the file `loader.user.js` to your UserScript Loader. Or if you are lazy, you can click [here](https://github.com/Bhpsngum/starblast-snippets/raw/master/CustomStationModuleModels/loader.user.js) to prompt the script to your UserScript Loader instead.
 
 ## Shortcut (all OS)
 * Ctrl + Shift + M to open import prompt
