@@ -9,7 +9,7 @@ TL/DR; just use latest browser version
 ## How to use it
 Load the file `loader.user.js` to your UserScript Loader.
 
-## Shortcut (all OS):
+## Shortcut (all OS)
 * Ctrl + Shift + P to open import prompt
 * Ctrl + Shift + Alt + P to toggle preload mode, which allows it to save the URL for preloading later
 
