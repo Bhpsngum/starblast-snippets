@@ -122,7 +122,7 @@
               if (e.altKey) {
                 let enableSave = !(this.local.data('keepURL') == '1'), status = enableSave ? "ENABLED": "DISABLED";
                 this.local.data('keepURL', +enableSave);
-                alert(`Preload mode for Custom Station Module Modles Loader is ${status}`);
+                alert(`Preload mode for Custom Station Module Modules Loader is ${status}`);
                 this.console.log(`Preload mode is ${status}`);
                 break;
               }
