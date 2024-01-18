@@ -17,7 +17,7 @@ In this folder, there are folder with encoded to alien codes:
 | 19 | Saucer |
 | 20 | Final Boss |
 
-In each folder, there are 2 files:
+In each folder, there are 3 files:
 * **`model.obj`**: Model file
 * **`lambert.jpg`**: Texture image
 * **`emissive.jpg`**: Emissive image
