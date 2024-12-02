@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Modding SSH
+// @name         Modding Shared Host (MSH)
 // @namespace    http://tampermonkey.net/
 // @version      1.0.0
 // @description  Collaborative Modding session on your own Modding Tab
@@ -14,7 +14,7 @@
 
 	let terminal = window.$("#terminal").terminal();
 
-	class ModdingSSHSession {
+	class ModdingSHSession {
 		constructor (server, token, terminal, nonSecure = false) {
 			this.server = server;
 			this.token = token;
@@ -81,7 +81,7 @@
 								for (let i of this.pending_commands) this.execute(i);
 								this.pending_commands = [];
 								this.terminal.set_prompt(this.prompt + "# ");
-								this.terminal.echo(`[modding-ssh://${this.prompt}]: Session connected successfully.`);
+								this.terminal.echo(`[msh://${this.prompt}]: Session connected successfully.`);
 								this.terminal.echo(`Type 'logout' to end the session.`);
 								break;
 							case "session_end":
@@ -170,14 +170,14 @@
 			else session.execute(input);
 		}
 		else {
-			if (command === "ssh") {
-				inSession = ModdingSSHSession.parse(args.slice(1).join(" "), terminal);
+			if (command === "msh") {
+				inSession = ModdingSHSession.parse(args.slice(1).join(" "), terminal);
 				if (!inSession.server) {
-					terminal.echo(`ssh [flags] <server> [token]\nConnect to Modding SSH session.\nAvailable flags:\n\t -n, --non-secure: Server is using non-secure WebSocket (ws://)`)
+					terminal.echo(`msh [flags] <server> [token]\nConnect to Modding SH session.\nAvailable flags:\n\t -n, --non-secure: Server is using non-secure WebSocket (ws://)`)
 					inSession = null;
 				}
 				else {
-					terminal.echo("Connecting to Modding SSH session...");
+					terminal.echo("Connecting to Modding SH session...");
 					inSession.connect();
 				}
 			}
