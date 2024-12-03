@@ -173,7 +173,7 @@
 			if (command === "msh") {
 				inSession = ModdingSHSession.parse(args.slice(1).join(" "), terminal);
 				if (!inSession.server) {
-					terminal.echo(`msh [flags] <server> [token]\nConnect to Modding SH session.\nAvailable flags:\n\t -n, --non-secure: Server is using non-secure WebSocket (ws://)`)
+					terminal.echo(`msh [flags] <server> [token]\nConnect to Modding Shared Host (MSH) session.\nAvailable flags:\n\t -n, --non-secure: Server is using non-secure WebSocket (ws://)`)
 					inSession = null;
 				}
 				else {
