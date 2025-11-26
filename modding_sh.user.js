@@ -87,6 +87,10 @@
 								}
 								this.terminal.echo(`Type 'logout' to end the session.`);
 								this.terminal.set_prompt(`[[bg;green;]${this.prompt}#] `);
+								ws.ping_timer = setInterval(() => {
+									if (this.closed) return clearInterval(ws.ping_timer);
+									ws.send(JSON.stringify({name: "ping"}));
+								}, 5000);
 								break;
 							case "session_end":
 								if (packet.error) {
