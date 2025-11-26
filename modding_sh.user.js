@@ -76,13 +76,17 @@
 							case "session_start":
 								this.started = true;
 								this.user = packet.username || "guest";
-								if (packet.server) this.server = packet.server;
-								this.prompt = `${this.user}@${this.server}`;
+								if (packet.host) this.server = packet.host;
+								this.prompt = `${this.user} @ ${this.server}`;
 								for (let i of this.pending_commands) this.execute(i);
 								this.pending_commands = [];
-								this.terminal.set_prompt(this.prompt + "# ");
 								this.terminal.echo(`[msh://${this.prompt}]: Session connected successfully.`);
+								if (packet.region) {
+									this.terminal.echo(`Server region: ${packet.region}`);
+									this.prompt += ` (${packet.region})`;
+								}
 								this.terminal.echo(`Type 'logout' to end the session.`);
+								this.terminal.set_prompt(`[[bg;green;]${this.prompt}#] `);
 								break;
 							case "session_end":
 								if (packet.error) {
