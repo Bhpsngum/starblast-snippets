@@ -80,9 +80,9 @@
 								this.prompt = `${this.user} @ ${this.server}`;
 								for (let i of this.pending_commands) this.execute(i);
 								this.pending_commands = [];
-								this.terminal.echo(`[msh://${this.prompt}]: Session connected successfully.`);
+								this.terminal.echo(`Session connected successfully.`);
 								if (packet.region) {
-									this.terminal.echo(`Server region: ${packet.region}`);
+									this.terminal.echo(`Mod region: ${packet.region}`);
 									this.prompt += ` (${packet.region})`;
 								}
 								this.terminal.echo(`Type 'logout' to end the session.`);
