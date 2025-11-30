@@ -77,7 +77,7 @@
 								this.started = true;
 								this.user = packet.username || "guest";
 								if (packet.host) this.server = packet.host;
-								this.prompt = `${this.user} @ ${this.server}`;
+								this.prompt = `${this.user}&#64;${this.server}`;
 								for (let i of this.pending_commands) this.execute(i);
 								this.pending_commands = [];
 								this.terminal.echo(`Session connected successfully.`);
